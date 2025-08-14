@@ -42,6 +42,13 @@ class LessonController extends Controller
         $previousLesson = $currentIndex > 0 ? $allLessons[$currentIndex - 1] : null;
         $nextLesson = $currentIndex < $allLessons->count() - 1 ? $allLessons[$currentIndex + 1] : null;
 
+        // Completed lessons for current user (to show ticks in sidebar)
+        $completedLessonIds = LessonProgress::where('user_id', $user->id)
+            ->whereIn('lesson_id', $allLessons->pluck('id'))
+            ->where('completed', true)
+            ->pluck('lesson_id')
+            ->toArray();
+
         // Get or create lesson progress
         $progress = LessonProgress::firstOrCreate(
             ['user_id' => $user->id, 'lesson_id' => $lesson->id],
@@ -53,6 +60,7 @@ class LessonController extends Controller
             'currentLesson' => $lesson,
             'previousLesson' => $previousLesson,
             'nextLesson' => $nextLesson,
+            'completedLessonIds' => $completedLessonIds,
         ]);
     }
 }

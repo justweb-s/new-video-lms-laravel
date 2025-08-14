@@ -26,7 +26,7 @@
                                 <a href="{{ route('courses.lesson', ['course' => $course->id, 'lesson' => $lesson->id]) }}" 
                                    class="block px-3 py-2 text-sm rounded hover:bg-blue-50 {{ (isset($currentLesson) && $currentLesson && $lesson->id === $currentLesson->id) ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-700' }}">
                                     {{ $loop->iteration }}. {{ $lesson->title }}
-                                    @if($lesson->completed)
+                                    @if(isset($completedLessonIds) && in_array($lesson->id, $completedLessonIds))
                                         <span class="ml-2 text-green-500">✓</span>
                                     @endif
                                 </a>
@@ -110,23 +110,52 @@
             // You can add video.js initialization here if needed
             // videojs('lesson-video', { /* options */ });
             
-            // Example: Track video progress
+            // Track video progress reliably every N seconds and mark completion on end
+            const routeUrl = '{{ (isset($currentLesson) && $currentLesson) ? route('progress.update') : '' }}';
+            const lessonId = {{ (isset($currentLesson) && $currentLesson) ? $currentLesson->id : 'null' }};
+            const csrfToken = '{{ csrf_token() }}';
+            let lastSentTime = 0;
+            const SEND_INTERVAL = 10; // seconds
+
+            function sendProgress(completed = false) {
+                if (!routeUrl || !lessonId) return;
+                const current = Math.floor(video.currentTime || 0);
+                const duration = Math.max(1, Math.floor(video.duration || 0)); // avoid div by 0
+                const percent = Math.min(100, Math.round((current / duration) * 100));
+
+                fetch(routeUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        lesson_id: lessonId,
+                        watch_time_seconds: current,
+                        progress_percentage: percent,
+                        completed: completed
+                    })
+                }).catch(() => {});
+            }
+
             video.addEventListener('timeupdate', function() {
-                // Send progress to server periodically
-                if (video.currentTime % 30 < 0.5) { // Every ~30 seconds
-                    fetch('{{ (isset($currentLesson) && $currentLesson) ? route('progress.update') : '' }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            lesson_id: '{{ (isset($currentLesson) && $currentLesson) ? $currentLesson->id : '' }}',
-                            watch_time_seconds: Math.floor(video.currentTime || 0),
-                            progress_percentage: Math.round(((video.currentTime || 0) / (video.duration || 1)) * 100),
-                            completed: false
-                        })
-                    });
+                if (video.paused) return;
+                if ((video.currentTime - lastSentTime) >= SEND_INTERVAL) {
+                    sendProgress(false);
+                    lastSentTime = video.currentTime;
+                }
+            });
+
+            video.addEventListener('ended', function() {
+                // Mark lesson as completed when the video ends
+                sendProgress(true);
+            });
+
+            document.addEventListener('visibilitychange', function() {
+                // Try to persist latest progress when the tab is hidden
+                if (document.visibilityState === 'hidden' && video && !video.paused) {
+                    sendProgress(false);
                 }
             });
         }

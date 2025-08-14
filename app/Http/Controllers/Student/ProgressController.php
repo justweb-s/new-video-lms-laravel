@@ -116,11 +116,16 @@ class ProgressController extends Controller
         // Aggiorna il progresso generale del corso
         $this->updateCourseProgress($user->id, $lesson->section->course_id);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Lezione completata!',
-            'progress' => $progress
-        ]);
+        // If this is an AJAX/JSON request, return JSON, otherwise redirect back
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Lezione completata!',
+                'progress' => $progress
+            ]);
+        }
+
+        return back()->with('success', 'Lezione completata!');
     }
 
     private function updateCourseProgress($userId, $courseId)
