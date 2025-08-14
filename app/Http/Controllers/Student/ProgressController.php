@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\LessonProgress;
 use App\Models\Lesson;
 use App\Models\Enrollment;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ProgressController extends Controller
 {
@@ -22,6 +24,7 @@ class ProgressController extends Controller
 
         $user = Auth::user();
         $lesson = Lesson::findOrFail($validated['lesson_id']);
+        Log::debug('StudentProgress.updateProgress start', ['user_id' => $user?->id, 'lesson_id' => $lesson->id, 'payload' => $validated]);
         
         // Verifica che l'utente sia iscritto al corso
         $enrollment = $user->enrollments()
@@ -30,8 +33,18 @@ class ProgressController extends Controller
             ->first();
             
         if (!$enrollment || $enrollment->isExpired()) {
+            Log::debug('StudentProgress.updateProgress forbidden', [
+                'has_enrollment' => (bool) $enrollment,
+                'enrollment_id' => $enrollment?->id,
+                'is_active' => $enrollment?->is_active,
+                'is_expired' => $enrollment?->isExpired(),
+                'expires_at' => optional($enrollment?->expires_at)->toIso8601String(),
+            ]);
             return response()->json(['error' => 'Non autorizzato'], 403);
         }
+
+        // Interpreta correttamente il boolean 'completed'
+        $completed = $request->has('completed') ? $request->boolean('completed') : false;
 
         // Aggiorna o crea il progresso
         $progress = LessonProgress::updateOrCreate(
@@ -42,13 +55,17 @@ class ProgressController extends Controller
             [
                 'watch_time_seconds' => $validated['watch_time_seconds'],
                 'progress_percentage' => $validated['progress_percentage'],
-                'completed' => $validated['completed'] ?? false,
-                'completed_at' => $validated['completed'] ? now() : null,
+                'completed' => $completed,
+                'completed_at' => $completed ? now() : null,
             ]
         );
+        Log::debug('StudentProgress.updateProgress saved', ['progress_id' => $progress->id]);
 
         // Aggiorna il progresso generale del corso
         $this->updateCourseProgress($user->id, $lesson->section->course_id);
+        Log::debug('StudentProgress.updateProgress courseProgressUpdated', [
+            'course_id' => $lesson->section->course_id,
+        ]);
 
         return response()->json([
             'success' => true,
@@ -72,6 +89,13 @@ class ProgressController extends Controller
             ->first();
             
         if (!$enrollment || $enrollment->isExpired()) {
+            Log::debug('StudentProgress.markAsCompleted forbidden', [
+                'has_enrollment' => (bool) $enrollment,
+                'enrollment_id' => $enrollment?->id,
+                'is_active' => $enrollment?->is_active,
+                'is_expired' => $enrollment?->isExpired(),
+                'expires_at' => optional($enrollment?->expires_at)->toIso8601String(),
+            ]);
             return response()->json(['error' => 'Non autorizzato'], 403);
         }
 
@@ -87,6 +111,7 @@ class ProgressController extends Controller
                 'progress_percentage' => 100,
             ]
         );
+        Log::debug('StudentProgress.markAsCompleted saved', ['progress_id' => $progress->id]);
 
         // Aggiorna il progresso generale del corso
         $this->updateCourseProgress($user->id, $lesson->section->course_id);
@@ -108,10 +133,12 @@ class ProgressController extends Controller
             return;
         }
 
-        // Calcola il progresso totale del corso
-        $totalLessons = $enrollment->course->lessons()->count();
+        // Calcola il progresso totale del corso evitando join complesse
+        $sectionIds = Section::where('course_id', $courseId)->pluck('id');
+        $lessonIds = Lesson::whereIn('section_id', $sectionIds)->pluck('id');
+        $totalLessons = $lessonIds->count();
         $completedLessons = LessonProgress::where('user_id', $userId)
-            ->whereIn('lesson_id', $enrollment->course->lessons()->pluck('id'))
+            ->whereIn('lesson_id', $lessonIds)
             ->where('completed', true)
             ->count();
 

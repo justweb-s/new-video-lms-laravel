@@ -53,7 +53,14 @@ class Course extends Model
 
     public function lessons(): HasManyThrough
     {
-        return $this->hasManyThrough(Lesson::class, Section::class);
+        return $this->hasManyThrough(
+            Lesson::class,
+            Section::class,
+            'course_id',   // Foreign key on sections table referencing courses.id
+            'section_id',  // Foreign key on lessons table referencing sections.id
+            'id',          // Local key on courses
+            'id'           // Local key on sections
+        );
     }
 
     public function getTotalLessonsAttribute()

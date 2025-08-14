@@ -11,6 +11,8 @@ use App\Models\Lesson;
 class LessonProgress extends Model
 {
     use HasFactory;
+    
+    protected $table = 'lesson_progress';
 
     protected $fillable = [
         'user_id',
