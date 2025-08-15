@@ -15,17 +15,22 @@ use App\Http\Controllers\Student\DashboardController as StudentDashboardControll
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\ProgressController as StudentProgressController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-// Redirect root to student login
+// Home: show catalog to guests, dashboard to authenticated users
 Route::get('/', function () {
-    return redirect()->route('login');
+    return Auth::check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('catalog.index');
 });
 
 // Public Catalog Routes
 Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/courses/{course}', [CatalogCourseController::class, 'show'])->name('catalog.show');
 Route::middleware('auth')->group(function () {
-    Route::get('/catalog/courses/{course}/purchase', [CatalogCourseController::class, 'purchase'])->name('catalog.purchase');
+    Route::get('/catalog/courses/{course}/checkout', [CatalogCourseController::class, 'purchase'])->name('catalog.checkout');
+    Route::get('/catalog/checkout/success', [CatalogCourseController::class, 'success'])->name('catalog.checkout.success');
+    Route::get('/catalog/checkout/cancel', [CatalogCourseController::class, 'cancel'])->name('catalog.checkout.cancel');
 });
 
 // Student Routes (using default auth)

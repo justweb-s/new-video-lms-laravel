@@ -47,7 +47,7 @@
                 @if($isEnrolled)
                     <a href="{{ route('courses.show', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Vai al corso</a>
                 @else
-                    <a href="{{ route('catalog.purchase', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista ora</a>
+                    <a href="{{ route('catalog.checkout', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista ora</a>
                     <p class="mt-3 text-sm text-gray-500">Verrai reindirizzato all'accesso se non sei autenticato.</p>
                 @endif
             </div>
