@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Repository\new-video-lms-laravel\phpunit.xml" tests="25" assertions="57" errors="0" failures="1" skipped="0" time="2.441008">
+    <testsuite name="Unit" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.004186">
+      <testsuite name="Tests\Unit\ExampleTest" file="C:\Repository\new-video-lms-laravel\tests\Unit\ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.004186">
+        <testcase name="test_that_true_is_true" file="C:\Repository\new-video-lms-laravel\tests\Unit\ExampleTest.php" line="12" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.004186"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="Feature" tests="24" assertions="56" errors="0" failures="1" skipped="0" time="2.436822">
+      <testsuite name="Tests\Feature\Admin\AdminAuthenticationTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Admin\AdminAuthenticationTest.php" tests="5" assertions="16" errors="0" failures="0" skipped="0" time="0.776510">
+        <testcase name="test_admin_login_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Admin\AdminAuthenticationTest.php" line="13" class="Tests\Feature\Admin\AdminAuthenticationTest" classname="Tests.Feature.Admin.AdminAuthenticationTest" assertions="1" time="0.424585"/>
+        <testcase name="test_admin_can_authenticate_using_the_login_screen" file="C:\Repository\new-video-lms-laravel\tests\Feature\Admin\AdminAuthenticationTest.php" line="20" class="Tests\Feature\Admin\AdminAuthenticationTest" classname="Tests.Feature.Admin.AdminAuthenticationTest" assertions="3" time="0.065504"/>
+        <testcase name="test_admin_cannot_authenticate_with_invalid_password" file="C:\Repository\new-video-lms-laravel\tests\Feature\Admin\AdminAuthenticationTest.php" line="33" class="Tests\Feature\Admin\AdminAuthenticationTest" classname="Tests.Feature.Admin.AdminAuthenticationTest" assertions="5" time="0.235173"/>
+        <testcase name="test_admin_can_logout" file="C:\Repository\new-video-lms-laravel\tests\Feature\Admin\AdminAuthenticationTest.php" line="48" class="Tests\Feature\Admin\AdminAuthenticationTest" classname="Tests.Feature.Admin.AdminAuthenticationTest" assertions="3" time="0.025395"/>
+        <testcase name="test_inactive_admin_is_redirected_by_middleware" file="C:\Repository\new-video-lms-laravel\tests\Feature\Admin\AdminAuthenticationTest.php" line="58" class="Tests\Feature\Admin\AdminAuthenticationTest" classname="Tests.Feature.Admin.AdminAuthenticationTest" assertions="4" time="0.025854"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\AuthenticationTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.354020">
+        <testcase name="test_login_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="13" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="1" time="0.034890"/>
+        <testcase name="test_users_can_authenticate_using_the_login_screen" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="20" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="3" time="0.042274"/>
+        <testcase name="test_users_can_not_authenticate_with_invalid_password" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="33" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="1" time="0.233308"/>
+        <testcase name="test_users_can_logout" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="45" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="3" time="0.043548"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\EmailVerificationTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\EmailVerificationTest.php" tests="3" assertions="6" errors="0" failures="0" skipped="0" time="0.128805">
+        <testcase name="test_email_verification_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\EmailVerificationTest.php" line="16" class="Tests\Feature\Auth\EmailVerificationTest" classname="Tests.Feature.Auth.EmailVerificationTest" assertions="1" time="0.041896"/>
+        <testcase name="test_email_can_be_verified" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\EmailVerificationTest.php" line="25" class="Tests\Feature\Auth\EmailVerificationTest" classname="Tests.Feature.Auth.EmailVerificationTest" assertions="4" time="0.039459"/>
+        <testcase name="test_email_is_not_verified_with_invalid_hash" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\EmailVerificationTest.php" line="44" class="Tests\Feature\Auth\EmailVerificationTest" classname="Tests.Feature.Auth.EmailVerificationTest" assertions="1" time="0.047451"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\PasswordConfirmationTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordConfirmationTest.php" tests="3" assertions="4" errors="0" failures="0" skipped="0" time="0.295596">
+        <testcase name="test_confirm_password_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordConfirmationTest.php" line="13" class="Tests\Feature\Auth\PasswordConfirmationTest" classname="Tests.Feature.Auth.PasswordConfirmationTest" assertions="1" time="0.034121"/>
+        <testcase name="test_password_can_be_confirmed" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordConfirmationTest.php" line="22" class="Tests\Feature\Auth\PasswordConfirmationTest" classname="Tests.Feature.Auth.PasswordConfirmationTest" assertions="2" time="0.030786"/>
+        <testcase name="test_password_is_not_confirmed_with_invalid_password" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordConfirmationTest.php" line="34" class="Tests\Feature\Auth\PasswordConfirmationTest" classname="Tests.Feature.Auth.PasswordConfirmationTest" assertions="1" time="0.230689"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\PasswordResetTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordResetTest.php" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.735328">
+        <testcase name="test_reset_password_link_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordResetTest.php" line="15" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" assertions="1" time="0.026576"/>
+        <testcase name="test_reset_password_link_can_be_requested" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordResetTest.php" line="22" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" assertions="1" time="0.233212"/>
+        <testcase name="test_reset_password_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordResetTest.php" line="33" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" assertions="2" time="0.240417"/>
+        <testcase name="test_password_can_be_reset_with_valid_token" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordResetTest.php" line="50" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" assertions="4" time="0.235122"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\PasswordUpdateTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordUpdateTest.php" tests="2" assertions="8" errors="0" failures="0" skipped="0" time="0.059025">
+        <testcase name="test_password_can_be_updated" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordUpdateTest.php" line="14" class="Tests\Feature\Auth\PasswordUpdateTest" classname="Tests.Feature.Auth.PasswordUpdateTest" assertions="4" time="0.030434"/>
+        <testcase name="test_correct_password_must_be_provided_to_update_password" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\PasswordUpdateTest.php" line="34" class="Tests\Feature\Auth\PasswordUpdateTest" classname="Tests.Feature.Auth.PasswordUpdateTest" assertions="4" time="0.028591"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\RegistrationTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\RegistrationTest.php" tests="2" assertions="4" errors="0" failures="0" skipped="0" time="0.052101">
+        <testcase name="test_registration_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\RegistrationTest.php" line="12" class="Tests\Feature\Auth\RegistrationTest" classname="Tests.Feature.Auth.RegistrationTest" assertions="1" time="0.028162"/>
+        <testcase name="test_new_users_can_register" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\RegistrationTest.php" line="19" class="Tests\Feature\Auth\RegistrationTest" classname="Tests.Feature.Auth.RegistrationTest" assertions="3" time="0.023939"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\ExampleTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\ExampleTest.php" tests="1" assertions="2" errors="0" failures="1" skipped="0" time="0.035437">
+        <testcase name="test_the_application_returns_a_successful_response" file="C:\Repository\new-video-lms-laravel\tests\Feature\ExampleTest.php" line="13" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="2" time="0.035437">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\ExampleTest::test_the_application_returns_a_successful_response&#13;
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'http://localhost/login'
++'http://localhost/catalog'
+&#13;
+C:\Repository\new-video-lms-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\Repository\new-video-lms-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:408
+C:\Repository\new-video-lms-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:205
+C:\Repository\new-video-lms-laravel\tests\Feature\ExampleTest.php:17</failure>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
