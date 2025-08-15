@@ -8,6 +8,15 @@
                 <a href="{{ route('admin.courses.sections.index', $course) }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                     Gestisci Sezioni
                 </a>
+                @if($course->workoutCard)
+                    <a href="{{ route('admin.workout-cards.show', $course->workoutCard) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                        Gestisci Scheda
+                    </a>
+                @else
+                    <a href="{{ route('admin.workout-cards.create', ['course_id' => $course->id]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                        Aggiungi Scheda
+                    </a>
+                @endif
                 <a href="{{ route('admin.courses.edit', $course) }}" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
                     Modifica
                 </a>
@@ -160,6 +169,15 @@
                         <div class="p-6">
                             <h4 class="text-lg font-medium text-gray-900 mb-4">Azioni</h4>
                             <div class="space-y-2">
+                                @if($course->workoutCard)
+                                    <a href="{{ route('admin.workout-cards.show', $course->workoutCard) }}" class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                                        Gestisci Scheda
+                                    </a>
+                                @else
+                                    <a href="{{ route('admin.workout-cards.create', ['course_id' => $course->id]) }}" class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                                        Aggiungi Scheda
+                                    </a>
+                                @endif
                                 <a href="{{ route('admin.courses.edit', $course) }}" class="block w-full text-center bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
                                     Modifica Corso
                                 </a>

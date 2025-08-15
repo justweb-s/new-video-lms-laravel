@@ -38,59 +38,25 @@
 
                     <!-- Content -->
                     <div class="px-6 py-4">
-                        @if($workoutCard->description)
-                            <p class="text-gray-700 text-sm mb-4">{{ Str::limit($workoutCard->description, 100) }}</p>
+                        @if($workoutCard->content)
+                            <p class="text-gray-700 text-sm mb-4">{{ Str::limit(strip_tags($workoutCard->content), 120) }}</p>
                         @endif
 
-                        <!-- Details -->
+                        <!-- Dettagli -->
                         <div class="space-y-2">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Livello:</span>
-                                <span class="font-medium capitalize {{ 
-                                    $workoutCard->difficulty_level === 'beginner' ? 'text-green-600' : 
-                                    ($workoutCard->difficulty_level === 'intermediate' ? 'text-yellow-600' : 'text-red-600') 
-                                }}">
-                                    {{ ucfirst($workoutCard->difficulty_level) }}
-                                </span>
+                                <span class="text-gray-500">Riscaldamento</span>
+                                <span class="font-medium">{{ $workoutCard->warmup ? 'Presente' : '—' }}</span>
                             </div>
-                            
-                            @if($workoutCard->estimated_duration)
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Durata:</span>
-                                    <span class="font-medium">{{ $workoutCard->estimated_duration }} min</span>
-                                </div>
-                            @endif
-
-                            @if($workoutCard->equipment_needed)
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Attrezzatura:</span>
-                                    <span class="font-medium">{{ Str::limit($workoutCard->equipment_needed, 30) }}</span>
-                                </div>
-                            @endif
-
-                            @if($workoutCard->exercises)
-                                @php
-                                    $exercises = json_decode($workoutCard->exercises, true);
-                                    $exerciseCount = is_array($exercises) ? count($exercises) : 0;
-                                @endphp
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Esercizi:</span>
-                                    <span class="font-medium">{{ $exerciseCount }}</span>
-                                </div>
-                            @endif
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Defaticamento</span>
+                                <span class="font-medium">{{ $workoutCard->venous_return ? 'Presente' : '—' }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Note</span>
+                                <span class="font-medium">{{ $workoutCard->notes ? 'Presente' : '—' }}</span>
+                            </div>
                         </div>
-
-                        <!-- PDF Link -->
-                        @if($workoutCard->pdf_url)
-                            <div class="mt-4">
-                                <a href="{{ $workoutCard->pdf_url }}" target="_blank" class="inline-flex items-center text-primary hover:text-primary/80 text-sm">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    Visualizza PDF
-                                </a>
-                            </div>
-                        @endif
                     </div>
 
                     <!-- Actions -->

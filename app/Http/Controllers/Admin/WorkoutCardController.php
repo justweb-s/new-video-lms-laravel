@@ -42,14 +42,11 @@ class WorkoutCardController extends Controller
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id|unique:workout_cards,course_id',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:2000',
-            'pdf_url' => 'nullable|url',
-            'exercises' => 'nullable|json',
-            'difficulty_level' => 'required|in:beginner,intermediate,advanced',
-            'estimated_duration' => 'nullable|integer|min:1|max:300',
-            'equipment_needed' => 'nullable|string|max:1000',
-            'instructions' => 'nullable|string|max:5000',
-            'is_active' => 'boolean'
+            'content' => 'required|string',
+            'warmup' => 'nullable|string',
+            'venous_return' => 'nullable|string',
+            'notes' => 'nullable|string',
+            'is_active' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
@@ -94,14 +91,11 @@ class WorkoutCardController extends Controller
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id|unique:workout_cards,course_id,' . $workoutCard->id,
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:2000',
-            'pdf_url' => 'nullable|url',
-            'exercises' => 'nullable|json',
-            'difficulty_level' => 'required|in:beginner,intermediate,advanced',
-            'estimated_duration' => 'nullable|integer|min:1|max:300',
-            'equipment_needed' => 'nullable|string|max:1000',
-            'instructions' => 'nullable|string|max:5000',
-            'is_active' => 'boolean'
+            'content' => 'required|string',
+            'warmup' => 'nullable|string',
+            'venous_return' => 'nullable|string',
+            'notes' => 'nullable|string',
+            'is_active' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');

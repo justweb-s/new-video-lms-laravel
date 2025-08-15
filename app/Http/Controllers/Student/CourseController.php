@@ -149,4 +149,31 @@ class CourseController extends Controller
             'nextLesson'
         ));
     }
+
+    public function workout(Course $course)
+    {
+        $user = Auth::user();
+
+        // Verifica se l'utente è iscritto al corso
+        $enrollment = $user->enrollments()
+            ->where('course_id', $course->id)
+            ->where('is_active', true)
+            ->first();
+
+        if (!$enrollment || $enrollment->isExpired()) {
+            abort(403, 'Non sei iscritto a questo corso o la tua iscrizione è scaduta.');
+        }
+
+        // Carica la scheda di allenamento
+        $course->load('workoutCard');
+
+        if (!$course->workoutCard || !$course->workoutCard->is_active) {
+            abort(404);
+        }
+
+        return view('student.courses.workout', [
+            'course' => $course,
+            'workoutCard' => $course->workoutCard,
+        ]);
+    }
 }

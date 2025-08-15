@@ -2,11 +2,22 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col md:flex-row gap-6">
+    <div class="flex flex-col md:flex-row gap-6" x-data="{ openWorkout: false }">
         <!-- Left Sidebar - Course Navigation -->
         <div class="w-full md:w-1/4 bg-white rounded-lg shadow-md p-4 h-fit">
             <h2 class="text-xl font-bold mb-4">{{ $course->title }}</h2>
             
+            @if($course->workoutCard && $course->workoutCard->is_active)
+                <button type="button"
+                        @click="openWorkout = !openWorkout"
+                        :aria-pressed="openWorkout.toString()"
+                        class="w-full inline-flex items-center justify-center mb-3 px-4 py-2 text-sm font-medium rounded-md text-white"
+                        :class="openWorkout ? 'bg-gray-600 hover:bg-gray-700' : 'bg-indigo-600 hover:bg-indigo-700'">
+                    <span x-show="!openWorkout">Scheda di Allenamento</span>
+                    <span x-show="openWorkout">Nascondi Scheda</span>
+                </button>
+            @endif
+
             <div class="space-y-2">
                 @foreach($course->sections as $section)
                     <div class="border rounded-md overflow-hidden" x-data="{ open: {{ $loop->first ? 'true' : 'false' }} }">
@@ -39,6 +50,52 @@
 
         <!-- Main Content - Video Player -->
         <div class="w-full md:w-3/4">
+            @if($course->workoutCard && $course->workoutCard->is_active)
+            <div x-show="openWorkout" x-transition class="mb-6 bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold">Scheda di Allenamento</h1>
+                        <p class="text-sm text-gray-500 mt-1">Corso: {{ $course->title ?? $course->name }}</p>
+                        <div class="mt-2 flex items-center gap-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $course->workoutCard->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $course->workoutCard->is_active ? 'ATTIVA' : 'INATTIVA' }}
+                            </span>
+                            <span class="text-xs text-gray-500">Aggiornata: {{ optional($course->workoutCard->updated_at ?? $course->workoutCard->created_at)->format('d/m/Y H:i') }}</span>
+                        </div>
+                    </div>
+                    <button type="button" @click="openWorkout = false" class="ml-4 inline-flex items-center px-3 py-1.5 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        Chiudi
+                    </button>
+                </div>
+                <div class="mt-6 space-y-6">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">{{ $course->workoutCard->title }}</h2>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Contenuto</h3>
+                        <div class="mt-1 prose max-w-none">{!! nl2br(e($course->workoutCard->content)) !!}</div>
+                    </div>
+                    @if($course->workoutCard->warmup)
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Riscaldamento (warm-up)</h3>
+                            <div class="mt-1 prose max-w-none">{!! nl2br(e($course->workoutCard->warmup)) !!}</div>
+                        </div>
+                    @endif
+                    @if($course->workoutCard->venous_return)
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Defaticamento (venous return)</h3>
+                            <div class="mt-1 prose max-w-none">{!! nl2br(e($course->workoutCard->venous_return)) !!}</div>
+                        </div>
+                    @endif
+                    @if($course->workoutCard->notes)
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Note</h3>
+                            <div class="mt-1 prose max-w-none">{!! nl2br(e($course->workoutCard->notes)) !!}</div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+            @endif
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 @if(isset($currentLesson) && $currentLesson)
                     <div class="aspect-w-16 aspect-h-9 bg-black">

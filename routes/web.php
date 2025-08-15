@@ -57,6 +57,7 @@ Route::middleware(['auth', 'student.auth'])->group(function () {
     Route::get('/courses', [StudentCourseController::class, 'index'])->name('courses.index');
     Route::prefix('courses')->name('courses.')->group(function () {
         Route::get('/{course}', [StudentCourseController::class, 'show'])->name('show');
+        Route::get('/{course}/workout', [StudentCourseController::class, 'workout'])->name('workout');
         Route::get('/{course}/lessons/{lesson}', [App\Http\Controllers\Student\LessonController::class, 'show'])->name('lesson');
     });
     
