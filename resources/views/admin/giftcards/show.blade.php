@@ -7,7 +7,13 @@
                 </h2>
                 <p class="text-sm text-gray-500">ID #{{ $giftcard->id }}</p>
             </div>
-            <a href="{{ route('admin.giftcards.index') }}" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded">Torna all'elenco</a>
+            <div class="flex items-center gap-2">
+                <form method="POST" action="{{ route('admin.giftcards.resend', $giftcard) }}" onsubmit="return confirm('Reinviare l\'email a {{ $giftcard->recipient_email }}?');">
+                    @csrf
+                    <button type="submit" class="text-sm bg-primary hover:bg-primary/90 text-white px-3 py-2 rounded">Reinvia email</button>
+                </form>
+                <a href="{{ route('admin.giftcards.index') }}" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded">Torna all'elenco</a>
+            </div>
         </div>
     </x-slot>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GiftCard;
 use App\Models\Course;
 use App\Models\Payment;
+use App\Mail\GiftCardIssuedMail;
 use Illuminate\Http\Request;
 
 class GiftCardController extends Controller
@@ -53,5 +54,16 @@ class GiftCardController extends Controller
             $payment = Payment::where('stripe_payment_intent_id', $giftcard->stripe_payment_intent_id)->first();
         }
         return view('admin.giftcards.show', compact('giftcard', 'payment'));
+    }
+
+    public function resend(GiftCard $giftcard)
+    {
+        try {
+            \Mail::to($giftcard->recipient_email)->send(new GiftCardIssuedMail($giftcard));
+            return back()->with('success', 'Email reinviata a '.$giftcard->recipient_email);
+        } catch (\Throwable $e) {
+            \Log::error('Errore reinvio email gift card: '.$e->getMessage());
+            return back()->with('error', 'Impossibile reinviare l\'email. Riprova più tardi.');
+        }
     }
 }

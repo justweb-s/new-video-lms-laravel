@@ -127,6 +127,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Gift Cards Management
         Route::resource('giftcards', AdminGiftCardController::class)->only(['index', 'show']);
+        Route::post('/giftcards/{giftcard}/resend', [AdminGiftCardController::class, 'resend'])->name('giftcards.resend');
     });
 });
 
