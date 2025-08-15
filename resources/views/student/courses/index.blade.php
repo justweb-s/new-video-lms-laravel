@@ -7,7 +7,7 @@
     @if($enrolledCourses->isEmpty())
         <div class="bg-white rounded-lg shadow-md p-6 text-center">
             <p class="text-gray-600 mb-4">Non sei iscritto a nessun corso al momento.</p>
-            <a href="{{ route('courses.index') }}" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+            <a href="{{ route('catalog.index') }}" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
                 Sfoglia i corsi disponibili
             </a>
         </div>

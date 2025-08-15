@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Catalog\CourseController as CatalogCourseController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\SectionController as AdminSectionController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
@@ -18,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 // Redirect root to student login
 Route::get('/', function () {
     return redirect()->route('login');
+});
+
+// Public Catalog Routes
+Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
+Route::get('/catalog/courses/{course}', [CatalogCourseController::class, 'show'])->name('catalog.show');
+Route::middleware('auth')->group(function () {
+    Route::get('/catalog/courses/{course}/purchase', [CatalogCourseController::class, 'purchase'])->name('catalog.purchase');
 });
 
 // Student Routes (using default auth)
