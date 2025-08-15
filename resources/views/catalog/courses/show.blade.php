@@ -50,6 +50,15 @@
                     <a href="{{ route('catalog.checkout', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista ora</a>
                     <a href="{{ route('giftcards.show', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md border border-primary text-primary font-semibold hover:bg-primary/5 ml-3">Regala questo corso</a>
                     <p class="mt-3 text-sm text-gray-500">Verrai reindirizzato all'accesso se non sei autenticato.</p>
+
+                    <div class="mt-6 bg-white rounded-lg p-4 shadow-sm">
+                        <p class="text-sm text-gray-700">Hai un codice gift card?</p>
+                        <form method="GET" action="{{ route('catalog.checkout', $course) }}" class="mt-2 flex items-center gap-2">
+                            <input type="text" name="gift_code" value="{{ request('gift_code') }}" placeholder="Inserisci codice" class="border rounded px-3 py-2 text-sm w-56" />
+                            <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold px-4 py-2 rounded">Usa gift code</button>
+                        </form>
+                        <p class="mt-2 text-xs text-gray-500">Se non sei autenticato, ti verrà richiesto di accedere.</p>
+                    </div>
                 @endif
             </div>
         </div>

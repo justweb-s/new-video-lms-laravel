@@ -16,6 +16,7 @@ use App\Http\Controllers\Student\DashboardController as StudentDashboardControll
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\ProgressController as StudentProgressController;
 use App\Http\Controllers\Catalog\GiftCardController as CatalogGiftCardController;
+use App\Http\Controllers\Admin\GiftCardController as AdminGiftCardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -123,6 +124,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Payments Management
         Route::resource('payments', AdminPaymentController::class)->only(['index', 'show']);
+
+        // Gift Cards Management
+        Route::resource('giftcards', AdminGiftCardController::class)->only(['index', 'show']);
     });
 });
 

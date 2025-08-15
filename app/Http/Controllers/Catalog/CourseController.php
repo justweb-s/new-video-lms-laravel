@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Payment;
+use App\Models\GiftCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -57,6 +58,73 @@ class CourseController extends Controller
         if ($existing && $existing->isActive()) {
             return redirect()->route('courses.show', $course)
                 ->with('status', 'Sei già iscritto a questo corso.');
+        }
+
+        // Se è stato fornito un codice gift card valido, usa quello come pagamento ed evita Stripe
+        $giftCode = trim((string) $request->query('gift_code', ''));
+        if ($giftCode !== '') {
+            $gift = GiftCard::where('code', strtoupper($giftCode))->first();
+            if (!$gift) {
+                return redirect()->route('catalog.show', $course)
+                    ->with('error', 'Codice gift card non trovato.');
+            }
+            if ($gift->status !== 'paid' || $gift->redeemed_at) {
+                return redirect()->route('catalog.show', $course)
+                    ->with('error', 'Codice gift card non valido o già utilizzato.');
+            }
+            if ((int) $gift->course_id !== (int) $course->id) {
+                return redirect()->route('catalog.show', $course)
+                    ->with('error', 'Questa gift card non è valida per questo corso.');
+            }
+
+            // Redeem gift card
+            $gift->status = 'redeemed';
+            $gift->redeemed_at = now();
+            $gift->redeemer_user_id = $user->id;
+            $gift->save();
+
+            // Registra un Payment per tracciabilità amministrativa (0 revenue, redemption)
+            try {
+                Payment::create([
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'stripe_session_id' => null,
+                    'stripe_payment_intent_id' => null,
+                    'amount_total' => 0,
+                    'currency' => strtolower(config('services.stripe.currency', 'eur')),
+                    'status' => 'gift_redeemed',
+                    'customer_email' => $user->email,
+                    'customer_details' => null,
+                    'custom_fields' => null,
+                    'metadata' => [
+                        'type' => 'gift_card_redemption',
+                        'gift_card_code' => $gift->code,
+                        'gift_card_amount' => $gift->amount,
+                    ],
+                ]);
+            } catch (\Throwable $e) {
+                \Log::warning('Impossibile registrare Payment redemption gift card: ' . $e->getMessage());
+            }
+
+            // Crea o attiva l'iscrizione
+            $enrollment = Enrollment::firstOrNew([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+            ]);
+
+            $expiresAt = null;
+            if (!empty($course->duration_weeks)) {
+                $expiresAt = now()->addWeeks($course->duration_weeks);
+            }
+
+            $enrollment->enrolled_at = $enrollment->enrolled_at ?: now();
+            $enrollment->expires_at = $expiresAt;
+            $enrollment->is_active = true;
+            $enrollment->progress_percentage = $enrollment->progress_percentage ?? 0;
+            $enrollment->save();
+
+            return redirect()->route('courses.show', $course)
+                ->with('status', 'Iscrizione attivata tramite gift card. Buona visione!');
         }
 
         // Configura Stripe
