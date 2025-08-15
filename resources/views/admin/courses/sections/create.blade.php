@@ -24,7 +24,7 @@
                            name="name" 
                            id="name" 
                            value="{{ old('name') }}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('name') border-red-500 @enderror"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('name') border-red-500 @enderror"
                            placeholder="Es: Introduzione al corso"
                            required>
                     @error('name')
@@ -40,7 +40,7 @@
                            id="section_order" 
                            value="{{ old('section_order', $course->sections->max('section_order') + 1) }}"
                            min="1"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('section_order') border-red-500 @enderror"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('section_order') border-red-500 @enderror"
                            required>
                     @error('section_order')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -56,7 +56,7 @@
                                id="is_active" 
                                value="1"
                                {{ old('is_active', true) ? 'checked' : '' }}
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                               class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
                     </div>
                     <div class="ml-3 text-sm">
                         <label for="is_active" class="font-medium text-gray-700">Sezione Attiva</label>
@@ -70,7 +70,7 @@
                     <textarea name="description" 
                               id="description" 
                               rows="4"
-                              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('description') border-red-500 @enderror"
                               placeholder="Descrizione dettagliata della sezione...">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -127,7 +127,7 @@
                 <a href="{{ route('admin.courses.sections.index', $course) }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                     Annulla
                 </a>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                     Crea Sezione
                 </button>
             </div>

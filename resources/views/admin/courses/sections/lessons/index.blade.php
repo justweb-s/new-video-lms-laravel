@@ -10,7 +10,7 @@
             <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Torna alla Sezione
             </a>
-            <a href="{{ route('admin.courses.sections.lessons.create', [$course, $section]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.courses.sections.lessons.create', [$course, $section]) }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                 Nuova Lezione
             </a>
         </div>
@@ -20,7 +20,7 @@
     <div class="bg-white shadow-md rounded-lg p-6 mb-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="text-center">
-                <div class="text-2xl font-bold text-blue-600">{{ $section->section_order }}</div>
+                <div class="text-2xl font-bold text-primary">{{ $section->section_order }}</div>
                 <div class="text-gray-600">Ordine Sezione</div>
             </div>
             <div class="text-center">
@@ -87,7 +87,7 @@
                         @foreach($section->lessons->sortBy('lesson_order') as $lesson)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                                         {{ $lesson->lesson_order }}
                                     </span>
                                 </td>
@@ -102,7 +102,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($lesson->video_url)
-                                        <a href="{{ $lesson->video_url }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Visualizza Video">
+                                        <a href="{{ $lesson->video_url }}" target="_blank" class="text-primary hover:text-primary/90" title="Visualizza Video">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                             </svg>
@@ -121,13 +121,13 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <a href="{{ route('admin.courses.sections.lessons.show', [$course, $section, $lesson]) }}" class="text-blue-600 hover:text-blue-900" title="Visualizza">
+                                        <a href="{{ route('admin.courses.sections.lessons.show', [$course, $section, $lesson]) }}" class="text-primary hover:text-primary/90" title="Visualizza">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                             </svg>
                                         </a>
-                                        <a href="{{ route('admin.courses.sections.lessons.edit', [$course, $section, $lesson]) }}" class="text-indigo-600 hover:text-indigo-900" title="Modifica">
+                                        <a href="{{ route('admin.courses.sections.lessons.edit', [$course, $section, $lesson]) }}" class="text-primary hover:text-primary/90" title="Modifica">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
@@ -156,7 +156,7 @@
                 <h3 class="mt-2 text-sm font-medium text-gray-900">Nessuna lezione</h3>
                 <p class="mt-1 text-sm text-gray-500">Inizia creando la prima lezione per questa sezione.</p>
                 <div class="mt-6">
-                    <a href="{{ route('admin.courses.sections.lessons.create', [$course, $section]) }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                    <a href="{{ route('admin.courses.sections.lessons.create', [$course, $section]) }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90">
                         <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
@@ -172,7 +172,7 @@
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('admin.courses.index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <a href="{{ route('admin.courses.index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                         </svg>
@@ -184,7 +184,7 @@
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <a href="{{ route('admin.courses.show', $course) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">{{ Str::limit($course->name, 30) }}</a>
+                        <a href="{{ route('admin.courses.show', $course) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">{{ Str::limit($course->name, 30) }}</a>
                     </div>
                 </li>
                 <li>
@@ -192,7 +192,7 @@
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">{{ Str::limit($section->name, 30) }}</a>
+                        <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">{{ Str::limit($section->name, 30) }}</a>
                     </div>
                 </li>
                 <li aria-current="page">

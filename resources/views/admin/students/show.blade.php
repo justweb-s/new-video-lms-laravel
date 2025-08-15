@@ -85,7 +85,7 @@
                                                         {{ $enrollment->is_active ? 'Attiva' : 'Inattiva' }}
                                                     </span>
                                                     <div class="w-16 bg-gray-200 rounded-full h-2">
-                                                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $enrollment->progress_percentage }}%"></div>
+                                                        <div class="bg-primary h-2 rounded-full" style="width: {{ $enrollment->progress_percentage }}%"></div>
                                                     </div>
                                                 </div>
                                             </div>

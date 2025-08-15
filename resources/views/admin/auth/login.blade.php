@@ -46,32 +46,32 @@
                 <!-- Username -->
                 <div>
                     <label for="username" class="block font-medium text-sm text-gray-700">Username</label>
-                    <input id="username" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" type="text" name="username" value="{{ old('username') }}" required autofocus autocomplete="username" />
+                    <input id="username" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-accent" type="text" name="username" value="{{ old('username') }}" required autofocus autocomplete="username" />
                 </div>
 
                 <!-- Password -->
                 <div class="mt-4">
                     <label for="password" class="block font-medium text-sm text-gray-700">Password</label>
-                    <input id="password" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" type="password" name="password" required autocomplete="current-password" />
+                    <input id="password" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-accent" type="password" name="password" required autocomplete="current-password" />
                 </div>
 
                 <!-- Remember Me -->
                 <div class="block mt-4">
                     <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-primary shadow-sm focus:ring-accent" name="remember">
                         <span class="ml-2 text-sm text-gray-600">Ricordami</span>
                     </label>
                 </div>
 
                 <div class="flex items-center justify-end mt-4">
-                    <button type="submit" class="ml-3 inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <button type="submit" class="ml-3 inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary/90 focus:bg-primary/90 active:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 transition ease-in-out duration-150">
                         Accedi
                     </button>
                 </div>
             </form>
 
             <div class="mt-6 text-center">
-                <a href="{{ route('login') }}" class="text-sm text-indigo-600 hover:text-indigo-900">
+                <a href="{{ route('login') }}" class="text-sm text-primary hover:text-primary/80">
                     Accesso Studenti
                 </a>
             </div>

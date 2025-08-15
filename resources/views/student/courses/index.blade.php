@@ -7,7 +7,7 @@
     @if($enrolledCourses->isEmpty())
         <div class="bg-white rounded-lg shadow-md p-6 text-center">
             <p class="text-gray-600 mb-4">Non sei iscritto a nessun corso al momento.</p>
-            <a href="{{ route('courses.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+            <a href="{{ route('courses.index') }}" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
                 Sfoglia i corsi disponibili
             </a>
         </div>
@@ -37,7 +37,7 @@
                                 <span>{{ $enrollment->progress_percentage }}%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $enrollment->progress_percentage }}%"></div>
+                                <div class="bg-primary h-2.5 rounded-full" style="width: {{ $enrollment->progress_percentage }}%"></div>
                             </div>
                         </div>
                         
@@ -47,7 +47,7 @@
                             </span>
                             
                             <a href="{{ route('courses.show', $course) }}" 
-                               class="text-blue-600 hover:text-blue-800 font-medium">
+                               class="text-primary hover:text-primary/80 font-medium">
                                 Continua →
                             </a>
                         </div>

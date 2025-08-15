@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Gestione Studenti
             </h2>
-            <a href="{{ route('admin.students.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.students.create') }}" class="bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                 Nuovo Studente
             </a>
         </div>
@@ -52,7 +52,7 @@
                                                 {{ $student->phone ?: 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                                                     {{ $student->enrollments_count }} corsi
                                                 </span>
                                             </td>
@@ -69,7 +69,7 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end space-x-2">
-                                                    <a href="{{ route('admin.students.show', $student) }}" class="text-indigo-600 hover:text-indigo-900">Visualizza</a>
+                                                    <a href="{{ route('admin.students.show', $student) }}" class="text-primary hover:text-primary/80">Visualizza</a>
                                                     <a href="{{ route('admin.students.enrollments', $student) }}" class="text-green-600 hover:text-green-900">Iscrizioni</a>
                                                     <a href="{{ route('admin.students.edit', $student) }}" class="text-yellow-600 hover:text-yellow-900">Modifica</a>
                                                     <form action="{{ route('admin.students.destroy', $student) }}" method="POST" class="inline" onsubmit="return confirm('Sei sicuro di voler eliminare questo studente?')">
@@ -96,7 +96,7 @@
                             <h3 class="mt-2 text-sm font-medium text-gray-900">Nessuno studente</h3>
                             <p class="mt-1 text-sm text-gray-500">Inizia creando il primo studente.</p>
                             <div class="mt-6">
-                                <a href="{{ route('admin.students.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <a href="{{ route('admin.students.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
                                     Nuovo Studente
                                 </a>
                             </div>

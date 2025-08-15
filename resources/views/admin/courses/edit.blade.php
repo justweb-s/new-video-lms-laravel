@@ -5,7 +5,7 @@
                 Modifica Corso: {{ $course->name }}
             </h2>
             <div class="flex space-x-2">
-                <a href="{{ route('admin.courses.show', $course) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('admin.courses.show', $course) }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                     Visualizza
                 </a>
                 <a href="{{ route('admin.courses.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
@@ -28,7 +28,7 @@
                             <div class="md:col-span-2">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nome Corso</label>
                                 <input type="text" name="name" id="name" value="{{ old('name', $course->name) }}" required 
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                                 @error('name')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -38,7 +38,7 @@
                             <div class="md:col-span-2">
                                 <label for="description" class="block text-sm font-medium text-gray-700">Descrizione</label>
                                 <textarea name="description" id="description" rows="4" 
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('description', $course->description) }}</textarea>
+                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">{{ old('description', $course->description) }}</textarea>
                                 @error('description')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -62,7 +62,7 @@
                             <div>
                                 <label for="image" class="block text-sm font-medium text-gray-700">{{ $course->image_url ? 'Nuova Immagine' : 'Immagine Corso' }}</label>
                                 <input type="file" name="image" id="image" accept="image/*" 
-                                       class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                       class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
                                 @error('image')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -72,7 +72,7 @@
                             <div>
                                 <label for="price" class="block text-sm font-medium text-gray-700">Prezzo (€)</label>
                                 <input type="number" name="price" id="price" value="{{ old('price', $course->price) }}" min="0" step="0.01" 
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                                 @error('price')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -82,7 +82,7 @@
                             <div>
                                 <label for="duration_weeks" class="block text-sm font-medium text-gray-700">Durata (settimane)</label>
                                 <input type="number" name="duration_weeks" id="duration_weeks" value="{{ old('duration_weeks', $course->duration_weeks) }}" min="1" 
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                                 @error('duration_weeks')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -92,7 +92,7 @@
                             <div>
                                 <div class="flex items-center h-full">
                                     <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $course->is_active) ? 'checked' : '' }} 
-                                           class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                                           class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary">
                                     <label for="is_active" class="ml-2 block text-sm text-gray-900">
                                         Corso attivo
                                     </label>
@@ -106,7 +106,7 @@
                             <div class="md:col-span-2">
                                 <label for="prerequisites" class="block text-sm font-medium text-gray-700">Prerequisiti</label>
                                 <textarea name="prerequisites" id="prerequisites" rows="3" 
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('prerequisites', $course->prerequisites) }}</textarea>
+                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">{{ old('prerequisites', $course->prerequisites) }}</textarea>
                                 @error('prerequisites')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
@@ -117,7 +117,7 @@
                             <a href="{{ route('admin.courses.show', $course) }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                                 Annulla
                             </a>
-                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                                 Aggiorna Corso
                             </button>
                         </div>
@@ -131,7 +131,7 @@
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Statistiche Corso</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-indigo-600">{{ $course->enrollments_count }}</div>
+                            <div class="text-2xl font-bold text-primary">{{ $course->enrollments_count }}</div>
                             <div class="text-sm text-gray-600">Studenti Iscritti</div>
                         </div>
                         <div class="text-center">
@@ -139,7 +139,7 @@
                             <div class="text-sm text-gray-600">Sezioni</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-blue-600">{{ $course->total_lessons }}</div>
+                            <div class="text-2xl font-bold text-primary">{{ $course->total_lessons }}</div>
                             <div class="text-sm text-gray-600">Lezioni</div>
                         </div>
                         <div class="text-center">

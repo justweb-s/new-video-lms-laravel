@@ -24,7 +24,7 @@
                         <div class="px-4 py-2 space-y-1" x-show="open" x-transition>
                             @foreach($section->lessons as $lesson)
                                 <a href="{{ route('courses.lesson', ['course' => $course->id, 'lesson' => $lesson->id]) }}" 
-                                   class="block px-3 py-2 text-sm rounded hover:bg-blue-50 {{ (isset($currentLesson) && $currentLesson && $lesson->id === $currentLesson->id) ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-700' }}">
+                                   class="block px-3 py-2 text-sm rounded hover:bg-primary/5 {{ (isset($currentLesson) && $currentLesson && $lesson->id === $currentLesson->id) ? 'bg-primary/10 text-primary font-medium' : 'text-gray-700' }}">
                                     {{ $loop->iteration }}. {{ $lesson->title }}
                                     @if(isset($completedLessonIds) && in_array($lesson->id, $completedLessonIds))
                                         <span class="ml-2 text-green-500">✓</span>
@@ -77,7 +77,7 @@
                             
                             @if($nextLesson)
                                 <a href="{{ route('courses.lesson', ['course' => $course->id, 'lesson' => $nextLesson->id]) }}" 
-                                   class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center">
+                                   class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 flex items-center">
                                     Next →
                                 </a>
                             @else

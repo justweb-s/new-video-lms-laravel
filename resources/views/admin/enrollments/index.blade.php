@@ -7,10 +7,10 @@
             <p class="text-gray-600 mt-2">Gestisci le iscrizioni degli studenti ai corsi</p>
         </div>
         <div class="flex space-x-4">
-            <a href="{{ route('admin.enrollments.export') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.enrollments.export') }}" class="bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                 Esporta CSV
             </a>
-            <a href="{{ route('admin.enrollments.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.enrollments.create') }}" class="bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                 Nuova Iscrizione
             </a>
         </div>
@@ -22,7 +22,7 @@
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                         </svg>
                     </div>
@@ -97,13 +97,13 @@
             <div>
                 <label for="search" class="block text-sm font-medium text-gray-700">Cerca</label>
                 <input type="text" name="search" id="search" value="{{ request('search') }}" 
-                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-primary"
                        placeholder="Nome studente o corso...">
             </div>
             
             <div>
                 <label for="course_id" class="block text-sm font-medium text-gray-700">Corso</label>
-                <select name="course_id" id="course_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                <select name="course_id" id="course_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-primary">
                     <option value="">Tutti i corsi</option>
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}" {{ request('course_id') == $course->id ? 'selected' : '' }}>
@@ -115,7 +115,7 @@
             
             <div>
                 <label for="status" class="block text-sm font-medium text-gray-700">Stato</label>
-                <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-primary">
                     <option value="">Tutti gli stati</option>
                     <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Attive</option>
                     <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inattive</option>
@@ -124,7 +124,7 @@
             </div>
             
             <div class="flex items-end">
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button type="submit" class="w-full bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                     Filtra
                 </button>
             </div>
@@ -206,13 +206,13 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <a href="{{ route('admin.enrollments.show', $enrollment) }}" class="text-blue-600 hover:text-blue-900" title="Visualizza">
+                                        <a href="{{ route('admin.enrollments.show', $enrollment) }}" class="text-primary hover:text-primary/80" title="Visualizza">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                             </svg>
                                         </a>
-                                        <a href="{{ route('admin.enrollments.edit', $enrollment) }}" class="text-indigo-600 hover:text-indigo-900" title="Modifica">
+                                        <a href="{{ route('admin.enrollments.edit', $enrollment) }}" class="text-primary hover:text-primary/80" title="Modifica">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
@@ -246,7 +246,7 @@
                 <h3 class="mt-2 text-sm font-medium text-gray-900">Nessuna iscrizione</h3>
                 <p class="mt-1 text-sm text-gray-500">Inizia creando la prima iscrizione.</p>
                 <div class="mt-6">
-                    <a href="{{ route('admin.enrollments.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                    <a href="{{ route('admin.enrollments.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                         <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>

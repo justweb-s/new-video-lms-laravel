@@ -5,7 +5,7 @@
                 Gestione Iscrizioni: {{ $student->full_name }}
             </h2>
             <div class="flex space-x-2">
-                <a href="{{ route('admin.students.show', $student) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('admin.students.show', $student) }}" class="bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                     Visualizza Studente
                 </a>
                 <a href="{{ route('admin.students.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
@@ -25,7 +25,7 @@
                         @csrf
                         <div class="flex-1">
                             <label for="course_id" class="block text-sm font-medium text-gray-700">Corso</label>
-                            <select name="course_id" id="course_id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <select name="course_id" id="course_id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-accent">
                                 <option value="">Seleziona un corso</option>
                                 @foreach($availableCourses as $course)
                                     <option value="{{ $course->id }}">{{ $course->name }} - €{{ number_format($course->price, 2) }}</option>
@@ -34,9 +34,9 @@
                         </div>
                         <div>
                             <label for="expires_at" class="block text-sm font-medium text-gray-700">Data Scadenza (opzionale)</label>
-                            <input type="date" name="expires_at" id="expires_at" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <input type="date" name="expires_at" id="expires_at" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-accent">
                         </div>
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                        <button type="submit" class="bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                             Aggiungi Iscrizione
                         </button>
                     </form>
@@ -88,7 +88,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                                                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $enrollment->progress_percentage }}%"></div>
+                                                        <div class="bg-primary h-2 rounded-full" style="width: {{ $enrollment->progress_percentage }}%"></div>
                                                     </div>
                                                     <span class="text-sm text-gray-900">{{ number_format($enrollment->progress_percentage, 1) }}%</span>
                                                 </div>

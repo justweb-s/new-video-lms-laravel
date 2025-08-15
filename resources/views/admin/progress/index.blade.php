@@ -19,7 +19,7 @@
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                         </svg>
                     </div>
@@ -162,11 +162,11 @@
                                             <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                                 <div>
                                                     <p class="text-sm text-gray-500">
-                                                        <a href="{{ route('admin.progress.student', $progress->user) }}" class="font-medium text-gray-900 hover:text-blue-600">
+                                                        <a href="{{ route('admin.progress.student', $progress->user) }}" class="font-medium text-gray-900 hover:text-primary/80">
                                                             {{ $progress->user->name }}
                                                         </a>
                                                         {{ $progress->is_completed ? 'ha completato' : 'ha iniziato' }}
-                                                        <a href="{{ route('admin.progress.lesson', $progress->lesson) }}" class="font-medium text-blue-600 hover:text-blue-800">
+                                                        <a href="{{ route('admin.progress.lesson', $progress->lesson) }}" class="font-medium text-primary hover:text-primary/80">
                                                             {{ $progress->lesson->title }}
                                                         </a>
                                                     </p>
@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-medium text-gray-900 truncate">
-                                        <a href="{{ route('admin.progress.student', $student) }}" class="hover:text-blue-600">
+                                        <a href="{{ route('admin.progress.student', $student) }}" class="hover:text-primary/80">
                                             {{ $student->name }}
                                         </a>
                                     </p>
@@ -233,7 +233,7 @@
         <h3 class="text-lg font-medium text-gray-900 mb-4">Azioni Rapide</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a href="{{ route('admin.courses.index') }}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <svg class="h-8 w-8 text-blue-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="h-8 w-8 text-primary mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
                 <div>

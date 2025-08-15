@@ -13,7 +13,7 @@
                     <div class="p-6 text-gray-900">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                     </svg>
@@ -129,7 +129,7 @@
                                             <span>{{ number_format($progressPercentage, 1) }}%</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="bg-indigo-600 h-2 rounded-full" style="width: {{ $progressPercentage }}%"></div>
+                                            <div class="bg-primary h-2 rounded-full" style="width: {{ $progressPercentage }}%"></div>
                                         </div>
                                     </div>
                                     
@@ -139,7 +139,7 @@
                                     </div>
                                     
                                     @if($isActive && !$isExpired)
-                                        <a href="{{ route('courses.show', $course) }}" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded text-center block">
+                                        <a href="{{ route('courses.show', $course) }}" class="w-full bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded text-center block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                                             Continua Corso
                                         </a>
                                     @else

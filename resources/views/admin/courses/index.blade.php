@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Gestione Corsi
             </h2>
-            <a href="{{ route('admin.courses.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.courses.create') }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                 Nuovo Corso
             </a>
         </div>
@@ -69,7 +69,7 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end space-x-2">
-                                                    <a href="{{ route('admin.courses.show', $course) }}" class="text-indigo-600 hover:text-indigo-900">Visualizza</a>
+                                                    <a href="{{ route('admin.courses.show', $course) }}" class="text-primary hover:text-primary/80">Visualizza</a>
                                                     <a href="{{ route('admin.courses.edit', $course) }}" class="text-yellow-600 hover:text-yellow-900">Modifica</a>
                                                     <form action="{{ route('admin.courses.destroy', $course) }}" method="POST" class="inline" onsubmit="return confirm('Sei sicuro di voler eliminare questo corso?')">
                                                         @csrf
@@ -95,7 +95,7 @@
                             <h3 class="mt-2 text-sm font-medium text-gray-900">Nessun corso</h3>
                             <p class="mt-1 text-sm text-gray-500">Inizia creando il tuo primo corso.</p>
                             <div class="mt-6">
-                                <a href="{{ route('admin.courses.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <a href="{{ route('admin.courses.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                                     Nuovo Corso
                                 </a>
                             </div>

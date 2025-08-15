@@ -7,7 +7,7 @@
             <p class="text-gray-600 mt-2">{{ $section->name }} - Corso: {{ $course->name }}</p>
         </div>
         <div class="flex space-x-2">
-            <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                 Visualizza
             </a>
             <a href="{{ route('admin.courses.sections.index', $course) }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
@@ -30,7 +30,7 @@
                            name="name" 
                            id="name" 
                            value="{{ old('name', $section->name) }}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('name') border-red-500 @enderror"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('name') border-red-500 @enderror"
                            placeholder="Es: Introduzione al corso"
                            required>
                     @error('name')
@@ -46,7 +46,7 @@
                            id="section_order" 
                            value="{{ old('section_order', $section->section_order) }}"
                            min="1"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('section_order') border-red-500 @enderror"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('section_order') border-red-500 @enderror"
                            required>
                     @error('section_order')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -62,7 +62,7 @@
                                id="is_active" 
                                value="1"
                                {{ old('is_active', $section->is_active) ? 'checked' : '' }}
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                               class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
                     </div>
                     <div class="ml-3 text-sm">
                         <label for="is_active" class="font-medium text-gray-700">Sezione Attiva</label>
@@ -76,7 +76,7 @@
                     <textarea name="description" 
                               id="description" 
                               rows="4"
-                              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('description') border-red-500 @enderror"
                               placeholder="Descrizione dettagliata della sezione...">{{ old('description', $section->description) }}</textarea>
                     @error('description')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -111,13 +111,13 @@
 
             <!-- Lessons Preview -->
             @if($section->lessons->count() > 0)
-                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                <div class="mt-6 p-4 bg-primary/5 rounded-lg">
                     <h3 class="text-sm font-medium text-gray-700 mb-2">Lezioni in questa Sezione ({{ $section->lessons->count() }})</h3>
                     <div class="space-y-2">
                         @foreach($section->lessons->sortBy('lesson_order')->take(5) as $lesson)
                             <div class="flex justify-between items-center text-sm">
                                 <div class="flex items-center">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary mr-2">
                                         {{ $lesson->lesson_order }}
                                     </span>
                                     <span class="font-medium">{{ $lesson->title }}</span>
@@ -135,7 +135,7 @@
                         @endif
                     </div>
                     <div class="mt-3">
-                        <a href="{{ route('admin.courses.sections.lessons.index', [$course, $section]) }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm">
+                        <a href="{{ route('admin.courses.sections.lessons.index', [$course, $section]) }}" class="inline-flex items-center text-primary hover:text-primary/80 text-sm">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                             </svg>
@@ -194,7 +194,7 @@
                 <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                     Annulla
                 </a>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                     Aggiorna Sezione
                 </button>
             </div>
@@ -206,7 +206,7 @@
         <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('admin.courses.index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <a href="{{ route('admin.courses.index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                         </svg>
@@ -218,7 +218,7 @@
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <a href="{{ route('admin.courses.show', $course) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">{{ Str::limit($course->name, 30) }}</a>
+                        <a href="{{ route('admin.courses.show', $course) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">{{ Str::limit($course->name, 30) }}</a>
                     </div>
                 </li>
                 <li>
@@ -226,7 +226,7 @@
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <a href="{{ route('admin.courses.sections.index', $course) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">Sezioni</a>
+                        <a href="{{ route('admin.courses.sections.index', $course) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">Sezioni</a>
                     </div>
                 </li>
                 <li>
@@ -234,7 +234,7 @@
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">{{ Str::limit($section->name, 30) }}</a>
+                        <a href="{{ route('admin.courses.sections.show', [$course, $section]) }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">{{ Str::limit($section->name, 30) }}</a>
                     </div>
                 </li>
                 <li aria-current="page">

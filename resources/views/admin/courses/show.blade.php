@@ -5,7 +5,7 @@
                 Dettagli Corso: {{ $course->name }}
             </h2>
             <div class="flex space-x-2">
-                <a href="{{ route('admin.courses.sections.index', $course) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('admin.courses.sections.index', $course) }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded">
                     Gestisci Sezioni
                 </a>
                 <a href="{{ route('admin.courses.edit', $course) }}" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">

@@ -6,7 +6,7 @@
             <h1 class="text-3xl font-bold text-gray-900">Schede di Allenamento</h1>
             <p class="text-gray-600 mt-2">Gestisci le schede di allenamento associate ai corsi</p>
         </div>
-        <a href="{{ route('admin.workout-cards.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.workout-cards.create') }}" class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
             Nuova Scheda
         </a>
     </div>
@@ -83,7 +83,7 @@
                         <!-- PDF Link -->
                         @if($workoutCard->pdf_url)
                             <div class="mt-4">
-                                <a href="{{ $workoutCard->pdf_url }}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm">
+                                <a href="{{ $workoutCard->pdf_url }}" target="_blank" class="inline-flex items-center text-primary hover:text-primary/80 text-sm">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
@@ -100,13 +100,13 @@
                                 Creata {{ $workoutCard->created_at->format('d/m/Y') }}
                             </span>
                             <div class="flex space-x-2">
-                                <a href="{{ route('admin.workout-cards.show', $workoutCard) }}" class="text-blue-600 hover:text-blue-900" title="Visualizza">
+                                <a href="{{ route('admin.workout-cards.show', $workoutCard) }}" class="text-primary hover:text-primary/80" title="Visualizza">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                     </svg>
                                 </a>
-                                <a href="{{ route('admin.workout-cards.edit', $workoutCard) }}" class="text-indigo-600 hover:text-indigo-900" title="Modifica">
+                                <a href="{{ route('admin.workout-cards.edit', $workoutCard) }}" class="text-primary hover:text-primary/80" title="Modifica">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                     </svg>
@@ -139,7 +139,7 @@
             <h3 class="mt-2 text-sm font-medium text-gray-900">Nessuna scheda di allenamento</h3>
             <p class="mt-1 text-sm text-gray-500">Inizia creando la prima scheda di allenamento per i tuoi corsi.</p>
             <div class="mt-6">
-                <a href="{{ route('admin.workout-cards.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                <a href="{{ route('admin.workout-cards.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                     <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                     </svg>
