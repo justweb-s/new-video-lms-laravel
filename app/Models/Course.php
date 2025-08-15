@@ -63,6 +63,11 @@ class Course extends Model
         );
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function getTotalLessonsAttribute()
     {
         return $this->lessons()->count();

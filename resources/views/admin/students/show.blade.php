@@ -130,6 +130,44 @@
 
                 <!-- Sidebar -->
                 <div class="space-y-6">
+                    <!-- Billing Data -->
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h4 class="text-lg font-medium text-gray-900 mb-4">Dati di Fatturazione</h4>
+                            <dl class="text-sm space-y-2">
+                                <div class="flex justify-between">
+                                    <dt class="text-gray-600">Codice Fiscale</dt>
+                                    <dd class="text-gray-900">{{ $student->tax_code ?: 'N/D' }}</dd>
+                                </div>
+                                <div class="flex justify-between">
+                                    <dt class="text-gray-600">P. IVA</dt>
+                                    <dd class="text-gray-900">{{ $student->tax_id ?: 'N/D' }}</dd>
+                                </div>
+                                <div class="flex justify-between">
+                                    <dt class="text-gray-600">Telefono</dt>
+                                    <dd class="text-gray-900">{{ $student->phone ?: 'N/D' }}</dd>
+                                </div>
+                                <div class="border-t my-2"></div>
+                                <div>
+                                    <dt class="text-gray-600">Indirizzo</dt>
+                                    <dd class="text-gray-900">
+                                        @php
+                                            $addr = array_filter([
+                                                $student->billing_address_line1,
+                                                $student->billing_address_line2,
+                                                $student->billing_postal_code,
+                                                $student->billing_city,
+                                                $student->billing_state,
+                                                $student->billing_country,
+                                            ]);
+                                        @endphp
+                                        {{ $addr ? implode(', ', $addr) : 'N/D' }}
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
                     <!-- Statistics -->
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
@@ -152,6 +190,42 @@
                                     <span class="text-sm font-medium text-gray-900">{{ $student->last_login ? $student->last_login->diffForHumans() : 'Mai' }}</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Payments -->
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-lg font-medium text-gray-900">Ultimi pagamenti</h4>
+                                <a href="{{ route('admin.payments.index', ['user' => $student->id]) }}" class="text-sm text-primary hover:underline">Vedi tutti</a>
+                            </div>
+                            @if(isset($recentPayments) && $recentPayments->count())
+                                <ul class="divide-y divide-gray-100">
+                                    @foreach($recentPayments as $pay)
+                                        <li class="py-2 text-sm flex items-center justify-between">
+                                            <div>
+                                                <div class="font-medium text-gray-900">{{ $pay->course->name ?? 'Corso N/D' }}</div>
+                                                <div class="text-gray-500">{{ $pay->created_at->format('d/m/Y H:i') }} • {{ strtoupper($pay->currency) }} {{ number_format($pay->amount_total/100, 2, ',', '.') }}</div>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                @php
+                                                    $badge = match($pay->status) {
+                                                        'paid' => 'bg-green-100 text-green-800',
+                                                        'open' => 'bg-yellow-100 text-yellow-800',
+                                                        'complete' => 'bg-blue-100 text-blue-800',
+                                                        default => 'bg-gray-100 text-gray-800',
+                                                    };
+                                                @endphp
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $badge }}">{{ strtoupper($pay->status) }}</span>
+                                                <a href="{{ route('admin.payments.show', $pay) }}" class="text-xs bg-gray-800 hover:bg-gray-900 text-white px-2 py-1 rounded">Dettagli</a>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-sm text-gray-500">Nessun pagamento recente.</p>
+                            @endif
                         </div>
                     </div>
 

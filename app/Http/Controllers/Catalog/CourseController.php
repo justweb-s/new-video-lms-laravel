@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Catalog;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -191,6 +192,42 @@ class CourseController extends Controller
         }
 
         $user->save();
+
+        // Registra il pagamento per consultazione lato admin (idempotente)
+        try {
+            $customFieldsArr = null;
+            if (!empty($session->custom_fields) && is_array($session->custom_fields)) {
+                $customFieldsArr = [];
+                foreach ($session->custom_fields as $cf) {
+                    // Ogni elemento è uno StripeObject: convertiamolo in array
+                    $customFieldsArr[] = method_exists($cf, 'toArray') ? $cf->toArray() : json_decode(json_encode($cf), true);
+                }
+            }
+
+            $customerDetailsArr = $session->customer_details ? (method_exists($session->customer_details, 'toArray') ? $session->customer_details->toArray() : json_decode(json_encode($session->customer_details), true)) : null;
+            $metadataArr = $session->metadata ? (method_exists($session->metadata, 'toArray') ? $session->metadata->toArray() : json_decode(json_encode($session->metadata), true)) : null;
+
+            $attributes = [
+                'stripe_session_id' => (string) $session->id,
+            ];
+            $values = [
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+                'stripe_payment_intent_id' => is_string($session->payment_intent) ? $session->payment_intent : (is_object($session->payment_intent) ? ($session->payment_intent->id ?? null) : null),
+                'amount_total' => (int) $session->amount_total,
+                'currency' => (string) strtolower($session->currency),
+                'status' => (string) $session->payment_status,
+                'customer_email' => $session->customer_details->email ?? $session->customer_email ?? null,
+                'customer_details' => $customerDetailsArr,
+                'custom_fields' => $customFieldsArr,
+                'metadata' => $metadataArr,
+            ];
+
+            Payment::updateOrCreate($attributes, $values);
+        } catch (\Throwable $e) {
+            // Non bloccare il flusso utente se per qualche ragione il salvataggio pagamento fallisce
+            \Log::warning('Impossibile registrare Payment: ' . $e->getMessage());
+        }
 
         // Crea o attiva l'iscrizione
         $enrollment = Enrollment::firstOrNew([

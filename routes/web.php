@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProgressController as AdminProgressController;
 use App\Http\Controllers\Admin\WorkoutCardController as AdminWorkoutCardController;
 use App\Http\Controllers\Admin\EnrollmentController as AdminEnrollmentController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\ProgressController as StudentProgressController;
@@ -105,6 +106,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('enrollments', AdminEnrollmentController::class);
         Route::post('/enrollments/bulk-action', [AdminEnrollmentController::class, 'bulkAction'])->name('enrollments.bulk-action');
         Route::get('/enrollments-export', [AdminEnrollmentController::class, 'export'])->name('enrollments.export');
+
+        // Payments Management
+        Route::resource('payments', AdminPaymentController::class)->only(['index', 'show']);
     });
 });
 

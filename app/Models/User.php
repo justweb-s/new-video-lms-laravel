@@ -78,6 +78,11 @@ class User extends Authenticatable
         return $this->hasMany(LessonProgress::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function getFullNameAttribute()
     {
         return trim($this->first_name . ' ' . $this->last_name) ?: $this->name;

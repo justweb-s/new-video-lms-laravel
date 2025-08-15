@@ -57,7 +57,7 @@ class StudentController extends Controller
      */
     public function show(User $student)
     {
-        $student->load(['enrollments.course', 'lessonProgress.lesson.section']);
+        $student->load(['enrollments.course', 'lessonProgress.lesson.section', 'payments.course']);
         $student->loadCount(['enrollments']);
         
         // Get recent progress
@@ -66,8 +66,11 @@ class StudentController extends Controller
             ->latest()
             ->take(10)
             ->get();
+        
+        // Get recent payments
+        $recentPayments = $student->payments()->with('course')->latest()->take(5)->get();
             
-        return view('admin.students.show', compact('student', 'recentProgress'));
+        return view('admin.students.show', compact('student', 'recentProgress', 'recentPayments'));
     }
 
     /**
