@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\ProgressController as StudentProgressController;
+use App\Http\Controllers\Catalog\GiftCardController as CatalogGiftCardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,6 +34,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/catalog/checkout/success', [CatalogCourseController::class, 'success'])->name('catalog.checkout.success');
     Route::get('/catalog/checkout/cancel', [CatalogCourseController::class, 'cancel'])->name('catalog.checkout.cancel');
 });
+
+// Gift Cards Routes
+Route::get('/gift-cards', [CatalogGiftCardController::class, 'index'])->name('giftcards.index');
+// Public redeem form so recipients can access the page directly from email, will prompt login on submit
+Route::get('/gift-cards/redeem', [CatalogGiftCardController::class, 'redeemForm'])->name('giftcards.redeem');
+Route::middleware('auth')->group(function () {
+    Route::post('/gift-cards/redeem', [CatalogGiftCardController::class, 'redeem'])->name('giftcards.redeem.submit');
+    Route::post('/gift-cards/{course}/checkout', [CatalogGiftCardController::class, 'checkout'])->name('giftcards.checkout');
+    Route::get('/gift-cards/checkout/success', [CatalogGiftCardController::class, 'success'])->name('giftcards.checkout.success');
+    Route::get('/gift-cards/checkout/cancel', [CatalogGiftCardController::class, 'cancel'])->name('giftcards.checkout.cancel');
+});
+// Keep parameterized route last to avoid conflicts with above paths
+Route::get('/gift-cards/{course}', [CatalogGiftCardController::class, 'show'])->name('giftcards.show');
 
 // Student Routes (using default auth)
 Route::middleware(['auth', 'student.auth'])->group(function () {

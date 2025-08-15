@@ -24,6 +24,7 @@
                                 <x-brand-logo class="block h-8 w-auto" />
                             </a>
                             <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
+                            <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
                         </div>
                         <div class="flex items-center space-x-4">
                             @if(Auth::check())
