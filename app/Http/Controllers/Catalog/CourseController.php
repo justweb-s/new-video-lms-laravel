@@ -67,10 +67,11 @@ class CourseController extends Controller
         $successUrl = route('catalog.checkout.success') . '?session_id={CHECKOUT_SESSION_ID}&course=' . $course->id;
         $cancelUrl = route('catalog.checkout.cancel') . '?course=' . $course->id;
 
-        // Crea la Checkout Session
+        // Crea la Checkout Session con raccolta dati aggiuntivi
         $session = StripeSession::create([
             'mode' => 'payment',
             'payment_method_types' => ['card'],
+            'customer_email' => $user->email,
             'line_items' => [[
                 'price_data' => [
                     'currency' => $currency,
@@ -82,6 +83,27 @@ class CourseController extends Controller
                 ],
                 'quantity' => 1,
             ]],
+            'billing_address_collection' => 'required',
+            'phone_number_collection' => [
+                'enabled' => true,
+            ],
+            'tax_id_collection' => [
+                'enabled' => true,
+            ],
+            'custom_fields' => [
+                [
+                    'key' => 'codice_fiscale',
+                    'label' => [
+                        'type' => 'custom',
+                        'custom' => 'Codice Fiscale',
+                    ],
+                    'type' => 'text',
+                    'text' => [
+                        'maximum_length' => 32,
+                    ],
+                    'optional' => false,
+                ],
+            ],
             'success_url' => $successUrl,
             'cancel_url' => $cancelUrl,
             'metadata' => [
@@ -127,6 +149,48 @@ class CourseController extends Controller
             return redirect()->route('catalog.show', $course)
                 ->with('error', 'Dati pagamento incoerenti.');
         }
+
+        // Salva i dati raccolti su utente (telefono, indirizzo, CF, VAT)
+        if ($details = $session->customer_details) {
+            // Telefono
+            if (!empty($details->phone)) {
+                $user->phone = $details->phone;
+            }
+            // Indirizzo di fatturazione
+            if (!empty($details->address)) {
+                $addr = $details->address;
+                $user->billing_address_line1 = $addr->line1 ?? $user->billing_address_line1;
+                $user->billing_address_line2 = $addr->line2 ?? $user->billing_address_line2;
+                $user->billing_city = $addr->city ?? $user->billing_city;
+                $user->billing_state = $addr->state ?? $user->billing_state;
+                $user->billing_postal_code = $addr->postal_code ?? $user->billing_postal_code;
+                $user->billing_country = $addr->country ?? $user->billing_country;
+            }
+            // Tax IDs (es. P.IVA)
+            if (!empty($details->tax_ids) && is_array($details->tax_ids)) {
+                // Prende il primo disponibile
+                $firstTaxId = $details->tax_ids[0] ?? null;
+                if ($firstTaxId && !empty($firstTaxId->value)) {
+                    $user->tax_id = $firstTaxId->value;
+                }
+            }
+        }
+
+        // Campo personalizzato: Codice Fiscale
+        $taxCode = null;
+        if (!empty($session->custom_fields) && is_array($session->custom_fields)) {
+            foreach ($session->custom_fields as $field) {
+                if (($field->key ?? null) === 'codice_fiscale') {
+                    $taxCode = $field->text->value ?? null;
+                    break;
+                }
+            }
+        }
+        if (!empty($taxCode)) {
+            $user->tax_code = $taxCode;
+        }
+
+        $user->save();
 
         // Crea o attiva l'iscrizione
         $enrollment = Enrollment::firstOrNew([

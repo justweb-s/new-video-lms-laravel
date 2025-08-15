@@ -26,6 +26,14 @@ class User extends Authenticatable
         'phone',
         'is_active',
         'last_login',
+        'tax_code',
+        'tax_id',
+        'billing_address_line1',
+        'billing_address_line2',
+        'billing_city',
+        'billing_state',
+        'billing_postal_code',
+        'billing_country',
     ];
 
     /**
