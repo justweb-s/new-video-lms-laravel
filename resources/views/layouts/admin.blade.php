@@ -114,20 +114,27 @@
     </div>
 
     <script>
-        // Simple dropdown toggle
-        document.getElementById('user-menu-button').addEventListener('click', function() {
-            const dropdown = this.parentNode.querySelector('[role="menu"]');
-            dropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('[role="menu"]');
+        // Simple dropdown toggle (null-safe and robust)
+        (function() {
             const button = document.getElementById('user-menu-button');
-            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.add('hidden');
+            const dropdown = document.querySelector('[role="menu"][aria-labelledby="user-menu-button"]');
+
+            if (!button || !dropdown) {
+                return;
             }
-        });
+
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+                dropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        })();
     </script>
 </body>
 </html>
