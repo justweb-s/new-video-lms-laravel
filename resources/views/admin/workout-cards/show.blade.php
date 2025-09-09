@@ -6,6 +6,9 @@
                 <p class="text-sm text-gray-500">{{ $workoutCard->title }}</p>
             </div>
             <div class="flex items-center gap-2">
+                <a href="{{ route('admin.workout-cards.builder', $workoutCard->course) }}" class="text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
+                    <i class="fas fa-tools mr-1"></i>Builder
+                </a>
                 <a href="{{ route('admin.workout-cards.edit', $workoutCard) }}" class="text-sm bg-primary hover:bg-primary/90 text-white px-3 py-2 rounded">Modifica</a>
                 <a href="{{ route('admin.workout-cards.index') }}" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded">Elenco</a>
             </div>
@@ -43,8 +46,11 @@
                         </div>
 
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">Contenuto</h3>
-                            <div class="mt-1 prose prose-sm max-w-none">{!! nl2br(e($workoutCard->content)) !!}</div>
+                            <h3 class="text-sm font-medium text-gray-500">Anteprima Scheda</h3>
+                            <div class="mt-1 border rounded-lg p-4 bg-gray-50">
+                                <link rel="stylesheet" href="{{ asset('css/workout-card.css') }}">
+                                <div class="workout-card-content">{!! $workoutCard->content !!}</div>
+                            </div>
                         </div>
 
                         @if($workoutCard->warmup)

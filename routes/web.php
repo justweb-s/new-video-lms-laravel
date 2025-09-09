@@ -117,6 +117,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         // Workout Cards Management
         Route::resource('workout-cards', AdminWorkoutCardController::class);
+        Route::get('/workout-cards/builder/{course?}', [AdminWorkoutCardController::class, 'builder'])->name('workout-cards.builder');
+        Route::post('/workout-cards/builder', [AdminWorkoutCardController::class, 'storeFromBuilder'])->name('workout-cards.store-builder');
         
         // Enrollment Management
         Route::resource('enrollments', AdminEnrollmentController::class);

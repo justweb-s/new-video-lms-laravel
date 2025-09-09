@@ -1,0 +1,223 @@
+/* Stili per le schede di allenamento */
+.card-header {
+    background: #ffffff;
+    color: #111111;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 1rem 1rem 0 0;
+    margin-bottom: 2rem;
+    border-bottom: 4px solid #36583c;
+}
+
+.card-header .logo {
+    max-height: 80px;
+    margin-bottom: 1rem;
+    filter: none;
+}
+
+.card-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #36583c;
+    text-shadow: none;
+}
+
+.info-box {
+    background: #f3f4f6;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+    border-left: 6px solid #f4e648;
+}
+
+.info-box p {
+    margin: 0.5rem 0;
+    font-weight: 600;
+    color: #36583c;
+}
+
+.workout-section {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    border-top: 3px solid #36583c;
+}
+
+.workout-title {
+    color: #36583c;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #f4e648;
+}
+
+.warmup {
+    background: #fffbe6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #f4e648;
+}
+
+.warmup strong {
+    color: #36583c;
+}
+
+.workout-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.workout-section table thead {
+    background: #36583c;
+    color: #f4e648;
+}
+
+.workout-section table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.workout-section table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+.workout-section table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.workout-section table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.venous-return {
+    background: #eef2ef;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1.5rem;
+    border-left: 4px solid #36583c;
+}
+
+.venous-return strong {
+    color: #36583c;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .card-header h1 {
+        font-size: 2rem;
+    }
+    
+    .workout-section {
+        padding: 1rem;
+    }
+    
+    .workout-section table {
+        font-size: 0.875rem;
+    }
+    
+    .workout-section table,
+    .workout-section table thead,
+    .workout-section table tbody,
+    .workout-section table th,
+    .workout-section table td,
+    .workout-section table tr {
+        display: block;
+    }
+    
+    .workout-section table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    .workout-section table tr {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        background: white;
+    }
+    
+    .workout-section table td {
+        border: none;
+        border-bottom: 1px solid #e5e7eb;
+        position: relative;
+        padding-left: 50% !important;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    .workout-section table td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #374151;
+    }
+    
+    .workout-section table td:last-child {
+        border-bottom: 0;
+    }
+}
+
+/* Print styles */
+@media print {
+    .card-header {
+        background: #ffffff !important;
+        border-bottom: 4px solid #36583c !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .info-box {
+        background: #f3f4f6 !important;
+        border-left: 6px solid #f4e648 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .warmup {
+        background: #fffbe6 !important;
+        border-left: 4px solid #f4e648 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .venous-return {
+        background: #eef2ef !important;
+        border-left: 4px solid #36583c !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .workout-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .workout-section table thead {
+        background: #36583c !important;
+        color: #f4e648 !important;
+    }
+}
