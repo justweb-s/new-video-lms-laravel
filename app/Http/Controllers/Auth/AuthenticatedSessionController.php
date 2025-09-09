@@ -28,6 +28,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Aggiorna l'ultimo accesso dello studente
+        $user = Auth::user();
+        if ($user) {
+            $user->forceFill([
+                'last_login' => now(),
+            ])->save();
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
