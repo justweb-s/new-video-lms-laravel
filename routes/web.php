@@ -30,6 +30,9 @@ Route::get('/', function () {
 // Public Catalog Routes
 Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/courses/{course}', [CatalogCourseController::class, 'show'])->name('catalog.show');
+// Privacy & Cookie Policy (public)
+Route::view('/privacy-policy', 'static.privacy-policy')->name('privacy-policy');
+Route::view('/cookie-policy', 'static.cookie-policy')->name('cookie-policy');
 Route::middleware('auth')->group(function () {
     Route::get('/catalog/courses/{course}/checkout', [CatalogCourseController::class, 'purchase'])->name('catalog.checkout');
     Route::get('/catalog/checkout/success', [CatalogCourseController::class, 'success'])->name('catalog.checkout.success');

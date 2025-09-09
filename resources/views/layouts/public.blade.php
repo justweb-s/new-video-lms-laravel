@@ -13,6 +13,39 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style id="cookie-consent-styles">
+            .cookie-consent {
+                position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 5000;
+                background: #36583c; color: #ffffff; border: 2px solid #f4e648;
+                padding: 16px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2);
+                display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+            }
+            .cookie-consent__message { font-size: 0.95rem; line-height: 1.4; color: #ffffff; }
+            .cookie-consent__message a { color: #f4e648; text-decoration: underline; font-weight: 600; }
+            .cookie-consent__agree {
+                background: #f4e648; color: #111; font-weight: 700; cursor: pointer;
+                padding: 10px 16px; border-radius: 10px; border: 2px solid #111; transition: transform .15s ease, box-shadow .15s ease;
+            }
+            .cookie-consent__agree:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.15); }
+            .cookie-consent__deny {
+                background: transparent; color: #ffffff; font-weight: 700;
+                padding: 10px 16px; border-radius: 10px; border: 2px solid #ffffff; transition: transform .15s ease, box-shadow .15s ease;
+            }
+            .cookie-consent__preferences {
+                background: transparent; color: #f4e648; font-weight: 700;
+                padding: 10px 16px; border-radius: 10px; border: 2px dashed #f4e648; transition: transform .15s ease, box-shadow .15s ease;
+            }
+            /* Modal */
+            .cc-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 6000; display:none; }
+            .cc-modal { position: fixed; z-index: 7000; inset: 0; display:none; align-items:center; justify-content:center; }
+            .cc-modal .cc-card { background: #ffffff; color:#111; width: 96%; max-width: 680px; border-radius: 14px; overflow: hidden; border: 2px solid #36583c; }
+            .cc-modal .cc-card .cc-header { background: #36583c; color: #fff; padding: 16px 20px; font-weight: 700; display:flex; align-items:center; justify-content:space-between; }
+            .cc-modal .cc-card .cc-body { padding: 16px 20px; }
+            .cc-modal .cc-card .cc-actions { display:flex; gap:12px; justify-content:flex-end; padding: 16px 20px; border-top:1px solid #e5e7eb; }
+            .cc-btn { padding: 10px 16px; border-radius: 10px; font-weight: 700; }
+            .cc-btn-primary { background:#36583c; color:#fff; border:2px solid #111; }
+            .cc-btn-secondary { background:#f4e648; color:#111; border:2px solid #111; }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -70,6 +103,14 @@
                 @yield('content')
             </main>
         </div>
+
+        @guest
+            @include('cookie-consent::index')
+        @endguest
+
+        @if(request()->cookie(config('cookie-consent.cookie_name')) === '1')
+            @includeIf('partials.analytics-consent')
+        @endif
 
         @stack('scripts')
     </body>

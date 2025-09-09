@@ -13,6 +13,9 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
@@ -95,6 +98,10 @@
             {{ $slot }}
         </main>
     </div>
+
+    @if(request()->cookie(config('cookie-consent.cookie_name')) === '1')
+        @includeIf('partials.analytics-consent')
+    @endif
 
     <script>
         // Simple dropdown toggle
