@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layouts.student>
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8">I Miei Corsi</h1>
     
@@ -57,4 +55,4 @@
         </div>
     @endif
 </div>
-@endsection
+</x-layouts.student>

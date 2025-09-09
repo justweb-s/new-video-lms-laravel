@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layouts.student>
 <div class="container mx-auto px-4 py-8">
     <div class="flex flex-col md:flex-row gap-6" x-data="{ openWorkout: false }">
         <!-- Left Sidebar - Course Navigation -->
@@ -222,4 +220,4 @@
     });
 </script>
 @endpush
-@endsection
+</x-layouts.student>

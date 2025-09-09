@@ -13,9 +13,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
@@ -26,8 +23,9 @@
                     <div class="flex">
                         <!-- Logo -->
                         <div class="shrink-0 flex items-center">
-                            <a href="{{ route('dashboard') }}" class="text-xl font-bold text-gray-800">
-                                Video LMS
+                            <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
+                                <x-brand-logo class="h-8 w-auto" />
+                                <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
                             </a>
                         </div>
 
@@ -104,20 +102,29 @@
     @endif
 
     <script>
-        // Simple dropdown toggle
-        document.getElementById('user-menu-button').addEventListener('click', function() {
-            const dropdown = this.parentNode.querySelector('[role="menu"]');
-            dropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('[role="menu"]');
+        // Simple dropdown toggle (null-safe and robust)
+        (function() {
             const button = document.getElementById('user-menu-button');
-            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.add('hidden');
+            const dropdown = document.querySelector('[role="menu"][aria-labelledby="user-menu-button"]');
+
+            if (!button || !dropdown) {
+                return;
             }
-        });
+
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+                dropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        })();
     </script>
+    
+    @stack('scripts')
 </body>
 </html>

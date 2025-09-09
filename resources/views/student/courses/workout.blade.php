@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layouts.student>
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-6">
         <div>
@@ -63,4 +61,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-layouts.student>
