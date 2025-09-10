@@ -43,9 +43,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/gift-cards', [CatalogGiftCardController::class, 'index'])->name('giftcards.index');
 // Public redeem form so recipients can access the page directly from email, will prompt login on submit
 Route::get('/gift-cards/redeem', [CatalogGiftCardController::class, 'redeemForm'])->name('giftcards.redeem');
+// Checkout route handles both GET (after login/registration) and POST (form submission)
+Route::match(['GET','POST'], '/gift-cards/{course}/checkout', [CatalogGiftCardController::class, 'checkout'])->name('giftcards.checkout');
 Route::middleware('auth')->group(function () {
     Route::post('/gift-cards/redeem', [CatalogGiftCardController::class, 'redeem'])->name('giftcards.redeem.submit');
-    Route::post('/gift-cards/{course}/checkout', [CatalogGiftCardController::class, 'checkout'])->name('giftcards.checkout');
     Route::get('/gift-cards/checkout/success', [CatalogGiftCardController::class, 'success'])->name('giftcards.checkout.success');
     Route::get('/gift-cards/checkout/cancel', [CatalogGiftCardController::class, 'cancel'])->name('giftcards.checkout.cancel');
 });

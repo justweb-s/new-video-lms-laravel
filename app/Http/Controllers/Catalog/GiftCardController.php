@@ -38,16 +38,42 @@ class GiftCardController extends Controller
     public function checkout(Request $request, Course $course)
     {
         abort_unless($course->is_active && $course->price > 0, 404);
-        $request->validate([
+
+        // Se l'utente non è autenticato:
+        // - se POST: salva i dati del form in sessione e imposta l'URL intended
+        // - reindirizza al login (dove sarà possibile anche registrarsi)
+        if (!Auth::check()) {
+            if ($request->isMethod('post')) {
+                $request->session()->put('gift_checkout_'.$course->id, [
+                    'recipient_name' => (string) $request->input('recipient_name'),
+                    'recipient_email' => (string) $request->input('recipient_email'),
+                    'message' => (string) $request->input('message'),
+                ]);
+            }
+            // Imposta manualmente l'URL di ritorno dopo login/registrazione
+            $request->session()->put('url.intended', route('giftcards.checkout', $course));
+            return redirect()->route('login')->with('status', "Accedi o registrati per completare l'acquisto.");
+        }
+
+        // Utente autenticato: se GET, riprendi eventuali dati salvati in sessione
+        if ($request->isMethod('get')) {
+            $saved = $request->session()->pull('gift_checkout_'.$course->id, null);
+            if ($saved) {
+                $request->merge($saved);
+            } else {
+                return redirect()->route('giftcards.show', $course)
+                    ->with('error', 'Compila i dati del destinatario per proseguire.');
+            }
+        }
+
+        // A questo punto abbiamo i dati nel request (da POST o da sessione): validiamo
+        $validated = $request->validate([
             'recipient_name' => ['required','string','max:100'],
             'recipient_email' => ['required','email','max:150'],
             'message' => ['nullable','string','max:1000'],
         ]);
 
         $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Accedi per acquistare una gift card.');
-        }
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
@@ -79,8 +105,8 @@ class GiftCardController extends Controller
                 'type' => 'gift_card',
                 'course_id' => (string) $course->id,
                 'buyer_user_id' => (string) $user->id,
-                'recipient_name' => (string) $request->recipient_name,
-                'recipient_email' => (string) $request->recipient_email,
+                'recipient_name' => (string) $validated['recipient_name'],
+                'recipient_email' => (string) $validated['recipient_email'],
             ],
             'success_url' => $successUrl,
             'cancel_url' => $cancelUrl,
@@ -88,7 +114,7 @@ class GiftCardController extends Controller
         ]);
 
         // Memorizza temporaneamente il messaggio in cache di sessione per riprenderlo al successo
-        $request->session()->put('gift_msg_'.$session->id, (string) $request->message);
+        $request->session()->put('gift_msg_'.$session->id, (string) ($validated['message'] ?? $request->input('message', '')));
 
         return redirect()->away($session->url);
     }

@@ -17,9 +17,12 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(): RedirectResponse
     {
-        return view('auth.register');
+        // Reindirizza alla pagina gateway con TAB "Registrati" attivo
+        // Mantieni eventuali errori/old input (esito di una validazione fallita)
+        try { session()->reflash(); } catch (\Throwable $e) { /* ignore */ }
+        return redirect()->route('login', ['tab' => 'register']);
     }
 
     /**
@@ -45,6 +48,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 }
