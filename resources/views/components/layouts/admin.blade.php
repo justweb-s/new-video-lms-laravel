@@ -49,6 +49,9 @@
                             <a href="{{ route('admin.workout-cards.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.workout-cards.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                                 Schede di Allenamento
                             </a>
+                            <a href="{{ route('admin.settings.contact.edit') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.settings.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
+                                Impostazioni
+                            </a>
                         </div>
                     </div>
 

@@ -19,6 +19,7 @@ use App\Http\Controllers\Catalog\GiftCardController as CatalogGiftCardController
 use App\Http\Controllers\Catalog\CartController as CatalogCartController;
 use App\Http\Controllers\Admin\GiftCardController as AdminGiftCardController;
 use App\Http\Controllers\StaticPageController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', [StaticPageController::class, 'home'])->name('static.home');
 Route::get('/chi-sono', [StaticPageController::class, 'about'])->name('static.about');
 Route::get('/contatti', [StaticPageController::class, 'contact'])->name('static.contact');
+Route::post('/contatti', [StaticPageController::class, 'submitContact'])->name('static.contact.submit');
 Route::get('/workout-online', [StaticPageController::class, 'workoutOnline'])->name('static.workout-online');
 Route::get('/workout-in-studio', [StaticPageController::class, 'workoutInStudio'])->name('static.workout-in-studio');
 
@@ -138,6 +140,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('workout-cards', AdminWorkoutCardController::class);
         Route::get('/workout-cards/builder/{course?}', [AdminWorkoutCardController::class, 'builder'])->name('workout-cards.builder');
         Route::post('/workout-cards/builder', [AdminWorkoutCardController::class, 'storeFromBuilder'])->name('workout-cards.store-builder');
+
+        // Settings - Contatti (mappa e destinatario)
+        Route::get('/settings/contact', [AdminSettingController::class, 'editContact'])->name('settings.contact.edit');
+        Route::post('/settings/contact', [AdminSettingController::class, 'updateContact'])->name('settings.contact.update');
         
         // Enrollment Management
         Route::resource('enrollments', AdminEnrollmentController::class);

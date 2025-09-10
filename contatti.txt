@@ -1,0 +1,53 @@
+<div id="content" class="site-content">
+		<div class="ast-container">
+		
+
+	<div id="primary" class="content-area primary">
+
+		
+					<main id="main" class="site-main">
+				<article class="post-129 page type-page status-publish pmpro-has-access ast-article-single" id="post-129" itemtype="https://schema.org/CreativeWork" itemscope="itemscope">
+	
+				<header class="entry-header ast-no-thumbnail ast-no-title ast-header-without-markup">
+							</header> <!-- .entry-header -->
+		
+<div class="entry-content clear" data-ast-blocks-layout="true" itemprop="text">
+
+	
+	<div class="wp-block-uagb-container uagb-block-6fbca592 alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-advanced-heading uagb-block-ceaf28e8"><h2 class="uagb-heading-text">Contatti</h2><div class="uagb-separator"></div></div></div></div><div class="wp-block-uagb-container uagb-block-984dbe48 alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-container uagb-block-728c4038"><div class="wp-block-uagb-container uagb-block-794dfb0a"><div class="wp-block-uagb-info-box uagb-block-bf815390 uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top wp-block-uagb-info-box--has-margin"><div class="uagb-infobox-margin-wrapper"><div class="uagb-ifb-content"><div class="uagb-ifb-icon-wrap"><svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M304 0h-224c-35.35 0-64 28.65-64 64v384c0 35.35 28.65 64 64 64h224c35.35 0 64-28.65 64-64V64C368 28.65 339.3 0 304 0zM192 480c-17.75 0-32-14.25-32-32s14.25-32 32-32s32 14.25 32 32S209.8 480 192 480zM304 64v320h-224V64H304z"></path></svg></div><div class="uagb-ifb-title-wrap"><h3 class="uagb-ifb-title">+39 350 014 9957</h3></div></div></div></div></div>
+
+<div class="wp-block-uagb-container uagb-block-c8f86bde"><div class="wp-block-uagb-info-box uagb-block-9596f9be uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top wp-block-uagb-info-box--has-margin"><div class="uagb-infobox-margin-wrapper"><div class="uagb-ifb-content"><div class="uagb-ifb-icon-wrap"><svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M275.9 330.7H171.3V480H17V32h109.5v104.5l305.1 85.6V480H275.9z"></path></svg></div><div class="uagb-ifb-title-wrap"><h3 class="uagb-ifb-title"><a href="https://maps.app.goo.gl/4QBRXQDvbnd9qFh68" target="_blank" rel="noopener">Via Alfredo Catalani&nbsp;38A, 09128 Cagliari CA</a></h3></div></div></div></div></div>
+
+<div class="wp-block-uagb-container uagb-block-332238ff"><div class="wp-block-uagb-info-box uagb-block-19d75c5f uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top wp-block-uagb-info-box--has-margin"><div class="uagb-infobox-margin-wrapper"><div class="uagb-ifb-content"><div class="uagb-ifb-icon-wrap"><svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M447 56.25C443.5 42 430.7 31.1 416 31.1H96c-14.69 0-27.47 10-31.03 24.25L3.715 304.9C1.247 314.9 0 325.2 0 335.5v96.47c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-96.47c0-10.32-1.247-20.6-3.715-30.61L447 56.25zM352 352H160L128 288H72.97L121 96h270l48.03 192H384L352 352z"></path></svg></div><div class="uagb-ifb-title-wrap"><h3 class="uagb-ifb-title">info@emyworkout.it</h3></div></div></div></div></div></div>
+
+<div class="wp-block-uagb-container uagb-block-52bb7f24 alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-container uagb-block-959eb3e6"><div class="wp-block-uagb-advanced-heading uagb-block-19b666a7"><h5 class="uagb-heading-text">Contattami</h5><div class="uagb-separator"></div></div>
+
+<div class="wp-block-uagb-forms uagb-forms__outer-wrap uagb-block-4d5b562c uagb-forms__medium-btn uagb-activated-script"><form class="uagb-forms-main-form" method="post" autocomplete="on" name="uagb-form-4d5b562c"><div class="wp-block-uagb-forms-name uagb-forms-name-wrap uagb-forms-field-set uagb-block-4a2d0279"><div class="uagb-forms-name-label required uagb-forms-input-label" id="4a2d0279">Nome</div><input type="text" placeholder="Il Tuo Nome" required="" class="uagb-forms-name-input uagb-forms-input" name="4a2d0279" autocomplete="given-name"></div>
+
+<div class="wp-block-uagb-forms-email uagb-forms-email-wrap uagb-forms-field-set uagb-block-eb800a48"><div class="uagb-forms-email-label  uagb-forms-input-label" id="eb800a48">Email</div><input type="email" class="uagb-forms-email-input uagb-forms-input" placeholder="La Tua Email" name="eb800a48" autocomplete="email"></div>
+
+<div class="wp-block-uagb-forms-textarea uagb-forms-textarea-wrap uagb-forms-field-set uagb-block-ce83e205"><div class="uagb-forms-textarea-label required uagb-forms-input-label" id="ce83e205">Message</div><textarea required="" class="uagb-forms-textarea-input uagb-forms-input" rows="3" placeholder="Scrivi un Messaggio" name="ce83e205" autocomplete="off"></textarea></div><div class="uagb-forms-form-hidden-data"><input type="hidden" class="uagb_forms_form_label" value="Spectra Form"><input type="hidden" class="uagb_forms_form_id" value="uagb-form-4d5b562c"></div><div class="uagb-form-reacaptcha-error-4d5b562c"></div><div class="uagb-forms-main-submit-button-wrap wp-block-button"><button class="uagb-forms-main-submit-button wp-block-button__link"><div class="uagb-forms-main-submit-button-text">Invia</div></button></div></form><div class="uagb-forms-success-message-4d5b562c uagb-forms-submit-message-hide"><span>The form has been submitted successfully!</span></div><div class="uagb-forms-failed-message-4d5b562c uagb-forms-submit-message-hide"><span>There has been some error while submitting the form. Please verify all form fields again.</span></div></div></div>
+
+<div class="wp-block-uagb-container uagb-block-14102b63"><div class="wp-block-uagb-info-box uagb-block-20e5272c uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top"><div class="uagb-ifb-content"><div class="uagb-ifb-title-wrap"><h5 class="uagb-ifb-title">Scrivimi!</h5></div><div class="uagb-ifb-separator"></div><p class="uagb-ifb-desc">Se vuoi farmi qualsiasi domanda riguardo i miei programmi di allenamento, o semplicemente vuoi avere delle informazioni in più, non esitare a contattarmi</p></div></div>
+
+<a href="https://www.instagram.com/emy__pt/" target="_blank" rel="noopener noreferrer">
+    <i class="fab fa-instagram" style="font-size: 24px;"></i>
+</a></div></div></div></div></div><div class="wp-block-uagb-google-map uagb-google-map__wrap uagb-block-3a39d654     " style="">
+				<embed class="uagb-google-map__iframe" title="Google Map for " src="https://maps.google.com/maps?q=Via%20Alfredo%20Catalani%C2%A038A%2C%2009128%20Cagliari%20CA&amp;z=16&amp;hl=it&amp;t=m&amp;output=embed&amp;iwloc=near" width="640" height="500" loading="lazy">
+			</div>
+	
+	
+</div><!-- .entry-content .clear -->
+
+	
+	
+</article><!-- #post-## -->
+
+			</main><!-- #main -->
+			
+		
+	</div><!-- #primary -->
+
+
+	</div> <!-- ast-container -->
+	</div>
