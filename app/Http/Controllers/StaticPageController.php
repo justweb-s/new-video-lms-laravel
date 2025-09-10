@@ -29,4 +29,9 @@ class StaticPageController extends Controller
         
         return view('static.workout-online', compact('courses'));
     }
+
+    public function workoutInStudio()
+    {
+        return view('static.workout-in-studio');
+    }
 }

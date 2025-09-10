@@ -64,6 +64,7 @@
                             <a href="{{ route('static.home') }}" class="text-sm font-medium text-primary hover:text-primary/80">Home</a>
                             <a href="{{ route('static.about') }}" class="text-sm font-medium text-primary hover:text-primary/80">Chi Sono</a>
                             <a href="{{ route('static.workout-online') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout Online</a>
+                            <a href="{{ route('static.workout-in-studio') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout in Studio</a>
                             <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
                             <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
                             <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>

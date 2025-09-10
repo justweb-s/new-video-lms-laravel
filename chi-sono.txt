@@ -1,0 +1,189 @@
+<div id="content" class="site-content">
+		<div class="ast-container">
+		
+
+	<div id="primary" class="content-area primary">
+
+		
+					<main id="main" class="site-main">
+				<article class="post-119 page type-page status-publish pmpro-has-access ast-article-single" id="post-119" itemtype="https://schema.org/CreativeWork" itemscope="itemscope">
+	
+				<header class="entry-header ast-no-thumbnail ast-no-title ast-header-without-markup">
+							</header> <!-- .entry-header -->
+		
+<div class="entry-content clear" data-ast-blocks-layout="true" itemprop="text">
+
+	
+	<div class="wp-block-uagb-container uagb-block-6fbca592 alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-advanced-heading uagb-block-ceaf28e8"><h2 class="uagb-heading-text"><mark class="uagb-highlight">Ciao, sono Emy</mark></h2><div class="uagb-separator"></div></div></div></div><div class="wp-block-uagb-container uagb-block-040b392f alignfull uagb-is-root-container"><div class="wp-block-uagb-container uagb-block-238ec8b6"><div class="wp-block-uagb-image uagb-block-f7b49567 wp-block-uagb-image--layout-default wp-block-uagb-image--effect-static wp-block-uagb-image--align-none"><figure class="wp-block-uagb-image__figure"><img decoding="async" srcset="https://www.emyworkout.it/wp-content/uploads/2024/10/chi-sono-682x1024.jpg ,https://www.emyworkout.it/wp-content/uploads/2024/10/chi-sono.jpg 780w, https://www.emyworkout.it/wp-content/uploads/2024/10/chi-sono.jpg 360w" sizes="auto, (max-width: 480px) 150px" src="https://www.emyworkout.it/wp-content/uploads/2024/10/chi-sono-682x1024.jpg" alt="" class="uag-image-1471" width="682" height="1024" title="chi sono" loading="lazy" role="img"></figure></div></div>
+
+<div class="wp-block-uagb-container uagb-block-fe4c451e"><div class="wp-block-uagb-advanced-heading uagb-block-60fc75cd"><h3 class="uagb-heading-text">La mia passione è aiutarti a vivere meglio</h3><div class="uagb-separator"></div><p class="uagb-desc-text">Il mio nome è <strong>Emy</strong>.</p></div>
+
+<p>Sono laureata in Scienze delle Attività Motorie con una specializzazione magistrale in Scienze delle Attività Motorie Preventive e Adattate. Nel corso degli anni, la mia sete di conoscenza e il desiderio di migliorarmi continuamente mi hanno portata a seguire una formazione sempre più mirata e specifica. Ho completato il mio percorso accademico con un Master in Preparazione Fisica Controllata, che ha arricchito e rafforzato le mie competenze nel settore.</p>
+
+<p>Grazie a questo solido bagaglio di conoscenze, oggi il mio lavoro si concentra su interventi individuali e di gruppo, con programmi di attività fisica adattata per diverse fasce di età e per persone con disabilità. Il mio obiettivo è promuovere la salute e il benessere psicofisico attraverso l’esercizio fisico, con programmi personalizzati che aiutino a raggiungere, mantenere o recuperare una condizione ottimale di benessere.</p>
+
+<p><a href="mailto:info@emyworkout.it">info@emyworkout.it</a></p></div></div><div class="wp-block-uagb-container uagb-block-021ad4f2 alignfull uagb-is-root-container"><style>
+    .fitness-coaching-section {
+        background-color: #36583c;
+        color: #f6e849;
+        padding: 80px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    .fitness-coaching-section::before,
+    .fitness-coaching-section::after {
+        content: '';
+        position: absolute;
+        background-color: rgba(246, 232, 73, 0.1);
+        border-radius: 50%;
+    }
+    .fitness-coaching-section::before {
+        top: -50px;
+        left: -50px;
+        width: 200px;
+        height: 200px;
+    }
+    .fitness-coaching-section::after {
+        bottom: -100px;
+        right: -100px;
+        width: 300px;
+        height: 300px;
+    }
+    .fitness-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+    .fitness-text {
+        padding-right: 40px;
+    }
+    .fitness-title {
+        font-size: 3.5em;
+        margin-bottom: 30px;
+        line-height: 1.2;
+        position: relative;
+    }
+    .fitness-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background-color: #f6e849;
+        margin-top: 20px;
+    }
+    .fitness-list {
+        list-style-type: none;
+        padding: 0;
+        margin-bottom: 40px;
+    }
+    .fitness-list li {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        font-size: 1.2em;
+    }
+    .fitness-list li::before {
+        content: "⦿";
+        color: #f6e849;
+        margin-right: 15px;
+        font-size: 1.5em;
+    }
+
+    .fitness-image {
+        position: relative;
+    }
+    .fitness-image-frame {
+        border: 8px solid #f6e849;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    .fitness-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    @media (max-width: 768px) {
+        .fitness-content {
+            grid-template-columns: 1fr;
+        }
+        .fitness-text {
+            padding-right: 0;
+        }
+        .fitness-image {
+            order: -1;
+        }
+    }
+</style>
+
+<section class="fitness-coaching-section">
+    <div class="fitness-content">
+        <div class="fitness-text">
+            <h2 class="fitness-title" style="color:#ffffff;">La mia filosofia</h2>
+            <p>La passione per questo lavoro nasce dalla mia esperienza personale: Ho scoperto quanto sia importante creare una routine quotidiana che includa:</p>
+            <ul class="fitness-list">
+                <li>Esercizio Fisico</li>
+                <li>Corretta Alimentazione</li>
+                <li>Adeguato Riposo</li>
+            </ul>
+            <p>Questi tre fondamenti hanno trasformato la mia vita e oggi sono alla base del mio approccio professionale.</p>
+        </div>
+        <div class="fitness-image">
+            <div class="fitness-image-frame">
+                <img decoding="async" src="https://www.emyworkout.it/wp-content/uploads/2024/10/Workout-in-studio-1-1024x683.jpg" alt="Coach di fitness in azione">
+            </div>
+        </div>
+    </div>
+</section></div><div class="wp-block-uagb-container uagb-block-23fcc576 alignfull uagb-is-root-container"><div class="wp-block-uagb-container uagb-block-e746bf0e"><div class="wp-block-uagb-image alignleft uagb-block-9e1356a4 wp-block-uagb-image--layout-default wp-block-uagb-image--effect-static wp-block-uagb-image--align-left"><figure class="wp-block-uagb-image__figure"><img decoding="async" srcset="https://www.emyworkout.it/wp-content/uploads/2024/10/la-mia-missione-1024x683.jpg ,https://www.emyworkout.it/wp-content/uploads/2024/10/la-mia-missione.jpg 780w, https://www.emyworkout.it/wp-content/uploads/2024/10/la-mia-missione.jpg 360w" sizes="auto, (max-width: 480px) 150px" src="https://www.emyworkout.it/wp-content/uploads/2024/10/la-mia-missione-1024x683.jpg" alt="" class="uag-image-1127" width="1024" height="683" title="la mia missione" loading="lazy" role="img"></figure></div></div>
+
+<div class="wp-block-uagb-container uagb-block-40a8248f"><div class="wp-block-uagb-advanced-heading uagb-block-b257f206"><h2 class="uagb-heading-text"><strong>La mia missione</strong></h2><div class="uagb-separator"></div></div>
+
+<p>Se hai deciso di prendere in mano la tua salute e il tuo benessere, sei nel posto giusto. Da anni mi impegno a trasmettere un messaggio chiaro: <strong>“La chiave per una vita equilibrata è DIVENTARE PROTAGONISTI DEL PROPRIO BENESSERE”</strong> seguendo l’onda dei tre fondamenti.<br>Può essere difficile trovare tempo e motivazione per prendersi cura di sé, soprattutto quando ci si sente persi a causa di tentativi falliti con soluzioni fai da te. Se ti sei sentita/o così, è probabile che tu abbia bisogno di una guida esperta.<br>La mia missione è guidarti attraverso un percorso personalizzato e adattato, pensato su misura per te, che ti aiuti a raggiungere i tuoi obiettivi rispettando il tuo stile di vita e le tue esigenze.<br>Insieme, possiamo costruire un piano che rispetti il tuo stile di vita e che ti porti verso il successo desiderato.<br>La tua trasformazione inizia dal primo passo. Se sei pronta/o a prendere il controllo della tua salute e vivere al massimo? Io sono al tuo fianco.</p></div></div><div class="wp-block-uagb-container uagb-block-496163b7 alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-info-box uagb-block-3fe81058 uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top"><div class="uagb-ifb-content"><div class="uagb-ifb-title-wrap"><h3 class="uagb-ifb-title">Cosa Dicono i Miei Clienti</h3></div><div class="uagb-ifb-separator"></div></div></div>
+
+<div class="wp-block-uagb-star-rating uagb-block-f0de7be8"><div class="uag-star-rating" title="5/5"><span class="uag-star">★</span><span class="uag-star">★</span><span class="uag-star">★</span><span class="uag-star">★</span><span class="uag-star">★</span></div></div>
+
+<div class="wp-block-uagb-container uagb-block-d019377b alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-container uagb-block-f48d2b0c"><div class="uagb-icon-wrapper uagb-block-60c5f9a2      " style="">
+									<span class="uagb-svg-wrapper" aria-label="quote-left" tabindex="0">		
+										<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" role="graphics-symbol" aria-hidden="false" aria-label=""><path d="M96 224C84.72 224 74.05 226.3 64 229.9V224c0-35.3 28.7-64 64-64c17.67 0 32-14.33 32-32S145.7 96 128 96C57.42 96 0 153.4 0 224v96c0 53.02 42.98 96 96 96s96-42.98 96-96S149 224 96 224zM352 224c-11.28 0-21.95 2.305-32 5.879V224c0-35.3 28.7-64 64-64c17.67 0 32-14.33 32-32s-14.33-32-32-32c-70.58 0-128 57.42-128 128v96c0 53.02 42.98 96 96 96s96-42.98 96-96S405 224 352 224z"></path></svg>
+									</span>
+							</div>
+
+<div class="wp-block-uagb-info-box uagb-block-295ea2eb uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top"><div class="uagb-ifb-content"><div class="uagb-ifb-title-wrap"><p class="uagb-ifb-title-prefix">Frequento questo studio da 2 anni e non ho intenzione di cambiare. Gli allenamenti sono personalizzati ed efficaci, ma il vero punto forte è la personal trainer, Emy. Persona meravigliosa, energica e positiva.</p><div class="uagb-ifb-separator"></div><p class="uagb-ifb-title">Arianna Corti</p></div></div></div></div>
+
+<div class="wp-block-uagb-container uagb-block-ce30c46f"><div class="uagb-icon-wrapper uagb-block-21687caf      " style="">
+									<span class="uagb-svg-wrapper" aria-label="quote-left" tabindex="0">		
+										<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" role="graphics-symbol" aria-hidden="false" aria-label=""><path d="M96 224C84.72 224 74.05 226.3 64 229.9V224c0-35.3 28.7-64 64-64c17.67 0 32-14.33 32-32S145.7 96 128 96C57.42 96 0 153.4 0 224v96c0 53.02 42.98 96 96 96s96-42.98 96-96S149 224 96 224zM352 224c-11.28 0-21.95 2.305-32 5.879V224c0-35.3 28.7-64 64-64c17.67 0 32-14.33 32-32s-14.33-32-32-32c-70.58 0-128 57.42-128 128v96c0 53.02 42.98 96 96 96s96-42.98 96-96S405 224 352 224z"></path></svg>
+									</span>
+							</div>
+
+<div class="wp-block-uagb-info-box uagb-block-0b696f45 uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top"><div class="uagb-ifb-content"><div class="uagb-ifb-title-wrap"><p class="uagb-ifb-title-prefix">Mi alleno da poco con Emy, ma ho trovato subito moltissimi benefici alle mie problematiche grazie ai suoi preziosi consigli ,alla sua preparazione e alla sua attenzione ad ogni piccolo particolare ,super consigliata !</p><div class="uagb-ifb-separator"></div><p class="uagb-ifb-title">Marzia Angius</p></div></div></div></div>
+
+<div class="wp-block-uagb-container uagb-block-6509a9ea"><div class="uagb-icon-wrapper uagb-block-25b3fcde      " style="">
+									<span class="uagb-svg-wrapper" aria-label="quote-left" tabindex="0">		
+										<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" role="graphics-symbol" aria-hidden="false" aria-label=""><path d="M96 224C84.72 224 74.05 226.3 64 229.9V224c0-35.3 28.7-64 64-64c17.67 0 32-14.33 32-32S145.7 96 128 96C57.42 96 0 153.4 0 224v96c0 53.02 42.98 96 96 96s96-42.98 96-96S149 224 96 224zM352 224c-11.28 0-21.95 2.305-32 5.879V224c0-35.3 28.7-64 64-64c17.67 0 32-14.33 32-32s-14.33-32-32-32c-70.58 0-128 57.42-128 128v96c0 53.02 42.98 96 96 96s96-42.98 96-96S405 224 352 224z"></path></svg>
+									</span>
+							</div>
+
+<div class="wp-block-uagb-info-box uagb-block-3cc6e56d uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top"><div class="uagb-ifb-content"><div class="uagb-ifb-title-wrap"><p class="uagb-ifb-title-prefix">Una personal trainer con i fiocchi! Lavori tanto ma con il sorriso! Seria e preparata! E, cosa fondamentale, una bella persona!</p><div class="uagb-ifb-separator"></div><p class="uagb-ifb-title">Silvia</p></div></div></div></div></div></div></div></div><div class="wp-block-uagb-container uagb-block-802ea240 alignfull uagb-is-root-container"><div class="uagb-container-inner-blocks-wrap"><div class="wp-block-uagb-info-box uagb-block-b5501270 uagb-infobox__content-wrap  uagb-infobox-icon-above-title uagb-infobox-image-valign-top"><div class="uagb-ifb-content"><div class="uagb-ifb-title-wrap"><h3 class="uagb-ifb-title">Rimaniamo in contatto</h3></div><div class="uagb-ifb-separator"></div></div></div>
+
+<div class="wp-block-uagb-forms uagb-forms__outer-wrap uagb-block-18b3c5c9 uagb-forms__medium-btn uagb-forms-inline-field uagb-forms-button-desk-width-0 uagb-forms-column-gap-5 uagb-forms-button-tablet-width-45 uagb-forms-button-mobile-width-100 uagb-activated-script"><form class="uagb-forms-main-form" method="post" autocomplete="on" name="uagb-form-18b3c5c9"><div class="wp-block-uagb-forms-email uagb-forms-email-wrap uagb-forms-field-set uagb-block-f43f63e4 uagb-forms-field-desk-width-75 uagb-forms-field-tablet-width-60 uagb-forms-field-mobile-width-100"><div class="uagb-forms-email-label required uagb-forms-input-label" id="f43f63e4">Email</div><input type="email" class="uagb-forms-email-input uagb-forms-input" placeholder="Il Tuo Indirizzo Email" required="" name="f43f63e4" autocomplete="email"></div><div class="uagb-forms-form-hidden-data"><input type="hidden" class="uagb_forms_form_label" value="Spectra Form"><input type="hidden" class="uagb_forms_form_id" value="uagb-form-18b3c5c9"></div><div class="uagb-form-reacaptcha-error-18b3c5c9"></div><div class="uagb-forms-main-submit-button-wrap wp-block-button"><button class="uagb-forms-main-submit-button wp-block-button__link"><div class="uagb-forms-main-submit-button-text">Iscriviti</div></button></div></form><div class="uagb-forms-success-message-18b3c5c9 uagb-forms-submit-message-hide"><span>The form has been submitted successfully!</span></div><div class="uagb-forms-failed-message-18b3c5c9 uagb-forms-submit-message-hide"><span>There has been some error while submitting the form. Please verify all form fields again.</span></div></div></div></div>
+	
+	
+</div><!-- .entry-content .clear -->
+
+	
+	
+</article><!-- #post-## -->
+
+			</main><!-- #main -->
+			
+		
+	</div><!-- #primary -->
+
+
+	</div> <!-- ast-container -->
+	</div>

@@ -27,6 +27,7 @@ Route::get('/', [StaticPageController::class, 'home'])->name('static.home');
 Route::get('/chi-sono', [StaticPageController::class, 'about'])->name('static.about');
 Route::get('/contatti', [StaticPageController::class, 'contact'])->name('static.contact');
 Route::get('/workout-online', [StaticPageController::class, 'workoutOnline'])->name('static.workout-online');
+Route::get('/workout-in-studio', [StaticPageController::class, 'workoutInStudio'])->name('static.workout-in-studio');
 
 // Public Catalog Routes
 Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
