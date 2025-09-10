@@ -146,6 +146,10 @@
                                         <a href="{{ route('courses.show', $course) }}" class="w-full bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded text-center block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                                             Continua Corso
                                         </a>
+                                    @elseif($isExpired && ($course->is_active))
+                                        <a href="{{ route('catalog.checkout', $course) }}" class="w-full bg-primary hover:bg-primary/90 focus:bg-primary/90 text-white font-bold py-2 px-4 rounded text-center block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
+                                            Riacquista
+                                        </a>
                                     @else
                                         <div class="w-full bg-gray-400 text-white font-bold py-2 px-4 rounded text-center">
                                             {{ $isExpired ? 'Corso Scaduto' : 'Corso Non Disponibile' }}
