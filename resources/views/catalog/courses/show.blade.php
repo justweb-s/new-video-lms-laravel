@@ -48,6 +48,10 @@
                     <a href="{{ route('courses.show', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Vai al corso</a>
                 @else
                     <a href="{{ route('catalog.checkout', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista ora</a>
+                    <form method="POST" action="{{ route('cart.add-course', $course) }}" class="inline" data-add-to-cart>
+                        @csrf
+                        <button type="submit" class="inline-flex items-center px-6 py-3 rounded-md border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 ml-3">Aggiungi al carrello</button>
+                    </form>
                     <a href="{{ route('giftcards.show', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md border border-primary text-primary font-semibold hover:bg-primary/5 ml-3">Regala questo corso</a>
                     <p class="mt-3 text-sm text-gray-500">Verrai reindirizzato all'accesso se non sei autenticato.</p>
 
@@ -65,3 +69,87 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form[data-add-to-cart]');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const url = form.getAttribute('action');
+    const token = form.querySelector('input[name="_token"]').value;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': token,
+          'Accept': 'application/json',
+        },
+      });
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      if (!data.ok) throw new Error('Server error');
+
+      // Aggiorna/crea badge nell'header
+      const updateBadge = (container) => {
+        if (!container) return;
+        let badge = container.querySelector('span');
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 w-4 h-4 inline-flex items-center justify-center rounded-full bg-primary text-white text-[10px] leading-none ring-2 ring-white shadow';
+          container.appendChild(badge);
+        }
+        badge.textContent = data.count;
+      };
+      document.querySelectorAll('button[title="Carrello"]').forEach(updateBadge);
+      document.querySelectorAll('a[title="Carrello"]').forEach(updateBadge);
+
+      // Aggiorna drawer: ricarica stato minimale e apri
+      try {
+        const stateRes = await fetch('{{ route('cart.state') }}', { headers: { 'Accept': 'application/json' } });
+        const state = await stateRes.json();
+        if (state && state.ok) {
+          const list = document.getElementById('cart-drawer-items');
+          const emptyMsg = document.querySelector('[data-cart-empty]');
+          const totalEl = document.getElementById('cart-drawer-total');
+          if (list) {
+            list.innerHTML = '';
+            state.items.forEach((it) => {
+              const li = document.createElement('li');
+              li.className = 'p-4 flex items-start gap-3';
+              li.innerHTML = `
+                <div class="w-12 h-12 rounded border border-gray-200 bg-gray-100 overflow-hidden flex-shrink-0">
+                  ${it.image ? `<img src="${it.image}" alt="${it.name}" class="w-full h-full object-cover" />` : `<div class=\"w-full h-full flex items-center justify-center text-gray-400\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M3 7h18M3 12h18M3 17h18\"/></svg></div>`}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 truncate">${it.name}</p>
+                    <p class="text-sm font-semibold text-gray-900">€${(it.price).toFixed(2).replace('.', ',')}</p>
+                  </div>
+                  <p class="mt-1 text-xs text-gray-500 capitalize">${it.type}</p>
+                </div>
+              `;
+              list.appendChild(li);
+            });
+          }
+          if (emptyMsg) emptyMsg.classList.add('hidden');
+          if (totalEl) totalEl.textContent = '€' + (parseFloat(state.total).toFixed(2).replace('.', ','));
+        }
+      } catch (err) {}
+
+      // Apri drawer
+      if (window.Alpine && document.body.__x) {
+        document.body.__x.$data.openCart = true;
+      } else {
+        document.body.setAttribute('x-data', '{ openCart: true }');
+      }
+    } catch (err) {
+      // fallback: submit normale
+      form.submit();
+    }
+  });
+});
+</script>
+@endpush

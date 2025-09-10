@@ -18,8 +18,15 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Cart + Settings Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+                @php $cartCount = is_array(session('cart.items')) ? count(session('cart.items')) : 0; @endphp
+                <button type="button" @click="openCart = true" class="relative inline-flex items-center justify-center p-2 rounded-full hover:bg-primary/10 text-primary focus:outline-none focus:ring-2 focus:ring-primary/30" aria-label="Apri carrello" title="Carrello">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-4a2 2 0 100 4 2 2 0 000-4zM9 18a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    @if($cartCount > 0)
+                        <span class="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 w-4 h-4 inline-flex items-center justify-center rounded-full bg-primary text-white text-[10px] leading-none ring-2 ring-white shadow">{{ $cartCount }}</span>
+                    @endif
+                </button>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary bg-white hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 transition ease-in-out duration-150">

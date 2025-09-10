@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>[x-cloak]{display:none!important}</style>
         <style id="cookie-consent-styles">
             .cookie-consent {
                 position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 5000;
@@ -45,7 +46,7 @@
             .cc-btn-secondary { background:#f4e648; color:#111; border:2px solid #111; }
         </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
+    <body x-data="{ openCart: false }" x-on:keydown.escape.window="openCart=false" class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
@@ -60,8 +61,18 @@
 
         @include('cookie-consent::index')
 
+        @php $cartCount = is_array(session('cart.items')) ? count(session('cart.items')) : 0; @endphp
+        <button type="button" @click="openCart = true" class="fixed bottom-5 right-5 z-[9997] relative inline-flex items-center justify-center p-3 rounded-full shadow-lg bg-white border border-primary/20 text-primary hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/30" aria-label="Apri carrello" title="Carrello">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-4a2 2 0 100 4 2 2 0 000-4zM9 18a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            @if($cartCount > 0)
+                <span class="absolute -top-1 -right-1 inline-flex items-center justify-center rounded-full bg-primary text-white text-[10px] leading-none px-1.5 py-0.5">{{ $cartCount }}</span>
+            @endif
+        </button>
+
         @if(request()->cookie(config('cookie-consent.cookie_name')) === '1')
             @includeIf('partials.analytics-consent')
         @endif
+
+        @include('partials.cart-drawer')
     </body>
 </html>

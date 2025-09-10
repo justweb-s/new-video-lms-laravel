@@ -16,6 +16,7 @@ use App\Http\Controllers\Student\DashboardController as StudentDashboardControll
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\ProgressController as StudentProgressController;
 use App\Http\Controllers\Catalog\GiftCardController as CatalogGiftCardController;
+use App\Http\Controllers\Catalog\CartController as CatalogCartController;
 use App\Http\Controllers\Admin\GiftCardController as AdminGiftCardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,19 @@ Route::middleware('auth')->group(function () {
 });
 // Keep parameterized route last to avoid conflicts with above paths
 Route::get('/gift-cards/{course}', [CatalogGiftCardController::class, 'show'])->name('giftcards.show');
+
+// Cart Routes
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CatalogCartController::class, 'index'])->name('index');
+    Route::get('/state', [CatalogCartController::class, 'state'])->name('state');
+    Route::post('/add-course/{course}', [CatalogCartController::class, 'addCourse'])->name('add-course');
+    Route::post('/add-gift-card/{course}', [CatalogCartController::class, 'addGiftCard'])->name('add-gift-card');
+    Route::delete('/item/{id}', [CatalogCartController::class, 'remove'])->name('remove');
+    Route::post('/clear', [CatalogCartController::class, 'clear'])->name('clear');
+    Route::get('/checkout', [CatalogCartController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/success', [CatalogCartController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/cancel', [CatalogCartController::class, 'cancel'])->name('checkout.cancel');
+});
 
 // Student Routes (using default auth)
 Route::middleware(['auth', 'student.auth'])->group(function () {

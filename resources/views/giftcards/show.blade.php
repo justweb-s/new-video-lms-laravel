@@ -54,9 +54,10 @@
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="pt-2">
+                    <div class="pt-2 flex items-center gap-3 flex-wrap">
                         <button type="submit" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista gift card</button>
-                        <p class="mt-2 text-xs text-gray-500">Ti verrà richiesto di accedere se non sei autenticato.</p>
+                        <button type="submit" formaction="{{ route('cart.add-gift-card', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50">Aggiungi al carrello</button>
+                        <p class="mt-2 text-xs text-gray-500 w-full">Ti verrà richiesto di accedere se non sei autenticato.</p>
                     </div>
                 </form>
             </div>

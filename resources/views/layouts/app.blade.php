@@ -13,8 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>[x-cloak]{display:none!important}</style>
     </head>
-    <body class="font-sans antialiased">
+    <body x-data="{ openCart: false }" x-on:keydown.escape.window="openCart=false" class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 
@@ -38,6 +39,7 @@
         </div>
         
         {{-- Scripts stack for pages using @push('scripts') --}}
+        @include('partials.cart-drawer')
         @stack('scripts')
     </body>
 </html>

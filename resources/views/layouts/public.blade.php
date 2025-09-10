@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>[x-cloak]{display:none!important}</style>
         <style id="cookie-consent-styles">
             .cookie-consent {
                 position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 5000;
@@ -47,7 +48,7 @@
             .cc-btn-secondary { background:#f4e648; color:#111; border:2px solid #111; }
         </style>
     </head>
-    <body class="font-sans antialiased">
+    <body x-data="{ openCart: false }" x-on:keydown.escape.window="openCart=false" x-on:open-cart.window="openCart=true" class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white/95 backdrop-blur border-b border-primary/10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,6 +61,13 @@
                             <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
                         </div>
                         <div class="flex items-center space-x-4">
+                            @php $cartCount = is_array(session('cart.items')) ? count(session('cart.items')) : 0; @endphp
+                            <button type="button" @click="openCart = true" class="relative inline-flex items-center justify-center p-2 rounded-full hover:bg-primary/10 text-primary focus:outline-none focus:ring-2 focus:ring-primary/30" aria-label="Apri carrello" title="Carrello">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-4a2 2 0 100 4 2 2 0 000-4zM9 18a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                @if($cartCount > 0)
+                                    <span class="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 w-4 h-4 inline-flex items-center justify-center rounded-full bg-primary text-white text-[10px] leading-none ring-2 ring-white shadow">{{ $cartCount }}</span>
+                                @endif
+                            </button>
                             @if(Auth::check())
                                 <a href="{{ route('dashboard') }}" class="text-sm text-primary hover:text-primary/80">Dashboard</a>
                                 <a href="{{ route('profile.edit') }}" class="text-sm text-primary hover:text-primary/80">Profilo</a>
@@ -111,6 +119,8 @@
         @if(request()->cookie(config('cookie-consent.cookie_name')) === '1')
             @includeIf('partials.analytics-consent')
         @endif
+
+        @include('partials.cart-drawer')
 
         @stack('scripts')
     </body>
