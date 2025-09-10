@@ -33,7 +33,7 @@
                         <p class="mt-2 text-gray-600">{{ Str::limit($course->description, 120) }}</p>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-lg font-semibold text-primary">€{{ number_format($course->price, 2, ',', '.') }}</span>
-                            <a href="{{ route('catalog.show', $course) }}" class="text-primary hover:text-primary/80 font-medium">Scopri di più →</a>
+                            <a href="{{ route('courses.show', $course) }}" class="text-primary hover:text-primary/80 font-medium">Scopri di più →</a>
                         </div>
                     </div>
                 </div>

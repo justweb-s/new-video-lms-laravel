@@ -22,7 +22,7 @@ class CourseController extends Controller
             ->orderByDesc('created_at')
             ->paginate(12);
 
-        return view('catalog.courses.index', compact('courses'));
+        return view('courses.index', compact('courses'));
     }
 
     public function show(Course $course)
@@ -41,7 +41,7 @@ class CourseController extends Controller
             $isEnrolled = $enrollment && !$enrollment->isExpired();
         }
 
-        return view('catalog.courses.show', compact('course', 'isEnrolled'));
+        return view('courses.show', compact('course', 'isEnrolled'));
     }
 
     public function purchase(Request $request, Course $course)
@@ -49,7 +49,7 @@ class CourseController extends Controller
         $user = $request->user();
 
         if (!$course->is_active) {
-            return redirect()->route('catalog.show', $course)
+            return redirect()->route('courses.show', $course)
                 ->with('error', 'Il corso non è attualmente disponibile.');
         }
 
@@ -65,15 +65,15 @@ class CourseController extends Controller
         if ($giftCode !== '') {
             $gift = GiftCard::where('code', strtoupper($giftCode))->first();
             if (!$gift) {
-                return redirect()->route('catalog.show', $course)
+                return redirect()->route('courses.show', $course)
                     ->with('error', 'Codice gift card non trovato.');
             }
             if ($gift->status !== 'paid' || $gift->redeemed_at) {
-                return redirect()->route('catalog.show', $course)
+                return redirect()->route('courses.show', $course)
                     ->with('error', 'Codice gift card non valido o già utilizzato.');
             }
             if ((int) $gift->course_id !== (int) $course->id) {
-                return redirect()->route('catalog.show', $course)
+                return redirect()->route('courses.show', $course)
                     ->with('error', 'Questa gift card non è valida per questo corso.');
             }
 
@@ -199,7 +199,7 @@ class CourseController extends Controller
         $session = StripeSession::retrieve($request->string('session_id'));
 
         if (!in_array($session->payment_status, ['paid'], true)) {
-            return redirect()->route('catalog.show', $course)
+            return redirect()->route('courses.show', $course)
                 ->with('error', 'Pagamento non confermato.');
         }
 
@@ -207,7 +207,7 @@ class CourseController extends Controller
         $metaUserId = (string)($session->metadata['user_id'] ?? '');
         $metaCourseId = (string)($session->metadata['course_id'] ?? '');
         if ($metaUserId !== (string) $user->id || $metaCourseId !== (string) $course->id) {
-            return redirect()->route('catalog.show', $course)
+            return redirect()->route('courses.show', $course)
                 ->with('error', 'Verifica pagamento non valida.');
         }
 
@@ -215,8 +215,7 @@ class CourseController extends Controller
         $expectedAmount = (int) round(((float) $course->price) * 100);
         $expectedCurrency = strtolower(config('services.stripe.currency', 'eur'));
         if ((int) $session->amount_total < $expectedAmount || strtolower($session->currency) !== $expectedCurrency) {
-            return redirect()->route('catalog.show', $course)
-                ->with('error', 'Dati pagamento incoerenti.');
+            return redirect()->route('courses.show', 'Dati pagamento incoerenti.');
         }
 
         // Salva i dati raccolti su utente (telefono, indirizzo, CF, VAT)
@@ -323,9 +322,9 @@ class CourseController extends Controller
         $courseId = $request->integer('course');
         $course = Course::find($courseId);
         if ($course) {
-            return redirect()->route('catalog.show', $course)
+            return redirect()->route('courses.show', $course)
                 ->with('error', 'Pagamento annullato.');
         }
-        return redirect()->route('catalog.index')->with('error', 'Pagamento annullato.');
+        return redirect()->route('courses.index')->with('error', 'Pagamento annullato.');
     }
 }

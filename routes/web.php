@@ -22,21 +22,28 @@ use Illuminate\Support\Facades\Auth;
 
 // Home: show catalog to guests, dashboard to authenticated users
 Route::get('/', function () {
-    return Auth::check()
-        ? redirect()->route('dashboard')
-        : redirect()->route('catalog.index');
-});
+    return view('home');
+})->name('home');
+
+// Static Pages
+Route::view('/chi-sono', 'static.chi-sono')->name('static.chi-sono');
+Route::view('/blog', 'static.blog')->name('static.blog');
+Route::view('/contatti', 'static.contatti')->name('static.contatti');
+Route::view('/regala-una-gift-card', 'static.regala-una-gift-card')->name('static.regala-una-gift-card');
+Route::view('/workout-in-studio', 'static.workout-in-studio')->name('static.workout-in-studio');
+Route::view('/workout-online', 'static.workout-online')->name('static.workout-online');
+Route::view('/prenota-una-consulenza', 'static.prenota-una-consulenza')->name('static.prenota-una-consulenza');
 
 // Public Catalog Routes
-Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
-Route::get('/catalog/courses/{course}', [CatalogCourseController::class, 'show'])->name('catalog.show');
+Route::get('/corsi', [CatalogCourseController::class, 'index'])->name('courses.index');
+Route::get('/corsi/{course}', [CatalogCourseController::class, 'show'])->name('courses.show');
 // Privacy & Cookie Policy (public)
 Route::view('/privacy-policy', 'static.privacy-policy')->name('privacy-policy');
 Route::view('/cookie-policy', 'static.cookie-policy')->name('cookie-policy');
 Route::middleware('auth')->group(function () {
-    Route::get('/catalog/courses/{course}/checkout', [CatalogCourseController::class, 'purchase'])->name('catalog.checkout');
-    Route::get('/catalog/checkout/success', [CatalogCourseController::class, 'success'])->name('catalog.checkout.success');
-    Route::get('/catalog/checkout/cancel', [CatalogCourseController::class, 'cancel'])->name('catalog.checkout.cancel');
+    Route::get('/corsi/{course}/checkout', [CatalogCourseController::class, 'purchase'])->name('courses.checkout');
+    Route::get('/corsi/checkout/success', [CatalogCourseController::class, 'success'])->name('courses.checkout.success');
+    Route::get('/corsi/checkout/cancel', [CatalogCourseController::class, 'cancel'])->name('courses.checkout.cancel');
 });
 
 // Gift Cards Routes

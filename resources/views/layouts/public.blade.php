@@ -53,11 +53,15 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex items-center space-x-6">
-                            <a href="{{ route('catalog.index') }}" class="flex items-center">
+                            <a href="{{ route('home') }}" class="flex items-center">
                                 <x-brand-logo class="block h-8 w-auto" />
                             </a>
-                            <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
-                            <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
+                            <a href="{{ route('static.chi-sono') }}" class="text-sm font-medium text-primary hover:text-primary/80">Chi Sono</a>
+                            <a href="{{ route('static.regala-una-gift-card') }}" class="text-sm font-medium text-primary hover:text-primary/80">Regala Una Gift Card</a>
+                            <a href="{{ route('courses.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Programmi</a>
+                            <a href="{{ route('static.prenota-una-consulenza') }}" class="text-sm font-medium text-primary hover:text-primary/80">Prenota una consulenza</a>
+                            <a href="{{ route('static.blog') }}" class="text-sm font-medium text-primary hover:text-primary/80">Blog</a>
+                            <a href="{{ route('static.contatti') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
                         </div>
                         <div class="flex items-center space-x-4">
                             @if(Auth::check())
