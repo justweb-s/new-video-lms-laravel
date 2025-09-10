@@ -7,6 +7,7 @@ use App\Mail\GiftCardIssuedMail;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\GiftCard;
+use App\Models\Setting;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -261,6 +262,9 @@ class GiftCardController extends Controller
             'course_id' => $course->id,
         ]);
         $enrollment->enrolled_at = $enrollment->enrolled_at ?: now();
+        // Scadenza automatica a N giorni (default 30) dal riscatto
+        $defaultDays = (int) (Setting::get('enrollment.default_duration_days', 30));
+        $enrollment->expires_at = now()->addDays(max(1, $defaultDays));
         $enrollment->is_active = true;
         $enrollment->save();
 

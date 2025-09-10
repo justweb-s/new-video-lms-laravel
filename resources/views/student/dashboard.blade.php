@@ -133,9 +133,13 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                                    <div class="flex justify-between items-center text-sm text-gray-500 mb-1">
                                         <span>{{ $courseData['completed_lessons'] }}/{{ $courseData['total_lessons'] }} lezioni</span>
                                         <span>Iscritto {{ $enrollment->enrolled_at->format('d/m/Y') }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs text-gray-500 mb-4">
+                                        <span></span>
+                                        <span>Scadenza: {{ $enrollment->expires_at ? $enrollment->expires_at->format('d/m/Y') : 'Nessuna scadenza' }}</span>
                                     </div>
                                     
                                     @if($isActive && !$isExpired)

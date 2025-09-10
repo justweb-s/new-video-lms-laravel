@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class StudentController extends Controller
 {
@@ -174,6 +175,33 @@ class StudentController extends Controller
 
         $status = $enrollment->is_active ? 'attivata' : 'disattivata';
         return back()->with('success', "Iscrizione {$status} con successo!");
+    }
+
+    /**
+     * Update enrollment expiration date.
+     */
+    public function updateEnrollmentExpiration(Request $request, User $student, Enrollment $enrollment)
+    {
+        // Assicura che l'enrollment appartenga allo studente
+        if ($enrollment->user_id !== $student->id) {
+            abort(404);
+        }
+
+        $data = $request->validate([
+            'expires_at' => ['nullable', 'date'],
+        ]);
+
+        // Consenti rimozione scadenza inviando valore vuoto
+        if (!array_key_exists('expires_at', $data)) {
+            // Nessun campo inviato: non cambiare
+        }
+
+        $enrollment->expires_at = !empty($data['expires_at'] ?? null)
+            ? Carbon::parse($data['expires_at'])->endOfDay()
+            : null;
+        $enrollment->save();
+
+        return back()->with('success', 'Scadenza iscrizione aggiornata con successo.');
     }
 
     /**

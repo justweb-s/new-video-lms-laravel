@@ -125,6 +125,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/students/{student}/enrollments', [AdminStudentController::class, 'enrollments'])->name('students.enrollments');
         Route::post('/students/{student}/enrollments', [AdminStudentController::class, 'storeEnrollment'])->name('students.enrollments.store');
         Route::patch('/students/{student}/enrollments/{enrollment}/toggle', [AdminStudentController::class, 'toggleEnrollment'])->name('students.enrollments.toggle');
+        Route::patch('/students/{student}/enrollments/{enrollment}/expires', [AdminStudentController::class, 'updateEnrollmentExpiration'])->name('students.enrollments.expires');
         Route::delete('/students/{student}/enrollments/{enrollment}', [AdminStudentController::class, 'destroyEnrollment'])->name('students.enrollments.destroy');
         
         // Progress Management

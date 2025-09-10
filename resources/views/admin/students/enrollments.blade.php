@@ -83,7 +83,19 @@
                                                 {{ $enrollment->enrolled_at->format('d/m/Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {{ $enrollment->expires_at ? $enrollment->expires_at->format('d/m/Y') : 'Nessuna scadenza' }}
+                                                <div class="space-y-2">
+                                                    <div>
+                                                        <span class="text-gray-600">Attuale:</span>
+                                                        <span class="font-medium">{{ $enrollment->expires_at ? $enrollment->expires_at->format('d/m/Y') : 'Nessuna scadenza' }}</span>
+                                                    </div>
+                                                    <form id="form-exp-{{ $enrollment->id }}" method="POST" action="{{ route('admin.students.enrollments.expires', [$student, $enrollment]) }}" class="flex items-center space-x-2">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="date" name="expires_at" value="{{ $enrollment->expires_at ? $enrollment->expires_at->format('Y-m-d') : '' }}" class="border-gray-300 rounded-md shadow-sm focus:border-primary focus:ring-accent">
+                                                        <button type="submit" class="inline-flex items-center px-2.5 py-1.5 rounded-md bg-primary text-white text-xs font-semibold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-1">Aggiorna</button>
+                                                        <button type="button" class="inline-flex items-center px-2.5 py-1.5 rounded-md bg-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-300" onclick="(function(){ var f=document.getElementById('form-exp-{{ $enrollment->id }}'); f.querySelector('input[name=\'expires_at\']').value=''; f.submit(); })();">Rimuovi</button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">

@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Payment;
 use App\Models\GiftCard;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -112,10 +113,9 @@ class CourseController extends Controller
                 'course_id' => $course->id,
             ]);
 
-            $expiresAt = null;
-            if (!empty($course->duration_weeks)) {
-                $expiresAt = now()->addWeeks($course->duration_weeks);
-            }
+            // Scadenza automatica a N giorni (default 30) dalla redemption
+            $defaultDays = (int) (Setting::get('enrollment.default_duration_days', 30));
+            $expiresAt = now()->addDays(max(1, $defaultDays));
 
             $enrollment->enrolled_at = $enrollment->enrolled_at ?: now();
             $enrollment->expires_at = $expiresAt;
@@ -303,10 +303,9 @@ class CourseController extends Controller
             'course_id' => $course->id,
         ]);
 
-        $expiresAt = null;
-        if (!empty($course->duration_weeks)) {
-            $expiresAt = now()->addWeeks($course->duration_weeks);
-        }
+        // Scadenza automatica a N giorni (default 30) dall'acquisto
+        $defaultDays = (int) (Setting::get('enrollment.default_duration_days', 30));
+        $expiresAt = now()->addDays(max(1, $defaultDays));
 
         $enrollment->enrolled_at = now();
         $enrollment->expires_at = $expiresAt;
