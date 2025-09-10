@@ -18,15 +18,15 @@ use App\Http\Controllers\Student\ProgressController as StudentProgressController
 use App\Http\Controllers\Catalog\GiftCardController as CatalogGiftCardController;
 use App\Http\Controllers\Catalog\CartController as CatalogCartController;
 use App\Http\Controllers\Admin\GiftCardController as AdminGiftCardController;
+use App\Http\Controllers\StaticPageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// Home: show catalog to guests, dashboard to authenticated users
-Route::get('/', function () {
-    return Auth::check()
-        ? redirect()->route('dashboard')
-        : redirect()->route('catalog.index');
-});
+// Static Pages Routes
+Route::get('/', [StaticPageController::class, 'home'])->name('static.home');
+Route::get('/chi-sono', [StaticPageController::class, 'about'])->name('static.about');
+Route::get('/contatti', [StaticPageController::class, 'contact'])->name('static.contact');
+Route::get('/workout-online', [StaticPageController::class, 'workoutOnline'])->name('static.workout-online');
 
 // Public Catalog Routes
 Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');

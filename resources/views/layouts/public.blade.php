@@ -8,12 +8,16 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>[x-cloak]{display:none!important}</style>
+        @stack('styles')
         <style id="cookie-consent-styles">
             .cookie-consent {
                 position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 5000;
@@ -54,11 +58,15 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex items-center space-x-6">
-                            <a href="{{ route('catalog.index') }}" class="flex items-center">
+                            <a href="{{ route('static.home') }}" class="flex items-center">
                                 <x-brand-logo class="block h-8 w-auto" />
                             </a>
+                            <a href="{{ route('static.home') }}" class="text-sm font-medium text-primary hover:text-primary/80">Home</a>
+                            <a href="{{ route('static.about') }}" class="text-sm font-medium text-primary hover:text-primary/80">Chi Sono</a>
+                            <a href="{{ route('static.workout-online') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout Online</a>
                             <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
                             <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
+                            <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
                         </div>
                         <div class="flex items-center space-x-4">
                             @php $cartCount = is_array(session('cart.items')) ? count(session('cart.items')) : 0; @endphp
@@ -110,6 +118,75 @@
                 @endif
                 @yield('content')
             </main>
+            
+            <!-- Footer -->
+            <footer class="bg-gradient-to-r from-yellow-400 to-yellow-300" style="background: linear-gradient(135deg, #f6e849 0%, #f4e030 100%);">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <!-- Logo e Descrizione -->
+                        <div class="md:col-span-1">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-green-800 text-yellow-400 rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                                    <span class="font-bold text-lg">E</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-green-800 text-lg" style="font-family: 'Montserrat', sans-serif;">EMY</h3>
+                                    <h4 class="font-bold text-green-800 text-sm" style="font-family: 'Montserrat', sans-serif;">WORKOUT</h4>
+                                    <p class="text-green-700 text-xs" style="font-family: 'Source Sans Pro', sans-serif;">Allenamento Adattato</p>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <h4 class="font-bold text-green-800 text-sm mb-3" style="font-family: 'Montserrat', sans-serif; text-transform: uppercase;">SEGUIMI SUI SOCIAL</h4>
+                                <a href="#" class="text-green-800 hover:text-green-600 transition-colors">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.749-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001.017 0z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Aggiungi Widget -->
+                        <div class="md:col-span-1">
+                            <p class="text-green-700 text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Aggiungi Widget</p>
+                        </div>
+                        
+                        <!-- Programmi -->
+                        <div class="md:col-span-1">
+                            <h4 class="font-bold text-green-800 text-lg mb-4" style="font-family: 'Montserrat', sans-serif; text-transform: uppercase;">PROGRAMMI</h4>
+                            <ul class="space-y-2">
+                                <li><a href="{{ route('static.contact') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Workout in Studio</a></li>
+                                <li><a href="{{ route('static.workout-online') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Workout Online</a></li>
+                                <li><a href="{{ route('static.workout-online') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Burn Fit</a></li>
+                                <li><a href="{{ route('static.workout-online') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Booty Boost</a></li>
+                                <li><a href="{{ route('static.workout-online') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Sculpt Fit</a></li>
+                                <li><a href="{{ route('static.contact') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Workout Personalizzato Online</a></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Informazioni -->
+                        <div class="md:col-span-1">
+                            <h4 class="font-bold text-green-800 text-lg mb-4" style="font-family: 'Montserrat', sans-serif; text-transform: uppercase;">INFORMAZIONI</h4>
+                            <ul class="space-y-2">
+                                <li><a href="{{ route('privacy-policy') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Privacy Policy</a></li>
+                                <li><a href="{{ route('privacy-policy') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Termini e Condizioni</a></li>
+                                <li><a href="{{ route('static.contact') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Contatti</a></li>
+                                <li><a href="{{ route('cookie-policy') }}" class="text-green-700 hover:text-green-600 transition-colors text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Cookie Policy (UE)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Copyright Bar -->
+                <div class="bg-green-800 py-4">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center">
+                            <p class="text-yellow-400 text-sm" style="font-family: 'Source Sans Pro', sans-serif;">
+                                Copyright © 2025 Emy Workout | Powered by JustWebsite
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
 
         @guest
