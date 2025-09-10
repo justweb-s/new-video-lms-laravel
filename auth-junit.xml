@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Tests\Feature\Auth\AuthenticationTest" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.993452">
+    <testcase name="test_login_screen_can_be_rendered" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="13" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="1" time="0.631020"/>
+    <testcase name="test_users_can_authenticate_using_the_login_screen" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="20" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="3" time="0.101781"/>
+    <testcase name="test_users_can_not_authenticate_with_invalid_password" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="33" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="1" time="0.232591"/>
+    <testcase name="test_users_can_logout" file="C:\Repository\new-video-lms-laravel\tests\Feature\Auth\AuthenticationTest.php" line="45" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" assertions="3" time="0.028060"/>
+  </testsuite>
+</testsuites>
