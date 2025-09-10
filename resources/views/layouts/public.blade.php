@@ -61,13 +61,15 @@
                             <a href="{{ route('static.home') }}" class="flex items-center">
                                 <x-brand-logo class="block h-8 w-auto" />
                             </a>
-                            <a href="{{ route('static.home') }}" class="text-sm font-medium text-primary hover:text-primary/80">Home</a>
-                            <a href="{{ route('static.about') }}" class="text-sm font-medium text-primary hover:text-primary/80">Chi Sono</a>
-                            <a href="{{ route('static.workout-online') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout Online</a>
-                            <a href="{{ route('static.workout-in-studio') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout in Studio</a>
-                            <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
-                            <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
-                            <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
+                            <div class="hidden sm:flex items-center space-x-6">
+                                <a href="{{ route('static.home') }}" class="text-sm font-medium text-primary hover:text-primary/80">Home</a>
+                                <a href="{{ route('static.about') }}" class="text-sm font-medium text-primary hover:text-primary/80">Chi Sono</a>
+                                <a href="{{ route('static.workout-online') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout Online</a>
+                                <a href="{{ route('static.workout-in-studio') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout in Studio</a>
+                                <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
+                                <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
+                                <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
+                            </div>
                         </div>
                         <div class="flex items-center space-x-4">
                             @php $cartCount = is_array(session('cart.items')) ? count(session('cart.items')) : 0; @endphp
@@ -88,7 +90,42 @@
                                 <a href="{{ route('login') }}" class="text-sm text-primary hover:text-primary/80">Accedi</a>
                                 <a href="{{ route('register') }}" class="inline-flex items-center px-3 py-1.5 rounded-md bg-primary text-white text-sm hover:bg-primary/90">Registrati</a>
                             @endif
+                            <!-- Mobile menu button -->
+                            <button id="mobile-menu-button-public" type="button" class="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-primary/80 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/30" aria-controls="mobile-menu-public" aria-expanded="false">
+                                <span class="sr-only">Apri menu</span>
+                                <!-- Menu open icon -->
+                                <svg id="icon-menu-public" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <!-- Menu close icon -->
+                                <svg id="icon-close-public" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
+                    </div>
+                </div>
+                <!-- Mobile Menu Panel -->
+                <div id="mobile-menu-public" class="sm:hidden hidden border-t border-primary/10">
+                    <div class="pt-2 pb-3 space-y-1">
+                        <a href="{{ route('static.home') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.home') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Home</a>
+                        <a href="{{ route('static.about') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.about') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Chi Sono</a>
+                        <a href="{{ route('static.workout-online') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-online') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout Online</a>
+                        <a href="{{ route('static.workout-in-studio') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-in-studio') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout in Studio</a>
+                        <a href="{{ route('catalog.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('catalog.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Catalogo</a>
+                        <a href="{{ route('giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('giftcards.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Gift Card</a>
+                        <a href="{{ route('static.contact') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.contact') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Contatti</a>
+                        @if(Auth::check())
+                            <a href="{{ route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Dashboard</a>
+                            <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('profile.edit') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Profilo</a>
+                            <form method="POST" action="{{ route('logout') }}" class="pl-3 pr-4 py-2">
+                                @csrf
+                                <button type="submit" class="text-left w-full text-base font-medium text-gray-600 hover:text-gray-800">Esci</button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('login') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Accedi</a>
+                            <a href="{{ route('register') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-white bg-primary/90 rounded-md mx-3 text-center">Registrati</a>
+                        @endif
                     </div>
                 </div>
             </nav>
@@ -199,6 +236,31 @@
         @endif
 
         @include('partials.cart-drawer')
+
+        <script>
+            (function() {
+                const btn = document.getElementById('mobile-menu-button-public');
+                const menu = document.getElementById('mobile-menu-public');
+                const iconMenu = document.getElementById('icon-menu-public');
+                const iconClose = document.getElementById('icon-close-public');
+                if (!btn || !menu || !iconMenu || !iconClose) { return; }
+                btn.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    menu.classList.toggle('hidden');
+                    iconMenu.classList.toggle('hidden');
+                    iconClose.classList.toggle('hidden');
+                });
+                document.addEventListener('click', function(event) {
+                    if (!menu.contains(event.target) && !btn.contains(event.target)) {
+                        if (!menu.classList.contains('hidden')) {
+                            menu.classList.add('hidden');
+                            iconMenu.classList.remove('hidden');
+                            iconClose.classList.add('hidden');
+                        }
+                    }
+                });
+            })();
+        </script>
 
         @stack('scripts')
     </body>
