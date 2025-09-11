@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\WorkoutCard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Spatie\Permission\Models\Permission;
 
 class WorkoutCardBuilderTest extends TestCase
 {
@@ -27,6 +28,10 @@ class WorkoutCardBuilderTest extends TestCase
         $admin = Admin::factory()->create();
         $course = Course::factory()->create(['is_active' => true]);
 
+        // Ensure permission exists and is granted to admin
+        Permission::firstOrCreate(['name' => 'workout-cards.manage', 'guard_name' => 'admin']);
+        $admin->givePermissionTo('workout-cards.manage');
+
         $this->actingAs($admin, 'admin')
             ->get(route('admin.workout-cards.builder', $course, absolute: false))
             ->assertOk();
@@ -36,6 +41,10 @@ class WorkoutCardBuilderTest extends TestCase
     {
         $admin = Admin::factory()->create();
         $course = Course::factory()->create(['is_active' => true]);
+
+        // Ensure permission exists and is granted to admin
+        Permission::firstOrCreate(['name' => 'workout-cards.manage', 'guard_name' => 'admin']);
+        $admin->givePermissionTo('workout-cards.manage');
 
         $payload = [
             'course_id' => $course->id,
@@ -82,6 +91,10 @@ class WorkoutCardBuilderTest extends TestCase
             'course_id' => $course->id,
             'title' => 'Vecchia Scheda',
         ]);
+
+        // Ensure permission exists and is granted to admin
+        Permission::firstOrCreate(['name' => 'workout-cards.manage', 'guard_name' => 'admin']);
+        $admin->givePermissionTo('workout-cards.manage');
 
         $payload = [
             'course_id' => $course->id,

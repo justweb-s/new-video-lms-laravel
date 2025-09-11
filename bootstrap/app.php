@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.auth' => \App\Http\Middleware\AdminAuth::class,
             'student.auth' => \App\Http\Middleware\StudentAuth::class,
+            // Spatie Permission middleware aliases
+            'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+            'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

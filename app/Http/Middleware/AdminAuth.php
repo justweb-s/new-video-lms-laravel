@@ -26,6 +26,9 @@ class AdminAuth
             return redirect()->route('admin.login')->with('error', 'Account disattivato.');
         }
 
+        // Ensure subsequent authorization checks use the 'admin' guard
+        Auth::shouldUse('admin');
+
         return $next($request);
     }
 }

@@ -25,12 +25,14 @@ class CourseController extends Controller
         // Attach computed attributes expected by the view
         foreach ($enrollments as $enrollment) {
             $course = $enrollment->course;
-            $totalLessons = $course->lessons()->count();
+            $allLessons = $course->sections->flatMap->lessons;
+            $totalLessons = $allLessons->count();
             $completedLessons = 0;
 
             if ($totalLessons > 0) {
+                $lessonIds = $allLessons->pluck('id');
                 $completedLessons = LessonProgress::where('user_id', $user->id)
-                    ->whereIn('lesson_id', $course->lessons()->pluck('id'))
+                    ->whereIn('lesson_id', $lessonIds)
                     ->where('completed', true)
                     ->count();
             }
@@ -67,12 +69,16 @@ class CourseController extends Controller
         
         // Calcola il progresso per ogni lezione
         $lessonsWithProgress = [];
+        $allLessons = $course->sections->flatMap->lessons;
+        $lessonIds = $allLessons->pluck('id');
+        $progressMap = LessonProgress::where('user_id', $user->id)
+            ->whereIn('lesson_id', $lessonIds)
+            ->get()
+            ->keyBy('lesson_id');
+
         foreach ($course->sections as $section) {
             foreach ($section->lessons as $lesson) {
-                $progress = LessonProgress::where('user_id', $user->id)
-                    ->where('lesson_id', $lesson->id)
-                    ->first();
-                    
+                $progress = $progressMap->get($lesson->id);
                 $lessonsWithProgress[] = [
                     'lesson' => $lesson,
                     'progress' => $progress,
@@ -83,7 +89,7 @@ class CourseController extends Controller
         }
         
         // Calcola statistiche del corso
-        $totalLessons = $course->lessons()->count();
+        $totalLessons = $allLessons->count();
         $completedLessons = collect($lessonsWithProgress)->where('completed', true)->count();
         $progressPercentage = $totalLessons > 0 ? round(($completedLessons / $totalLessons) * 100, 2) : 0;
         
@@ -132,8 +138,9 @@ class CourseController extends Controller
             ]
         );
         
-        // Carica lezione precedente e successiva
-        $allLessons = $course->lessons()->orderBy('lesson_order')->get();
+        // Carica lezione precedente e successiva evitando query aggiuntive
+        $course->loadMissing(['sections.lessons']);
+        $allLessons = $course->sections->flatMap->lessons->sortBy('lesson_order')->values();
         $currentIndex = $allLessons->search(function($item) use ($lesson) {
             return $item->id === $lesson->id;
         });

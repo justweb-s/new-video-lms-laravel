@@ -162,6 +162,9 @@ class WorkoutCardController extends Controller
 
         $validated['is_active'] = $request->has('is_active');
 
+        // Sanitize manual HTML content to prevent XSS if edited via textarea
+        $validated['content'] = $this->sanitizeHtml($validated['content']);
+
         $workoutCard = WorkoutCard::create($validated);
 
         return redirect()->route('admin.workout-cards.index')
@@ -210,6 +213,9 @@ class WorkoutCardController extends Controller
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+
+        // Sanitize manual HTML content to prevent XSS if edited via textarea
+        $validated['content'] = $this->sanitizeHtml($validated['content']);
 
         $workoutCard->update($validated);
 
@@ -277,6 +283,71 @@ class WorkoutCardController extends Controller
         }
 
         return $html;
+    }
+
+    /**
+     * Sanitize manual HTML content to allow only whitelisted tags/attributes.
+     */
+    private function sanitizeHtml(string $html): string
+    {
+        // Prefer package sanitizer if installed
+        if (class_exists(\Mews\Purifier\Facades\Purifier::class)) {
+            try {
+                return \Mews\Purifier\Facades\Purifier::clean($html, 'workout');
+            } catch (\Throwable $e) {
+                // fall through to DOM-based sanitizer
+            }
+        }
+
+        // Fallback: allow only tags used by the builder output
+        $allowedTags = '<div><img><h1><h2><p><strong><table><thead><tbody><tr><th><td><br><section>';
+        $stripped = strip_tags($html, $allowedTags);
+
+        $doc = new \DOMDocument();
+        @$doc->loadHTML('<?xml encoding="utf-8" ?>' . $stripped);
+
+        // Remove potentially dangerous nodes altogether
+        foreach (['script','style','iframe','object','embed'] as $tag) {
+            while (($nodes = $doc->getElementsByTagName($tag))->length) {
+                $node = $nodes->item(0);
+                $node->parentNode?->removeChild($node);
+            }
+        }
+
+        $allowedAttrs = ['class','src','alt','data-label'];
+        $all = $doc->getElementsByTagName('*');
+        for ($i = $all->length - 1; $i >= 0; $i--) {
+            $el = $all->item($i);
+            if ($el->hasAttributes()) {
+                $toRemove = [];
+                foreach (iterator_to_array($el->attributes) as $attr) {
+                    $name = $attr->nodeName;
+                    if (str_starts_with($name, 'on') || !in_array($name, $allowedAttrs, true)) {
+                        $toRemove[] = $name;
+                    }
+                }
+                foreach ($toRemove as $name) {
+                    $el->removeAttribute($name);
+                }
+            }
+            if ($el->tagName === 'img') {
+                $src = $el->getAttribute('src');
+                if (!preg_match('#^https?://#i', $src)) {
+                    $el->removeAttribute('src');
+                }
+            }
+        }
+
+        // Extract inner HTML from body
+        $body = $doc->getElementsByTagName('body')->item(0);
+        $result = '';
+        if ($body) {
+            foreach ($body->childNodes as $child) {
+                $result .= $doc->saveHTML($child);
+            }
+        }
+
+        return $result;
     }
 
     /**

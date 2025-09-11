@@ -71,7 +71,7 @@ Route::prefix('cart')->name('cart.')->group(function () {
 });
 
 // Student Routes (using default auth)
-Route::middleware(['auth', 'student.auth'])->group(function () {
+Route::middleware(['auth', 'verified', 'student.auth'])->group(function () {
     Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
     
     // Course routes for students
@@ -137,10 +137,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/progress/student/{student}/course/{course}/reset', [AdminProgressController::class, 'resetCourseProgress'])->name('progress.reset');
         Route::get('/progress/export', [AdminProgressController::class, 'export'])->name('progress.export');
         
-        // Workout Cards Management
-        Route::resource('workout-cards', AdminWorkoutCardController::class);
-        Route::get('/workout-cards/builder/{course?}', [AdminWorkoutCardController::class, 'builder'])->name('workout-cards.builder');
-        Route::post('/workout-cards/builder', [AdminWorkoutCardController::class, 'storeFromBuilder'])->name('workout-cards.store-builder');
+        // Workout Cards Management (restricted by permission via Gate)
+        Route::middleware('can:workout-cards.manage')->group(function () {
+            Route::resource('workout-cards', AdminWorkoutCardController::class);
+            Route::get('/workout-cards/builder/{course?}', [AdminWorkoutCardController::class, 'builder'])->name('workout-cards.builder');
+            Route::post('/workout-cards/builder', [AdminWorkoutCardController::class, 'storeFromBuilder'])->name('workout-cards.store-builder');
+        });
 
         // Settings - Contatti (mappa e destinatario)
         Route::get('/settings/contact', [AdminSettingController::class, 'editContact'])->name('settings.contact.edit');

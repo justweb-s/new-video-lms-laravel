@@ -25,7 +25,10 @@
 
             <div>
                 <h3 class="text-sm font-medium text-gray-500">Contenuto</h3>
-                <div class="mt-1 prose max-w-none">{!! nl2br(e($workoutCard->content)) !!}</div>
+                <div class="mt-1">
+                    <link rel="stylesheet" href="{{ asset('css/workout-card.css') }}">
+                    <div class="workout-card-content">{!! $workoutCard->content !!}</div>
+                </div>
             </div>
 
             @if($workoutCard->warmup)
