@@ -1036,30 +1036,22 @@
     <div class="container-responsive">
         <h2 class="slider-title">I MIEI ALLENAMENTI</h2>
         <div class="image-slider" x-data="imageSlider()">
-            <div class="slider-track" :style="`transform: translateX(-${currentSlide * (slideWidth + 16)}px)`">
+            <div class="slider-track" x-ref="sliderTrack" :style="{ 'transform': `translateX(-${currentSlide * (slideWidth + 16)}px)`, 'transition': isTransitioning ? 'transform 0.5s ease' : 'none' }">
                 <div class="slider-slide">
                     <img src="/images/allenamento-1.jpg" alt="Allenamento 1" loading="lazy">
                 </div>
                 <div class="slider-slide">
-                    <img src="/images/allenamento6.jpg" alt="Allenamento 6" loading="lazy">
+                    <img src="/images/allenamento-2.jpg" alt="Allenamento 2" loading="lazy">
                 </div>
                 <div class="slider-slide">
                     <img src="/images/allenamento-3.jpg" alt="Allenamento 3" loading="lazy">
                 </div>
                 <div class="slider-slide">
-                    <img src="/images/allenamento5-1.jpg" alt="Allenamento 5" loading="lazy">
-                </div>
-                <div class="slider-slide">
                     <img src="/images/allenamento-4.jpg" alt="Allenamento 4" loading="lazy">
                 </div>
-            </div>
-            <div class="slider-nav">
-                <button class="slider-btn" @click="prevSlide()" :disabled="currentSlide === 0">
-                    ‹
-                </button>
-                <button class="slider-btn" @click="nextSlide()" :disabled="currentSlide >= maxSlide">
-                    ›
-                </button>
+                <div class="slider-slide">
+                    <img src="/images/allenamento-5.jpg" alt="Allenamento 5" loading="lazy">
+                </div>
             </div>
         </div>
     </div>
@@ -1126,18 +1118,46 @@
 <script>
     function imageSlider() {
         return {
-            currentSlide: 0,
+            currentSlide: 1,
             slideWidth: 300,
-            totalSlides: 5,
-            
+            totalSlides: 0,
+            isTransitioning: true,
+
             init() {
-                // Adjust slide width based on screen size
-                this.updateSlideWidth();
-                window.addEventListener('resize', () => {
+                this.$nextTick(() => {
+                    const track = this.$refs.sliderTrack;
+                    const slides = Array.from(track.children);
+                    this.totalSlides = slides.length;
+
+                    if (this.totalSlides > 0) {
+                        // Clone the first slide and add it to the end
+                        const firstSlideClone = slides[0].cloneNode(true);
+                        track.appendChild(firstSlideClone);
+
+                        // Clone the last slide and add it to the beginning
+                        const lastSlideClone = slides[this.totalSlides - 1].cloneNode(true);
+                        track.insertBefore(lastSlideClone, slides[0]);
+                    }
+
                     this.updateSlideWidth();
+                    window.addEventListener('resize', () => this.updateSlideWidth());
+
+                    setInterval(() => {
+                        this.nextSlide();
+                    }, 3000);
+
+                    track.addEventListener('transitionend', () => {
+                        if (this.currentSlide >= this.totalSlides + 1) {
+                            this.isTransitioning = false;
+                            this.currentSlide = 1;
+                        } else if (this.currentSlide <= 0) {
+                            this.isTransitioning = false;
+                            this.currentSlide = this.totalSlides;
+                        }
+                    });
                 });
             },
-            
+
             updateSlideWidth() {
                 if (window.innerWidth <= 480) {
                     this.slideWidth = 200;
@@ -1147,24 +1167,10 @@
                     this.slideWidth = 300;
                 }
             },
-            
-            get maxSlide() {
-                const containerWidth = window.innerWidth <= 480 ? 200 : 
-                                     window.innerWidth <= 768 ? 500 : 900;
-                const visibleSlides = Math.floor(containerWidth / (this.slideWidth + 16));
-                return Math.max(0, this.totalSlides - visibleSlides);
-            },
-            
+
             nextSlide() {
-                if (this.currentSlide < this.maxSlide) {
-                    this.currentSlide++;
-                }
-            },
-            
-            prevSlide() {
-                if (this.currentSlide > 0) {
-                    this.currentSlide--;
-                }
+                this.currentSlide++;
+                this.isTransitioning = true;
             }
         }
     }
