@@ -40,8 +40,8 @@ class BlogPostController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cover_image_upload')) {
-            $path = $request->file('cover_image_upload')->store('public/blog-covers');
-            $data['cover_image'] = Storage::url($path);
+            $path = $request->file('cover_image_upload')->store('blog-covers', 'public');
+            $data['cover_image'] = Storage::disk('public')->url($path);
         }
 
         $data['admin_id'] = auth('admin')->id();
@@ -63,8 +63,8 @@ class BlogPostController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cover_image_upload')) {
-            $path = $request->file('cover_image_upload')->store('public/blog-covers');
-            $data['cover_image'] = Storage::url($path);
+            $path = $request->file('cover_image_upload')->store('blog-covers', 'public');
+            $data['cover_image'] = Storage::disk('public')->url($path);
         }
 
         $data['pinned'] = $request->boolean('pinned');

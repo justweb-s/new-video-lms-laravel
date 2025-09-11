@@ -99,6 +99,26 @@ class BlogPost extends Model
         return $slug;
     }
 
+    // Accessors
+    public function getCoverImageAttribute($value)
+    {
+        if (empty($value)) {
+            return $value;
+        }
+        $path = $value;
+        // Normalizza percorsi errati
+        $path = str_replace('/storage/public/', '/storage/', $path);
+        $path = str_replace('storage/public/', 'storage/', $path);
+        if (Str::startsWith($path, 'public/')) {
+            $path = '/storage/' . substr($path, 7);
+        }
+        // Se non è assoluto o già con /storage, forza /storage/
+        if (!Str::startsWith($path, ['http://', 'https://', '/'])) {
+            $path = '/storage/' . ltrim($path, '/');
+        }
+        return $path;
+    }
+
     // Scopes
     public function scopePublished($query)
     {
