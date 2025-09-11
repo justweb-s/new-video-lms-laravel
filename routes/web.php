@@ -20,9 +20,11 @@ use App\Http\Controllers\Catalog\CartController as CatalogCartController;
 use App\Http\Controllers\Admin\GiftCardController as AdminGiftCardController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SeoSettingController as AdminSeoSettingController;
+use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,6 +50,9 @@ Route::get('/workout-in-studio', [StaticPageController::class, 'workoutInStudio'
 // Blog (public)
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+// Newsletter Subscription
+Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
 
 // Public Catalog Routes
 Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
@@ -184,6 +189,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Gift Cards Management
         Route::resource('giftcards', AdminGiftCardController::class)->only(['index', 'show']);
         Route::post('/giftcards/{giftcard}/resend', [AdminGiftCardController::class, 'resend'])->name('giftcards.resend');
+
+        // Newsletter Management
+        Route::get('/newsletters', [AdminNewsletterController::class, 'index'])->name('newsletters.index');
     });
 });
 

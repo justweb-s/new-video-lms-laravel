@@ -5,7 +5,7 @@
     .hero-section {
         background-image: url('/images/hero.jpg');
         background-size: cover;
-        background-position: center;
+        background-position: center top;
         background-repeat: no-repeat;
         background-attachment: fixed;
         position: relative;
@@ -20,7 +20,7 @@
         .hero-section {
             background-attachment: scroll;
             min-height: 80vh;
-            background-position: center center;
+            background-position: center top;
         }
     }
     
@@ -345,16 +345,23 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0;
-        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         margin: 4rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /* Desktop border-radius */
+    @media (min-width: 769px) {
+        .workout-options {
+            border-radius: 80px 10px 80px 10px;
+        }
     }
     
     @media (max-width: 768px) {
         .workout-options {
             grid-template-columns: 1fr;
             margin: 2rem 0;
+            border-radius: 20px;
         }
     }
     
@@ -368,9 +375,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        color: white;
+        align-items: flex-start;
     }
-    
+
     .workout-option::before {
         content: '';
         position: absolute;
@@ -378,33 +385,82 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.4);
         z-index: 1;
     }
     
     .workout-option-content {
         position: relative;
         z-index: 2;
+        text-align: left;
     }
-    
+
+    /* --- Blocco Sinistra: Workout Online --- */
     .workout-online {
         background-image: url('/images/workout-online2.jpg');
     }
-    
+
+    .workout-online::before {
+        background-color: rgba(54, 88, 61, 0.6); /* Overlay verde */
+    }
+
+    .workout-online h3,
+    .workout-online p {
+        color: #f6e849; /* Testo giallo */
+    }
+
+    .workout-online .workout-btn {
+        background-color: #f6e849;
+        color: #36583d;
+    }
+
+    /* --- Blocco Destra: Workout in Studio --- */
     .workout-studio {
         background-image: url('/images/banner2.jpg');
     }
+
+    .workout-studio::before {
+        background-color: rgba(246, 232, 73, 0.6); /* Overlay giallo semitrasparente */
+    }
+
+    .workout-studio h3,
+    .workout-studio p {
+        color: #36583d; /* Testo verde */
+    }
     
-    .workout-option h3 {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 800;
-        font-size: 2.5rem;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
-        line-height: 1.1;
+    .workout-studio .workout-btn {
+        background-color: #36583d;
         color: #f6e849;
     }
     
+    /* --- Stili Comuni --- */
+    .workout-option h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 3.5rem;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        line-height: 1.1;
+    }
+
+    .workout-option p {
+        font-family: 'Source Sans Pro', sans-serif;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+        font-size: 1.1rem;
+    }
+
+    .workout-option .workout-btn {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        cursor: pointer;
+    }
+
     @media (max-width: 768px) {
         .workout-option h3 {
             font-size: 2rem;
@@ -415,35 +471,7 @@
         .workout-option h3 {
             font-size: 1.5rem;
         }
-    }
-    
-    .workout-option p {
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-        opacity: 0.9;
-    }
-    
-    .workout-option-btn {
-        background-color: #f6e849;
-        color: #36583d;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
-        padding: 1rem 2rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 0.9rem;
-        letter-spacing: 0.5px;
-        align-self: flex-start;
-    }
-    
-    .workout-option-btn:hover {
-        background-color: #f4e030;
+    }    background-color: #f4e030;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
@@ -1071,14 +1099,24 @@
 </div>
 
 <!-- Newsletter Section -->
-<div class="newsletter-section">
+<div class="newsletter-section" id="newsletter-section">
     <div class="container-responsive">
         <h2 class="newsletter-title">RESTIAMO IN CONTATTO</h2>
-        <form class="newsletter-form" action="#" method="POST">
+        
+        @if (session('success'))
+            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; text-align: center;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form class="newsletter-form" action="{{ route('newsletter.store') }}" method="POST">
             @csrf
-            <input type="email" class="newsletter-input" placeholder="Il Tuo indirizzo Email" required>
+            <input type="email" name="email" class="newsletter-input" placeholder="Il Tuo indirizzo Email" required value="{{ old('email') }}">
             <button type="submit" class="newsletter-btn">ISCRIVITI</button>
         </form>
+        @error('email')
+            <p class="text-danger" style="color: #dc3545; text-align: center; margin-top: 0.5rem;">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 

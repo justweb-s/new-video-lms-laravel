@@ -7,6 +7,9 @@
 
         @include('partials.seo')
 
+        <link rel="icon" href="{{ asset('images/favicon-studio.png') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ asset('images/favicon-studio.png') }}" type="image/png">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,16 +169,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <!-- Logo e Descrizione -->
                         <div class="md:col-span-1">
-                            <div class="flex items-center mb-4">
-                                <div class="bg-green-800 text-yellow-400 rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                                    <span class="font-bold text-lg">E</span>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-green-800 text-lg" style="font-family: 'Montserrat', sans-serif;">EMY</h3>
-                                    <h4 class="font-bold text-green-800 text-sm" style="font-family: 'Montserrat', sans-serif;">WORKOUT</h4>
-                                    <p class="text-green-700 text-xs" style="font-family: 'Source Sans Pro', sans-serif;">Allenamento Adattato</p>
-                                </div>
-                            </div>
+                            <a href="{{ route('static.home') }}" class="flex items-center mb-4">
+                                <x-brand-logo class="block h-10 w-auto" />
+                            </a>
                             <div class="mt-6">
                                 <h4 class="font-bold text-green-800 text-sm mb-3" style="font-family: 'Montserrat', sans-serif; text-transform: uppercase;">SEGUIMI SUI SOCIAL</h4>
                                 <a href="#" class="text-green-800 hover:text-green-600 transition-colors">
@@ -184,11 +180,6 @@
                                     </svg>
                                 </a>
                             </div>
-                        </div>
-                        
-                        <!-- Aggiungi Widget -->
-                        <div class="md:col-span-1">
-                            <p class="text-green-700 text-sm" style="font-family: 'Source Sans Pro', sans-serif;">Aggiungi Widget</p>
                         </div>
                         
                         <!-- Programmi -->
