@@ -1084,7 +1084,7 @@
                 <p class="testimonial-author">Giorgia Lopez</p>
             </div>
         </div>
-        <a href="https://www.google.com/search?sa=X&sca_esv=e6356c902485f8e1&hl=it-IT&tbm=lcl&sxsrf=ADLYWIKQIGJYEntaoojFHiJVTSDIj7k3IA:1722783273793&q=EMY+project+Studio+Recensioni&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2MDYzMDU3NjCxNLQwMLA0MTU03MDI-IpR1tU3UqGgKD8rNblEIbikNCUzXyEoNTk1rzgzPy9zESt-eQAksNY_WgAAAA&rldimm=8360573049180094511&ved=2ahUKEwipxrzoy9uHAxVN_rsIHX_1L_oQ9fQKegQIMRAF&biw=1707&bih=811&dpr=1.13#lkt=LocalPoiReviews" class="testimonials-btn">
+        <a href="https://www.google.com/search?sa=X&sca_esv=e6356c902485f8e1&hl=it-IT&tbm=lcl&sxsrf=ADLYWIKQIGJYEntaoojFHiJVTSDIj7k3IA:1722783273793&q=EMY+project+Studio+Recensioni&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxK2MDYzMDU3NjCxNLQwMLA0MTU03MDI-IpR1tU3UqGgKD8rNblEIbikNCUzXyEoNTk1rzgzPy9zESt-eQAksNY_WgAAAA&rldimm=8360573049180094511&ved=2ahUKEwipxrzoy9uHAxVN_rsIHX_1L_oQ9fQKegQIMRAF&biw=1707&bih=811&dpr=1.13#lkt=LocalPoiReviews" class="testimonials-btn" target="_blank">
             VEDI TUTTE LE RECENSIONI
         </a>
     </div>
