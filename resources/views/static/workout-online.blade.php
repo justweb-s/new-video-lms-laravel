@@ -3,32 +3,54 @@
 @push('styles')
 <style>
     .workout-online-hero {
-        background: linear-gradient(135deg, #f6e849 0%, #f4e030 100%);
-        padding: 80px 0;
-        text-align: center;
+        background-image: url('/images/hero-workout-online.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         overflow: hidden;
     }
-    
-    .workout-online-hero::before {
+
+    /* Mobile optimization for hero */
+    @media (max-width: 768px) {
+        .workout-online-hero {
+            background-attachment: scroll;
+            min-height: 80vh;
+        }
+    }
+
+    .workout-online-hero::after {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(54, 88, 61, 0.1) 0%, transparent 70%);
-        animation: float 6s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
     }
     
+
+    
+    .workout-online-hero .container-responsive {
+        position: relative;
+        z-index: 2;
+    }
+
     .workout-online-hero h1 {
         font-family: 'Montserrat', sans-serif;
         font-size: 3.5rem;
         font-weight: 700;
-        color: #36583d;
+        color: #ffffff;
         margin-bottom: 20px;
         position: relative;
         z-index: 2;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
     }
     
     .workout-online-hero .highlight {
