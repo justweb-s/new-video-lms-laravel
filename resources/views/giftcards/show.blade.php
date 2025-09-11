@@ -4,12 +4,8 @@
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-            @php
-                $image = $course->image_url;
-                $imageSrc = $image ? (Str::startsWith($image, ['http://', 'https://']) ? $image : Storage::url($image)) : null;
-            @endphp
-            @if($imageSrc)
-                <img src="{{ $imageSrc }}" alt="{{ $course->name }}" class="w-full rounded-lg shadow-sm object-cover">
+            @if($course->image_url)
+                <img src="{{ asset('storage/' . $course->image_url) }}" alt="{{ $course->name }}" class="w-full rounded-lg shadow-sm object-cover">
             @else
                 <div class="w-full h-72 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
                     <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

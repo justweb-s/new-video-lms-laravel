@@ -12,7 +12,7 @@
             @forelse($courses as $course)
                 <div class="bg-white shadow-sm rounded-lg overflow-hidden">
                     @if($course->image_url)
-                        <img src="{{ $course->image_url }}" alt="{{ $course->name }}" class="w-full h-40 object-cover">
+                        <img src="{{ asset('storage/' . $course->image_url) }}" alt="{{ $course->name }}" class="w-full h-40 object-cover">
                     @endif
                     <div class="p-5">
                         <h3 class="text-lg font-semibold text-gray-900">{{ $course->name }}</h3>
