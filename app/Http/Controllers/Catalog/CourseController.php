@@ -140,6 +140,7 @@ class CourseController extends Controller
         $session = StripeSession::create([
             'mode' => 'payment',
             'payment_method_types' => ['card'],
+            'billing_address_collection' => 'required',
             'customer_email' => $user->email,
             'line_items' => [[
                 'price_data' => [
@@ -152,7 +153,6 @@ class CourseController extends Controller
                 ],
                 'quantity' => 1,
             ]],
-            'billing_address_collection' => 'required',
             'phone_number_collection' => [
                 'enabled' => true,
             ],
@@ -164,13 +164,27 @@ class CourseController extends Controller
                     'key' => 'codice_fiscale',
                     'label' => [
                         'type' => 'custom',
-                        'custom' => 'Codice Fiscale',
+                        'custom' => 'Codice Fiscale (se non hai P.IVA)',
                     ],
                     'type' => 'text',
                     'text' => [
-                        'maximum_length' => 32,
+                        'maximum_length' => 16,
+                        'minimum_length' => 16,
                     ],
-                    'optional' => false,
+                    'optional' => true,
+                ],
+                [
+                    'key' => 'vat_number',
+                    'label' => [
+                        'type' => 'custom',
+                        'custom' => 'Partita IVA (se azienda)',
+                    ],
+                    'type' => 'text',
+                    'text' => [
+                        'maximum_length' => 20,
+                        'minimum_length' => 8,
+                    ],
+                    'optional' => true,
                 ],
             ],
             'success_url' => $successUrl,
@@ -245,18 +259,27 @@ class CourseController extends Controller
             }
         }
 
-        // Campo personalizzato: Codice Fiscale
+        // Campi personalizzati: Codice Fiscale e P.IVA
         $taxCode = null;
+        $vatNumber = null;
         if (!empty($session->custom_fields) && is_array($session->custom_fields)) {
             foreach ($session->custom_fields as $field) {
                 if (($field->key ?? null) === 'codice_fiscale') {
                     $taxCode = $field->text->value ?? null;
-                    break;
+                }
+                if (($field->key ?? null) === 'vat_number') {
+                    $vatNumber = $field->text->value ?? null;
                 }
             }
         }
         if (!empty($taxCode)) {
             $user->tax_code = $taxCode;
+        }
+        if (!empty($vatNumber)) {
+            // Salva la P.IVA nel campo tax_id dell'utente, se non già presente da tax_id_collection
+            if (empty($user->tax_id)) {
+                $user->tax_id = $vatNumber;
+            }
         }
 
         $user->save();
@@ -278,6 +301,8 @@ class CourseController extends Controller
             $attributes = [
                 'stripe_session_id' => (string) $session->id,
             ];
+            $billingAddress = $session->customer_details->address ?? null;
+
             $values = [
                 'user_id' => $user->id,
                 'course_id' => $course->id,
@@ -289,6 +314,15 @@ class CourseController extends Controller
                 'customer_details' => $customerDetailsArr,
                 'custom_fields' => $customFieldsArr,
                 'metadata' => $metadataArr,
+                // Dati di fatturazione
+                'billing_name' => $session->customer_details->name ?? null,
+                'vat_number' => $vatNumber, // Dal campo custom
+                'billing_address_line1' => $billingAddress ? $billingAddress->line1 : null,
+                'billing_address_line2' => $billingAddress ? $billingAddress->line2 : null,
+                'billing_address_city' => $billingAddress ? $billingAddress->city : null,
+                'billing_address_state' => $billingAddress ? $billingAddress->state : null,
+                'billing_address_postal_code' => $billingAddress ? $billingAddress->postal_code : null,
+                'billing_address_country' => $billingAddress ? $billingAddress->country : null,
             ];
 
             Payment::updateOrCreate($attributes, $values);

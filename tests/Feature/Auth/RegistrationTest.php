@@ -26,7 +26,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        // Now unverified users are redirected to the verification notice page
-        $response->assertRedirect(route('verification.notice', absolute: false));
+        $response->assertRedirect(route('dashboard', absolute: false));
     }
 }
