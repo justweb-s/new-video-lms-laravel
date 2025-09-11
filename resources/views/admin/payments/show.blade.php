@@ -77,7 +77,27 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Dati cliente (Stripe)</h3>
                             @if($payment->customer_details)
-                                <pre class="text-xs bg-gray-50 border rounded p-4 overflow-auto">{{ json_encode($payment->customer_details, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE) }}</pre>
+                                @php $details = $payment->customer_details; @endphp
+                                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                                    <div class="md:col-span-2"><dt class="text-gray-500">Nome/Ragione Sociale</dt><dd class="text-gray-900 font-medium">{{ $details['name'] ?? 'N/D' }}</dd></div>
+                                    <div><dt class="text-gray-500">Email</dt><dd class="text-gray-900">{{ $details['email'] ?? 'N/D' }}</dd></div>
+                                    <div><dt class="text-gray-500">Telefono</dt><dd class="text-gray-900">{{ $details['phone'] ?? 'N/D' }}</dd></div>
+                                    @if(isset($details['address']) && is_array($details['address']))
+                                        <div class="md:col-span-2">
+                                            <dt class="text-gray-500">Indirizzo</dt>
+                                            <dd class="text-gray-900">{{ collect([$details['address']['line1'], $details['address']['line2'], $details['address']['city'], $details['address']['state'], $details['address']['postal_code'], $details['address']['country']])->filter()->implode(', ') ?: 'Non specificato' }}</dd>
+                                        </div>
+                                    @endif
+                                    @if(isset($details['tax_ids']) && !empty($details['tax_ids']))
+                                        @foreach($details['tax_ids'] as $taxId)
+                                            <div>
+                                                <dt class="text-gray-500">{{ $taxId['type'] === 'eu_vat' ? 'P.IVA (EU VAT)' : 'ID Fiscale' }}</dt>
+                                                <dd class="text-gray-900 font-mono">{{ $taxId['value'] }}</dd>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                    <div><dt class="text-gray-500">Esenzione Fiscale</dt><dd class="text-gray-900">{{ $details['tax_exempt'] ?? 'N/D' }}</dd></div>
+                                </dl>
                             @else
                                 <p class="text-sm text-gray-500">Nessun dato cliente disponibile.</p>
                             @endif
@@ -88,7 +108,26 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Campi personalizzati (Stripe Checkout)</h3>
                             @if($payment->custom_fields)
-                                <pre class="text-xs bg-gray-50 border rounded p-4 overflow-auto">{{ json_encode($payment->custom_fields, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE) }}</pre>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full text-sm">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-2 text-left font-medium text-gray-600">Etichetta</th>
+                                                <th class="px-4 py-2 text-left font-medium text-gray-600">Valore</th>
+                                                <th class="px-4 py-2 text-left font-medium text-gray-600">Chiave</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($payment->custom_fields as $field)
+                                                <tr>
+                                                    <td class="px-4 py-2">{{ $field['label']['custom'] ?? 'N/D' }}</td>
+                                                    <td class="px-4 py-2 font-mono">{{ $field['text']['value'] ?? 'N/D' }}</td>
+                                                    <td class="px-4 py-2 font-mono text-gray-500">{{ $field['key'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             @else
                                 <p class="text-sm text-gray-500">Nessun campo personalizzato rilevato.</p>
                             @endif
@@ -99,7 +138,14 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Metadata</h3>
                             @if($payment->metadata)
-                                <pre class="text-xs bg-gray-50 border rounded p-4 overflow-auto">{{ json_encode($payment->metadata, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE) }}</pre>
+                                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                                    @foreach($payment->metadata as $key => $value)
+                                        <div>
+                                            <dt class="text-gray-500 capitalize">{{ str_replace('_', ' ', $key) }}</dt>
+                                            <dd class="text-gray-900 font-mono">{{ $value }}</dd>
+                                        </div>
+                                    @endforeach
+                                </dl>
                             @else
                                 <p class="text-sm text-gray-500">Nessun metadata.</p>
                             @endif

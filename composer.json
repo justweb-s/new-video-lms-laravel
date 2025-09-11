@@ -15,6 +15,7 @@
         "mews/purifier": "^3.4",
         "spatie/laravel-cookie-consent": "^3.3",
         "spatie/laravel-permission": "^6.21",
+        "spatie/laravel-sitemap": "^7.3",
         "stripe/stripe-php": "14"
     },
     "require-dev": {
