@@ -46,6 +46,9 @@
                             <a href="{{ route('admin.giftcards.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.giftcards.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                                 Gift Card
                             </a>
+                            <a href="{{ route('admin.blog-posts.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.blog-posts.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
+                                Blog
+                            </a>
                             <a href="{{ route('admin.payments.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.payments.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                                 Ordini
                             </a>
@@ -114,6 +117,7 @@
                     <a href="{{ route('admin.courses.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Corsi</a>
                     <a href="{{ route('admin.students.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.students.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Studenti</a>
                     <a href="{{ route('admin.giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.giftcards.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Gift Card</a>
+                    <a href="{{ route('admin.blog-posts.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.blog-posts.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Blog</a>
                     <a href="{{ route('admin.payments.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.payments.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Ordini</a>
                     <a href="{{ route('admin.workout-cards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.workout-cards.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Schede di Allenamento</a>
                     <div x-data="{ open: {{ request()->routeIs('admin.settings.*') ? 'true' : 'false' }} }">

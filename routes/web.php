@@ -19,6 +19,8 @@ use App\Http\Controllers\Catalog\GiftCardController as CatalogGiftCardController
 use App\Http\Controllers\Catalog\CartController as CatalogCartController;
 use App\Http\Controllers\Admin\GiftCardController as AdminGiftCardController;
 use App\Http\Controllers\StaticPageController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SeoSettingController as AdminSeoSettingController;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +44,10 @@ Route::get('/contatti', [StaticPageController::class, 'contact'])->name('static.
 Route::post('/contatti', [StaticPageController::class, 'submitContact'])->name('static.contact.submit');
 Route::get('/workout-online', [StaticPageController::class, 'workoutOnline'])->name('static.workout-online');
 Route::get('/workout-in-studio', [StaticPageController::class, 'workoutInStudio'])->name('static.workout-in-studio');
+
+// Blog (public)
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Public Catalog Routes
 Route::get('/catalog', [CatalogCourseController::class, 'index'])->name('catalog.index');
@@ -155,6 +161,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/workout-cards/builder/{course?}', [AdminWorkoutCardController::class, 'builder'])->name('workout-cards.builder');
             Route::post('/workout-cards/builder', [AdminWorkoutCardController::class, 'storeFromBuilder'])->name('workout-cards.store-builder');
         });
+
+        // Blog Posts Management
+        Route::resource('blog-posts', AdminBlogPostController::class);
 
         // Settings - Contatti (mappa e destinatario)
         Route::get('/settings/contact', [AdminSettingController::class, 'editContact'])->name('settings.contact.edit');

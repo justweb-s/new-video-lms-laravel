@@ -67,6 +67,7 @@
                                 <a href="{{ route('static.workout-online') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout Online</a>
                                 <a href="{{ route('static.workout-in-studio') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout in Studio</a>
                                 <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
+                                <a href="{{ route('blog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Blog</a>
                                 <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
                                 <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
                             </div>
@@ -113,6 +114,7 @@
                         <a href="{{ route('static.workout-online') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-online') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout Online</a>
                         <a href="{{ route('static.workout-in-studio') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-in-studio') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout in Studio</a>
                         <a href="{{ route('catalog.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('catalog.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Catalogo</a>
+                        <a href="{{ route('blog.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('blog.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Blog</a>
                         <a href="{{ route('giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('giftcards.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Gift Card</a>
                         <a href="{{ route('static.contact') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.contact') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Contatti</a>
                         @if(Auth::check())
