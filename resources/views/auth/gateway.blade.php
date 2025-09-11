@@ -44,19 +44,19 @@
                 <div class="block mt-4">
                     <label for="remember_me" class="inline-flex items-center">
                         <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary" name="remember">
-                        <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                        <span class="ms-2 text-sm text-gray-600">{{ __('Ricordami') }}</span>
                     </label>
                 </div>
 
                 <div class="flex items-center justify-between mt-6">
                     @if (Route::has('password.request'))
                         <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
+                            {{ __('Hai dimenticato la password?') }}
                         </a>
                     @endif
 
                     <x-primary-button>
-                        {{ __('Log in') }}
+                        {{ __('Accedi') }}
                     </x-primary-button>
                 </div>
             </form>
@@ -67,7 +67,7 @@
 
                 <!-- Name -->
                 <div>
-                    <x-input-label for="name" :value="__('Name')" />
+                    <x-input-label for="name" :value="__('Nome')" />
                     <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
@@ -90,7 +90,7 @@
 
                 <!-- Confirm Password -->
                 <div class="mt-4">
-                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                    <x-input-label for="password_confirmation" :value="__('Conferma Password')" />
 
                     <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
 
@@ -99,11 +99,11 @@
 
                 <div class="flex items-center justify-between mt-6">
                     <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" href="{{ route('login', ['tab' => 'login']) }}">
-                        {{ __('Already registered?') }}
+                        {{ __('Sei già registrato?') }}
                     </a>
 
                     <x-primary-button>
-                        {{ __('Register') }}
+                        {{ __('Registrati') }}
                     </x-primary-button>
                 </div>
             </form>
