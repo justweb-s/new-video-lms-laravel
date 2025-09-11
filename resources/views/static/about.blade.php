@@ -564,14 +564,24 @@
 </div>
 
 <!-- Newsletter Section -->
-<div class="newsletter-section">
+<div class="newsletter-section" id="newsletter-section">
     <div class="newsletter-content">
         <h3 class="newsletter-title">Rimaniamo in contatto</h3>
-        <form class="newsletter-form" method="post" action="#">
+        
+        @if (session('success'))
+            <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; text-align: center;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form class="newsletter-form" action="{{ route('newsletter.store') }}" method="POST">
             @csrf
-            <input type="email" name="email" placeholder="Il Tuo Indirizzo Email" required>
+            <input type="email" name="email" placeholder="Il Tuo Indirizzo Email" required value="{{ old('email') }}">
             <button type="submit">Iscriviti</button>
         </form>
+        @error('email')
+            <p class="text-danger" style="color: #dc3545; text-align: center; margin-top: 0.5rem;">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 @endsection
