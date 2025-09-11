@@ -28,7 +28,9 @@ class UpdateCourseRequest extends FormRequest
             'price' => 'required|numeric|min:0|max:999999.99',
             'duration_weeks' => 'nullable|integer|min:1|max:104',
             'prerequisites' => 'nullable|string|max:1000',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
         ];
     }
 

@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.video-section {
+    /* Altezza per mobile (default) */
+    @apply relative w-full h-64 overflow-hidden flex items-center justify-center;
+    /* Altezza per desktop (da breakpoint 'lg' in su) */
+    @apply lg:h-[720px];
+}
+
+.video-section video {
+    @apply absolute top-0 left-0 w-full h-full object-cover z-0;
+}
+
+.video-overlay {
+    @apply absolute top-0 left-0 w-full h-full bg-green-900 opacity-50 z-10;
+}

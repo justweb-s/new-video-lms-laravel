@@ -995,15 +995,12 @@
 
 <!-- Video Section -->
 <div class="video-section">
-    <div class="container-responsive">
-        <h2 class="video-title">LA MIA PALESTRA</h2>
-        <div class="video-container">
-            <video controls poster="/images/Emy-Workout-2.jpg" preload="metadata">
-                <source src="/videos/1vd.mp4" type="video/mp4">
-                Il tuo browser non supporta il tag video.
-            </video>
-        </div>
-    </div>
+    <div class="video-overlay"></div>
+    <video autoplay loop muted poster="/images/Emy-Workout-2.jpg">
+        <source src="/videos/1vd.mp4" type="video/mp4">
+        Il tuo browser non supporta il tag video.
+    </video>
+
 </div>
 
 <!-- Slider Section -->

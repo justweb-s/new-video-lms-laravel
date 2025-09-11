@@ -1,5 +1,10 @@
 @extends('layouts.public')
 
+@section('title', $course->name)
+@section('meta_description', Str::limit(strip_tags($course->description), 155))
+@section('meta_image', $imageSrc ?? asset('images/favicon-studio.png'))
+
+
 @section('content')
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">

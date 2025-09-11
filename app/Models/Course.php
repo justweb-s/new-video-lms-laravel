@@ -21,6 +21,8 @@ class Course extends Model
         'is_active',
         'duration_weeks',
         'prerequisites',
+        'meta_title',
+        'meta_description',
     ];
 
     protected $casts = [

@@ -52,9 +52,16 @@
                             <a href="{{ route('admin.workout-cards.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.workout-cards.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                                 Schede di Allenamento
                             </a>
-                            <a href="{{ route('admin.settings.contact.edit') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.settings.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
-                                Impostazioni
-                            </a>
+                            <div class="relative flex items-center" x-data="{ open: false }" @click.away="open = false">
+                                <button @click="open = !open" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.settings.*') ? 'border-accent text-white' : 'border-transparent text-white/80 hover:text-white hover:border-accent/80' }} text-sm font-medium leading-5 transition duration-150 ease-in-out text-white">
+                                    <span>Impostazioni</span>
+                                    <svg class="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div x-show="open" x-transition class="origin-top-right absolute right-0 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50" style="top: calc(100% + 0.5rem);">
+                                    <a href="{{ route('admin.settings.contact.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Contatti</a>
+                                    <a href="{{ route('admin.settings.seo.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">SEO</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -109,7 +116,16 @@
                     <a href="{{ route('admin.giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.giftcards.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Gift Card</a>
                     <a href="{{ route('admin.payments.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.payments.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Ordini</a>
                     <a href="{{ route('admin.workout-cards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.workout-cards.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Schede di Allenamento</a>
-                    <a href="{{ route('admin.settings.contact.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin.settings.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent text-white/80 hover:bg-primary/30 hover:border-accent/60 hover:text-white' }}">Impostazioni</a>
+                    <div x-data="{ open: {{ request()->routeIs('admin.settings.*') ? 'true' : 'false' }} }">
+                        <button @click="open = !open" class="w-full text-left flex items-center justify-between pl-3 pr-4 py-2 border-l-4 text-base font-medium text-white/80 hover:text-white {{ request()->routeIs('admin.settings.*') ? 'bg-primary/20 border-accent text-white' : 'border-transparent hover:bg-primary/30 hover:border-accent/60' }}">
+                            <span>Impostazioni</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div x-show="open" class="pl-8 space-y-1 mt-1">
+                            <a href="{{ route('admin.settings.contact.edit') }}" class="block py-1 text-sm text-white/80 hover:text-white">Contatti</a>
+                            <a href="{{ route('admin.settings.seo.edit') }}" class="block py-1 text-sm text-white/80 hover:text-white">SEO</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>

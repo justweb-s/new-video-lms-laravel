@@ -1,5 +1,9 @@
 @extends('layouts.public')
 
+@section('title', 'Catalogo Corsi')
+@section('meta_description', 'Esplora tutti i corsi disponibili sulla nostra piattaforma. Trova il workout online o il programma di allenamento perfetto per te.')
+
+
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="flex items-center justify-between mb-8">

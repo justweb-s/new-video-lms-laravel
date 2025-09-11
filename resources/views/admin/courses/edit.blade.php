@@ -113,6 +113,33 @@
                             </div>
                         </div>
 
+                        <hr class="my-6">
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <h3 class="text-lg font-medium text-gray-900">Impostazioni SEO</h3>
+                            <!-- Meta Title -->
+                            <div>
+                                <label for="meta_title" class="block text-sm font-medium text-gray-700">Meta Titolo</label>
+                                <input type="text" name="meta_title" id="meta_title" value="{{ old('meta_title', $course->meta_title) }}" 
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                                <p class="mt-1 text-sm text-gray-500">Se vuoto, verrà usato il nome del corso. Ottimale: 55-60 caratteri.</p>
+                                @error('meta_title')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Meta Description -->
+                            <div>
+                                <label for="meta_description" class="block text-sm font-medium text-gray-700">Meta Descrizione</label>
+                                <textarea name="meta_description" id="meta_description" rows="3" 
+                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">{{ old('meta_description', $course->meta_description) }}</textarea>
+                                <p class="mt-1 text-sm text-gray-500">Se vuota, verrà usata la descrizione del corso. Ottimale: 150-160 caratteri.</p>
+                                @error('meta_description')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="flex items-center justify-end space-x-4 mt-6">
                             <a href="{{ route('admin.courses.show', $course) }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                                 Annulla

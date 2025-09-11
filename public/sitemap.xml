@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    <url>
+    <loc>http://localhost</loc>
+    <priority>1.0</priority>
+            </url>
+    <url>
+    <loc>http://localhost/chi-sono</loc>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/contatti</loc>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/workout-online</loc>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/workout-in-studio</loc>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/privacy-policy</loc>
+    <priority>0.3</priority>
+            </url>
+    <url>
+    <loc>http://localhost/cookie-policy</loc>
+    <priority>0.3</priority>
+            </url>
+    <url>
+    <loc>http://localhost/catalog</loc>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/catalog/courses/1</loc>
+    <lastmod>2025-09-11T09:54:40+00:00</lastmod>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/gift-cards</loc>
+    <priority>0.6</priority>
+            </url>
+</urlset>

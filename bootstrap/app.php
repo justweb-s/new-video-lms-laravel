@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\GenerateSitemap;
+use App\Providers\ViewServiceProvider;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -10,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withCommands([
+        GenerateSitemap::class,
+    ])
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin.auth' => \App\Http\Middleware\AdminAuth::class,
@@ -19,6 +25,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         ]);
+    })
+    ->withProviders([
+        ViewServiceProvider::class,
+    ])
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->command('sitemap:generate')->daily();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
