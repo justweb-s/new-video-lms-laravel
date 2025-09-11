@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SeoSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SeoSettingController extends Controller
 {
@@ -43,6 +44,9 @@ class SeoSettingController extends Controller
                 ['meta_title' => $values['title'], 'meta_description' => $values['description']]
             );
         }
+
+        // Invalida la cache SEO così le nuove impostazioni sono subito attive
+        Cache::forget('seo_settings');
 
         return redirect()->route('admin.settings.seo.edit')
             ->with('success', 'Impostazioni SEO aggiornate con successo!');

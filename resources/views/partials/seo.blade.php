@@ -18,7 +18,7 @@
 
     // Fallbacks
     if (empty($pageTitle) && isset($course)) $pageTitle = $course->name;
-    if (empty($pageDescription) && isset($course)) $pageDescription = Str::limit(strip_tags($course->description), 155);
+    if (empty($pageDescription) && isset($course)) $pageDescription = \Illuminate\Support\Str::limit(strip_tags($course->description), 155);
     if (empty($pageDescription)) $pageDescription = $appName . ' - Piattaforma corsi e allenamenti online e in studio.';
 
     $fullTitle = $pageTitle ? ($pageTitle . ' | ' . $appName) : $appName;
@@ -28,20 +28,20 @@
 @endphp
 
 <title>{{ $fullTitle }}</title>
-<meta name="description" content="{{ $description }}">
+<meta name="description" content="{{ $pageDescription }}">
 <meta name="robots" content="{{ $robots }}">
 <link rel="canonical" href="{{ $canonical }}" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ $canonical }}">
-<meta property="og:title" content="{{ $title ?: $appName }}">
-<meta property="og:description" content="{{ $description }}">
+<meta property="og:title" content="{{ $pageTitle ?: $appName }}">
+<meta property="og:description" content="{{ $pageDescription }}">
 <meta property="og:image" content="{{ $image }}">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="{{ $canonical }}">
-<meta name="twitter:title" content="{{ $title ?: $appName }}">
-<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:title" content="{{ $pageTitle ?: $appName }}">
+<meta name="twitter:description" content="{{ $pageDescription }}">
 <meta name="twitter:image" content="{{ $image }}">

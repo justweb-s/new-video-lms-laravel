@@ -5,6 +5,7 @@ namespace App\Http\View\Composers;
 use App\Models\SeoSetting;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class SeoComposer
 {
@@ -13,18 +14,21 @@ class SeoComposer
     public function __construct()
     {
         $this->seoSettings = Cache::rememberForever('seo_settings', function () {
+            if (!Schema::hasTable('seo_settings')) {
+                return collect();
+            }
             return SeoSetting::all()->keyBy('page_key');
         });
     }
 
     public function compose(View $view)
     {
-        $routeName = request()->route()->getName();
+        $routeName = request()->route()?->getName() ?? '';
 
         $seoData = $this->seoSettings->get($routeName);
 
-        $defaultTitle = $seoData->meta_title ?? null;
-        $defaultDescription = $seoData->meta_description ?? null;
+        $defaultTitle = $seoData?->meta_title ?? null;
+        $defaultDescription = $seoData?->meta_description ?? null;
 
         $view->with('defaultSeoTitle', $defaultTitle)
              ->with('defaultSeoDescription', $defaultDescription);
