@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('tax_id')->nullable()->after('email');
-        });
-        Schema::table('payments', function (Blueprint $table) {
-            $table->string('tax_id')->nullable()->after('customer_email');
-        });
+        if (!Schema::hasColumn('users', 'tax_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('tax_id', 64)->nullable()->after('email');
+            });
+        }
+        if (!Schema::hasColumn('payments', 'tax_id')) {
+            Schema::table('payments', function (Blueprint $table) {
+                $table->string('tax_id')->nullable()->after('customer_email');
+            });
+        }
     }
 
     /**
@@ -24,11 +28,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('tax_id');
-        });
-        Schema::table('payments', function (Blueprint $table) {
-            $table->dropColumn('tax_id');
-        });
+        if (Schema::hasColumn('users', 'tax_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('tax_id');
+            });
+        }
+        if (Schema::hasColumn('payments', 'tax_id')) {
+            Schema::table('payments', function (Blueprint $table) {
+                $table->dropColumn('tax_id');
+            });
+        }
     }
 };
