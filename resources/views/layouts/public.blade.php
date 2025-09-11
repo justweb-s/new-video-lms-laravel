@@ -40,9 +40,10 @@
                 background: transparent; color: #f4e648; font-weight: 700;
                 padding: 10px 16px; border-radius: 10px; border: 2px dashed #f4e648; transition: transform .15s ease, box-shadow .15s ease;
             }
+            .cookie-consent__actions { display:flex; align-items:center; gap:12px; margin-left:auto; flex-wrap:wrap; }
             /* Modal */
-            .cc-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 6000; display:none; }
-            .cc-modal { position: fixed; z-index: 7000; inset: 0; display:none; align-items:center; justify-content:center; }
+            .cc-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 6000; }
+            .cc-modal { position: fixed; z-index: 7000; inset: 0; align-items:center; justify-content:center; }
             .cc-modal .cc-card { background: #ffffff; color:#111; width: 96%; max-width: 680px; border-radius: 14px; overflow: hidden; border: 2px solid #36583c; }
             .cc-modal .cc-card .cc-header { background: #36583c; color: #fff; padding: 16px 20px; font-weight: 700; display:flex; align-items:center; justify-content:space-between; }
             .cc-modal .cc-card .cc-body { padding: 16px 20px; }
@@ -233,7 +234,19 @@
             @include('cookie-consent::index')
         @endguest
 
-        @if(request()->cookie(config('cookie-consent.cookie_name')) === '1')
+        @php
+            $cc = request()->cookie(config('cookie-consent.cookie_name'));
+            $analyticsAllowed = $cc === '1';
+            if (!$analyticsAllowed && is_string($cc) && str_starts_with($cc, '{')) {
+                try {
+                    $ccArr = json_decode($cc, true);
+                    $analyticsAllowed = is_array($ccArr) && !empty($ccArr['analytics']);
+                } catch (\Throwable $e) {
+                    $analyticsAllowed = false;
+                }
+            }
+        @endphp
+        @if($analyticsAllowed)
             @includeIf('partials.analytics-consent')
         @endif
 

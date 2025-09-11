@@ -5,12 +5,12 @@
     .workout-studio-hero {
         background-image: url('/images/hero-workout-studio.jpg');
         background-size: cover;
-        background-position: center;
+        background-position: center top;
         background-repeat: no-repeat;
-        background-attachment: fixed;
+        background-attachment: scroll;
         min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
         position: relative;
         overflow: hidden;
@@ -20,24 +20,23 @@
     @media (max-width: 768px) {
         .workout-studio-hero {
             background-attachment: scroll;
-            min-height: 80vh;
+            min-height: 50vh;
+        }
+        .workout-studio-hero h1 {
+            font-size: 1.2rem !important;
+        }
+        .workout-studio-hero .container-responsive {
+            padding: 1.5rem;
         }
     }
 
-    .workout-studio-hero::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1;
-    }
+
     
     .workout-studio-hero .container-responsive {
         position: relative;
         z-index: 2;
+        padding: 4rem;
+        text-align: center;
     }
 
     .workout-studio-hero h1 {

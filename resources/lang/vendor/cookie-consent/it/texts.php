@@ -2,7 +2,7 @@
 
 return [
     'message' => 'La tua esperienza su questo sito sarà migliorata se consenti i cookie.',
-    'agree' => 'Consenti i cookie',
+    'agree' => 'Accetta',
     'deny' => 'Rifiuta',
     'preferences' => 'Preferenze',
     'modal_title' => 'Preferenze Consenso Cookie',

@@ -3,32 +3,51 @@
 @push('styles')
 <style>
     .chi-sono-hero {
-        background: linear-gradient(135deg, #f6e849 0%, #f4e030 100%);
-        padding: 80px 0;
-        text-align: center;
+        background-image: url('/images/hero-chi-sono.jpg');
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
         position: relative;
         overflow: hidden;
     }
     
-    .chi-sono-hero::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(54, 88, 61, 0.1) 0%, transparent 70%);
-        animation: float 6s ease-in-out infinite;
+    /* Mobile optimization for hero */
+    @media (max-width: 768px) {
+        .chi-sono-hero {
+            background-attachment: scroll;
+            min-height: 50vh;
+        }
+        .chi-sono-hero h1 {
+            font-size: 1.2rem !important;
+        }
+        .chi-sono-hero .container-responsive {
+            padding: 1.5rem;
+        }
     }
+
+
     
+    .chi-sono-hero .container-responsive {
+        position: relative;
+        z-index: 2;
+        padding: 4rem;
+        text-align: center;
+    }
+
     .chi-sono-hero h1 {
         font-family: 'Montserrat', sans-serif;
         font-size: 3.5rem;
         font-weight: 700;
-        color: #36583d;
+        color: #ffffff;
         margin-bottom: 20px;
         position: relative;
         z-index: 2;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
     }
     
     .chi-sono-hero .highlight {

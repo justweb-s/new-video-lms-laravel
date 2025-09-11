@@ -73,6 +73,11 @@ class BlogPost extends Model
                     $post->meta_description = Str::limit(strip_tags($post->content), 155);
                 }
             }
+
+            // Default published_at se si pubblica senza specificare la data
+            if ($post->status === 'published' && empty($post->published_at)) {
+                $post->published_at = now();
+            }
         });
     }
 

@@ -165,7 +165,19 @@
         </main>
     </div>
 
-    @if(request()->cookie(config('cookie-consent.cookie_name')) === '1')
+    @php
+        $cc = request()->cookie(config('cookie-consent.cookie_name'));
+        $analyticsAllowed = $cc === '1';
+        if (!$analyticsAllowed && is_string($cc) && str_starts_with($cc, '{')) {
+            try {
+                $ccArr = json_decode($cc, true);
+                $analyticsAllowed = is_array($ccArr) && !empty($ccArr['analytics']);
+            } catch (\Throwable $e) {
+                $analyticsAllowed = false;
+            }
+        }
+    @endphp
+    @if($analyticsAllowed)
         @includeIf('partials.analytics-consent')
     @endif
 
