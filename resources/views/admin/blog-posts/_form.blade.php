@@ -33,8 +33,9 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">Contenuto (HTML supportato)</label>
-                <textarea name="content" rows="12" class="mt-1 block w-full border rounded px-3 py-2">{{ old('content', $post->content) }}</textarea>
+                <label for="content" class="block text-sm font-medium text-gray-700">Contenuto</label>
+                <input id="content" type="hidden" name="content" value="{{ old('content', $post->content) }}">
+                <trix-editor input="content" class="trix-content mt-1 block w-full border rounded px-3 py-2"></trix-editor>
                 @error('content')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
         </div>
