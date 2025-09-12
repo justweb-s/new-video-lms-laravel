@@ -46,6 +46,8 @@ Route::get('/contatti', [StaticPageController::class, 'contact'])->name('static.
 Route::post('/contatti', [StaticPageController::class, 'submitContact'])->name('static.contact.submit');
 Route::get('/workout-online', [StaticPageController::class, 'workoutOnline'])->name('static.workout-online');
 Route::get('/workout-in-studio', [StaticPageController::class, 'workoutInStudio'])->name('static.workout-in-studio');
+Route::get('/prenota-una-consulenza', [StaticPageController::class, 'bookAConsultation'])->name('static.book-a-consultation');
+Route::post('/prenota-una-consulenza', [StaticPageController::class, 'submitBookAConsultation'])->name('static.book-a-consultation.submit');
 
 // Blog (public)
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

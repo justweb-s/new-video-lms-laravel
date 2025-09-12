@@ -74,6 +74,7 @@
                                 <a href="{{ route('blog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Blog</a>
                                 <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
                                 <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
+                                <a href="{{ route('static.book-a-consultation') }}" class="text-sm font-medium text-primary hover:text-primary/80">Prenota una consulenza</a>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
@@ -121,6 +122,7 @@
                         <a href="{{ route('blog.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('blog.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Blog</a>
                         <a href="{{ route('giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('giftcards.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Gift Card</a>
                         <a href="{{ route('static.contact') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.contact') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Contatti</a>
+                        <a href="{{ route('static.book-a-consultation') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.book-a-consultation') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Prenota una consulenza</a>
                         @if(Auth::check())
                             <a href="{{ route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Dashboard</a>
                             <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('profile.edit') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Profilo</a>

@@ -65,4 +65,32 @@ class StaticPageController extends Controller
     {
         return view('static.workout-in-studio');
     }
+
+    public function bookAConsultation()
+    {
+        return view('static.book-a-consultation');
+    }
+
+    public function submitBookAConsultation(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required','string','max:120'],
+            'cognome' => ['required','string','max:120'],
+            'email' => ['required','email','max:190'],
+            'phone' => ['required','string','max:50'],
+            'message' => ['nullable','string','max:5000'],
+        ]);
+
+        $data['ip'] = $request->ip();
+
+        $recipient = Setting::get('contact.recipient_email', config('mail.from.address') ?? env('MAIL_FROM_ADDRESS'));
+
+        try {
+            Mail::to($recipient)->send(new ContactMessage($data));
+        } catch (\Throwable $e) {
+            return back()->withInput()->withErrors(['email' => 'Errore durante l\'invio del messaggio. Riprova più tardi.']);
+        }
+
+        return back()->with('status', 'Messaggio inviato correttamente! Ti risponderemo al più presto.');
+    }
 }
