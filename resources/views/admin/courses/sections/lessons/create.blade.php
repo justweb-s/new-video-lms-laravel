@@ -13,7 +13,7 @@
 
     <!-- Form -->
     <div class="bg-white shadow-md rounded-lg p-6">
-        <form action="{{ route('admin.courses.sections.lessons.store', [$course, $section]) }}" method="POST">
+                <form id="lesson-form" action="{{ route('admin.courses.sections.lessons.store', [$course, $section]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -65,19 +65,28 @@
                     @enderror
                 </div>
 
-                <!-- URL Video -->
+                <!-- Video File -->
                 <div class="md:col-span-2">
-                    <label for="video_url" class="block text-sm font-medium text-gray-700 mb-2">URL Video</label>
-                    <input type="url" 
-                           name="video_url" 
-                           id="video_url" 
-                           value="{{ old('video_url') }}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('video_url') border-red-500 @enderror"
-                           placeholder="https://www.youtube.com/watch?v=...">
-                    @error('video_url')
+                    <label for="video_file" class="block text-sm font-medium text-gray-700 mb-2">Carica Video *</label>
+                    <input type="file" 
+                           name="video_file" 
+                           id="video_file" 
+                           accept="video/mp4,video/avi,video/mpeg"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('video_file') border-red-500 @enderror"
+                           required>
+                    @error('video_file')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-sm text-gray-500">URL del video della lezione (YouTube, Vimeo, etc.)</p>
+                    <p class="mt-1 text-sm text-gray-500">Carica il file video della lezione (max 1GB). Tipi supportati: MP4, AVI, MPEG.</p>
+                </div>
+
+                <!-- Upload Progress -->
+                <div id="upload-progress" class="md:col-span-2 hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Caricamento video...</label>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div id="upload-progress-bar" class="bg-primary h-3 rounded-full" style="width:0%"></div>
+                    </div>
+                    <p id="upload-progress-text" class="mt-1 text-sm text-gray-600">0%</p>
                 </div>
 
                 <!-- Stato -->
@@ -252,6 +261,73 @@ document.addEventListener('DOMContentLoaded', function() {
             this.value = 300;
         }
     });
+
+    // Upload con barra di progresso
+    const form = document.getElementById('lesson-form');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const progressWrap = document.getElementById('upload-progress');
+            const progressBar = document.getElementById('upload-progress-bar');
+            const progressText = document.getElementById('upload-progress-text');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn ? submitBtn.textContent : '';
+
+            if (progressWrap) progressWrap.classList.remove('hidden');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Caricamento...';
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, true);
+            xhr.setRequestHeader('Accept', 'application/json');
+
+            xhr.upload.onprogress = function (evt) {
+                if (evt.lengthComputable) {
+                    const percent = Math.round((evt.loaded / evt.total) * 100);
+                    if (progressBar) progressBar.style.width = percent + '%';
+                    if (progressText) progressText.textContent = percent + '%';
+                }
+            };
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const res = JSON.parse(xhr.responseText);
+                            if (res.redirect) {
+                                window.location.href = res.redirect;
+                                return;
+                            }
+                        } catch (e) {}
+                        window.location.reload();
+                    } else {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText || 'Crea Lezione';
+                        }
+                        if (progressText) {
+                            progressText.textContent = 'Errore durante il caricamento';
+                            progressText.classList.add('text-red-600');
+                        }
+                        if (xhr.status === 422) {
+                            try {
+                                const json = JSON.parse(xhr.responseText);
+                                if (json.errors) {
+                                    alert(Object.values(json.errors).flat().join('\n'));
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+            };
+
+            const formData = new FormData(form);
+            xhr.send(formData);
+        });
+    }
 });
 </script>
 </x-layouts.admin>
