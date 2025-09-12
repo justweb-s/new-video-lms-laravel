@@ -20,7 +20,7 @@ class CourseFactory extends Factory
             'image_url' => null,
             'price' => fake()->randomFloat(2, 0, 9999),
             'is_active' => true,
-            'duration_weeks' => fake()->numberBetween(1, 12),
+            'duration_days' => fake()->numberBetween(7, 90),
             'prerequisites' => fake()->sentence(),
         ];
     }

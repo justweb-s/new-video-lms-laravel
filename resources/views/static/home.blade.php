@@ -1,4 +1,4 @@
-@extends('layouts.public')
+<x-layouts.guest>
 
 @push('styles')
 <style>
@@ -1142,4 +1142,4 @@
 </script>
 @endpush
 
-@endsection
+</x-layouts.guest>

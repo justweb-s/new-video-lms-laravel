@@ -397,8 +397,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div>
               <label class="inline-flex items-center px-3 py-2 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200">
-                <input type="file" id="media-upload-input" class="hidden" accept="image/*,video/*">
-                <span>Carica Nuovo</span>
+                <input type="file" id="media-upload-input" class="hidden" accept="image/*,video/*" multiple>
+                <span>Carica Nuovi</span>
               </label>
             </div>
           </div>
@@ -506,36 +506,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // Upload inside modal
     if (uploadInput) {
         uploadInput.addEventListener('change', function(){
-            const file = this.files && this.files[0];
-            if (!file) return;
+            const files = Array.from(this.files || []);
+            if (!files.length) return;
             if (upWrap) upWrap.classList.remove('hidden');
-            if (upBar) upBar.style.width = '0%';
-            if (upText) upText.textContent = '0%';
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ route('admin.media.store') }}', true);
-            xhr.setRequestHeader('Accept','application/json');
-            xhr.upload.onprogress = function(evt){
-                if (evt.lengthComputable) {
-                    const percent = Math.round((evt.loaded / evt.total) * 100);
-                    if (upBar) upBar.style.width = percent + '%';
-                    if (upText) upText.textContent = percent + '%';
-                }
-            };
-            xhr.onreadystatechange = function(){
-                if (xhr.readyState === 4) {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        try { const res = JSON.parse(xhr.responseText); } catch(e) {}
-                        loadMedia('video');
-                    } else {
-                        alert('Errore durante l\'upload media');
+            let index = 0;
+            const total = files.length;
+
+            const uploadNext = () => {
+                if (index >= total) { this.value = ''; return; }
+                if (upBar) upBar.style.width = '0%';
+                if (upText) upText.textContent = `File ${index+1}/${total} - 0%`;
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ route('admin.media.store') }}', true);
+                xhr.setRequestHeader('Accept','application/json');
+                xhr.upload.onprogress = function(evt){
+                    if (evt.lengthComputable) {
+                        const percent = Math.round((evt.loaded / evt.total) * 100);
+                        if (upBar) upBar.style.width = percent + '%';
+                        if (upText) upText.textContent = `File ${index+1}/${total} - ${percent}%`;
                     }
-                    uploadInput.value = '';
-                }
+                };
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try { const res = JSON.parse(xhr.responseText); } catch(e) {}
+                            loadMedia('video');
+                            index++;
+                            uploadNext();
+                        } else {
+                            alert('Errore durante l\'upload media');
+                            index++;
+                            uploadNext();
+                        }
+                    }
+                };
+                const fd = new FormData();
+                fd.append('file', files[index]);
+                fd.append('_token', csrfToken);
+                xhr.send(fd);
             };
-            const fd = new FormData();
-            fd.append('file', file);
-            fd.append('_token', csrfToken);
-            xhr.send(fd);
+            uploadNext();
         });
     }
 });

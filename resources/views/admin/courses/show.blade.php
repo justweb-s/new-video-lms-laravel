@@ -57,7 +57,7 @@
                                         </div>
                                         <div>
                                             <span class="font-medium text-gray-700">Durata:</span>
-                                            <span class="text-gray-900">{{ $course->duration_weeks ?? 'N/A' }} settimane</span>
+                                            <span class="text-gray-900">{{ $course->duration_days ?? 'N/A' }} giorni</span>
                                         </div>
                                         <div>
                                             <span class="font-medium text-gray-700">Sezioni:</span>

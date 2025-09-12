@@ -34,10 +34,10 @@
                     <dt class="text-sm text-gray-500">Prezzo</dt>
                     <dd class="mt-1 text-2xl font-semibold text-primary">€{{ number_format($course->price, 2, ',', '.') }}</dd>
                 </div>
-                @if(!empty($course->duration_weeks))
+                @if(!empty($course->duration_days))
                 <div class="bg-white rounded-lg p-4 shadow-sm">
                     <dt class="text-sm text-gray-500">Durata accesso</dt>
-                    <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ $course->duration_weeks }} settimane</dd>
+                    <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ $course->duration_days }} giorni</dd>
                 </div>
                 @endif
                 @if(!empty($course->prerequisites))
