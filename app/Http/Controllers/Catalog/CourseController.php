@@ -54,6 +54,42 @@ class CourseController extends Controller
                 ->with('error', 'Il corso non è attualmente disponibile.');
         }
 
+        // Se il corso è gratuito, iscrivi direttamente l'utente senza passare da Stripe
+        if ($course->price == 0) {
+            // Crea o attiva l'iscrizione
+            $enrollment = Enrollment::firstOrNew([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+            ]);
+
+            $defaultDays = (int) (Setting::get('enrollment.default_duration_days', 30));
+            $expiresAt = now()->addDays(max(1, $defaultDays));
+
+            $enrollment->enrolled_at = now();
+            $enrollment->expires_at = $expiresAt;
+            $enrollment->is_active = true;
+            $enrollment->progress_percentage = $enrollment->progress_percentage ?? 0;
+            $enrollment->save();
+
+            // Registra un Payment per tracciabilità (0 amount)
+            try {
+                Payment::create([
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'amount_total' => 0,
+                    'currency' => strtolower(config('services.stripe.currency', 'eur')),
+                    'status' => 'paid', // o 'free_enrollment'
+                    'customer_email' => $user->email,
+                    'metadata' => ['type' => 'free_course_enrollment'],
+                ]);
+            } catch (\Throwable $e) {
+                \Log::warning('Impossibile registrare Payment per corso gratuito: ' . $e->getMessage());
+            }
+
+            return redirect()->route('courses.show', $course)
+                ->with('status', 'Iscrizione al corso gratuito completata!');
+        }
+
         // Se già iscritto e attivo, vai direttamente al corso
         $existing = $user->enrollments()->where('course_id', $course->id)->first();
         if ($existing && $existing->isActive()) {
