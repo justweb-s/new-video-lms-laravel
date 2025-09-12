@@ -918,57 +918,22 @@
         
         <!-- Programs Grid -->
         <div class="programs-grid">
-            <!-- Dimagrimento Card -->
-            <div class="program-card" style="background-image: url('/images/burn-fit.jpg')">
-                <div class="program-overlay"></div>
-                <div class="program-content">
-                    <h3 class="program-title">DIMAGRIMENTO</h3>
-                    <p class="program-subtitle">Burn Fit</p>
-                    <p class="program-duration">30 Giorni</p>
-                    <a href="{{ route('static.workout-online') }}" class="program-btn">
-                        SCOPRI DI PIÙ →
+            @if($featuredCourses->count() > 0)
+                @foreach($featuredCourses as $course)
+                    <a href="{{ route('courses.show', $course) }}" class="program-card" style="background-image: url('{{ Storage::url($course->image_url) }}');">
+                        <div class="program-overlay">
+                            <div class="program-content">
+                                <h3 class="program-title">{{ $course->name }}</h3>
+                                <p class="program-subtitle">{{ $course->duration_days }} Giorni</p>
+                                <p class="program-duration">Online</p>
+                                <span class="program-btn">SCOPRI DI PIÙ →</span>
+                            </div>
+                        </div>
                     </a>
-                </div>
-            </div>
-            
-            <!-- Glutei Card -->
-            <div class="program-card" style="background-image: url('/images/booty-boost.jpg')">
-                <div class="program-overlay"></div>
-                <div class="program-content">
-                    <h3 class="program-title">GLUTEI</h3>
-                    <p class="program-subtitle">Booty Boost</p>
-                    <p class="program-duration">30 Giorni</p>
-                    <a href="{{ route('static.workout-online') }}" class="program-btn">
-                        SCOPRI DI PIÙ →
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Tonificazione Card -->
-            <div class="program-card" style="background-image: url('/images/sculpt-fit.jpg')">
-                <div class="program-overlay"></div>
-                <div class="program-content">
-                    <h3 class="program-title">TONIFICAZIONE</h3>
-                    <p class="program-subtitle">Sculpt Fit</p>
-                    <p class="program-duration">30 Giorni</p>
-                    <a href="{{ route('static.workout-online') }}" class="program-btn">
-                        SCOPRI DI PIÙ →
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Personalizzato Card -->
-            <div class="program-card" style="background-image: url('/images/personalizzato.jpg')">
-                <div class="program-overlay"></div>
-                <div class="program-content">
-                    <h3 class="program-title">PERSONALIZZATO</h3>
-                    <p class="program-subtitle">Allenamento Personalizzato</p>
-                    <p class="program-duration">30 Giorni</p>
-                    <a href="{{ route('static.contact') }}" class="program-btn">
-                        SCOPRI DI PIÙ →
-                    </a>
-                </div>
-            </div>
+                @endforeach
+            @else
+                <p class="col-span-4 text-center text-gray-500">Nessun corso in primo piano al momento.</p>
+            @endif
         </div>
     </div>
 </div>

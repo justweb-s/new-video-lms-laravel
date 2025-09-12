@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
+use App\Models\Media;
 use App\Models\Section;
 use App\Models\Course;
 use Illuminate\Http\Request;
@@ -39,7 +40,8 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
-            'video_file' => 'required|file|mimetypes:video/mp4,video/avi,video/mpeg|max:1024000', // Max 1GB
+            'video_file' => 'required_without:video_url|nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:1024000', // Max 1GB
+            'video_url' => 'required_without:video_file|nullable|url',
             'duration_minutes' => 'required|integer|min:1|max:600',
             'lesson_order' => 'required|integer|min:1',
             'is_active' => 'boolean',
@@ -63,6 +65,16 @@ class LessonController extends Controller
             }
             $uploadedFile->storeAs('videos', $fileName, 's3');
             $validated['video_url'] = Storage::disk('s3')->url($key);
+
+            // Registra nei media
+            Media::create([
+                'disk' => 's3',
+                'key' => $key,
+                'filename' => $fileName,
+                'mime_type' => $uploadedFile->getMimeType(),
+                'size' => $uploadedFile->getSize(),
+                'type' => 'video',
+            ]);
         }
 
         $validated['section_id'] = $section->id;
@@ -108,7 +120,8 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
-            'video_file' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:1024000', // Max 1GB
+            'video_file' => 'required_without:video_url|nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:1024000',
+            'video_url' => 'required_without:video_file|nullable|url',
             'duration_minutes' => 'required|integer|min:1|max:600',
             'lesson_order' => 'required|integer|min:1',
             'is_active' => 'boolean',
@@ -116,20 +129,6 @@ class LessonController extends Controller
         ]);
 
         if ($request->hasFile('video_file')) {
-            // Delete old video if it exists
-            if ($lesson->video_url) {
-                $oldKey = ltrim(parse_url($lesson->video_url, PHP_URL_PATH), '/');
-                $bucket = config('filesystems.disks.s3.bucket');
-                // Se l'URL è del tipo <bucket>.s3.<region>.amazonaws.com/<key>
-                if ($bucket && (str_starts_with($oldKey, $bucket . '/') || Str::startsWith($oldKey, $bucket . '/'))) {
-                    $oldKey = substr($oldKey, strlen($bucket) + 1);
-                }
-                
-                if (!empty($oldKey)) {
-                    Storage::disk('s3')->delete($oldKey);
-                }
-            }
-
             // Carica su S3 mantenendo il nome originale (sanitizzato) e prevenendo collisioni
             $uploadedFile = $request->file('video_file');
             $originalName = $uploadedFile->getClientOriginalName();
@@ -146,6 +145,16 @@ class LessonController extends Controller
             }
             $uploadedFile->storeAs('videos', $fileName, 's3');
             $validated['video_url'] = Storage::disk('s3')->url($key);
+
+            // Registra nei media
+            Media::create([
+                'disk' => 's3',
+                'key' => $key,
+                'filename' => $fileName,
+                'mime_type' => $uploadedFile->getMimeType(),
+                'size' => $uploadedFile->getSize(),
+                'type' => 'video',
+            ]);
         }
 
         $validated['is_active'] = $request->has('is_active');

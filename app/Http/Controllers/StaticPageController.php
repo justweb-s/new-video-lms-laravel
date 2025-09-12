@@ -12,7 +12,12 @@ class StaticPageController extends Controller
 {
     public function home()
     {
-        return view('static.home');
+        $featuredCourses = Course::where('is_active', true)
+                                   ->where('is_featured', true)
+                                   ->take(4)
+                                   ->get();
+
+        return view('static.home', compact('featuredCourses'));
     }
 
     public function about()

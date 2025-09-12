@@ -72,12 +72,23 @@
                            name="video_file" 
                            id="video_file" 
                            accept="video/mp4,video/avi,video/mpeg"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('video_file') border-red-500 @enderror"
-                           required>
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary @error('video_file') border-red-500 @enderror">
                     @error('video_file')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                     <p class="mt-1 text-sm text-gray-500">Carica il file video della lezione (max 1GB). Tipi supportati: MP4, AVI, MPEG.</p>
+
+                    <div class="mt-3">
+                        <span class="text-sm text-gray-500">Oppure</span>
+                        <button type="button" id="open-media-modal" class="ml-2 inline-flex items-center px-3 py-2 bg-primary text-white rounded hover:bg-primary/90">Scegli dalla Galleria</button>
+                    </div>
+
+                    <input type="hidden" name="video_url" id="video_url" value="{{ old('video_url') }}">
+                    <div id="selected-media" class="mt-2 hidden">
+                        <span class="text-sm text-gray-600">Selezionato:</span>
+                        <a id="selected-media-url" href="#" target="_blank" class="text-primary text-sm break-all"></a>
+                        <button type="button" id="clear-selected-media" class="ml-2 text-sm text-red-600 hover:underline">Rimuovi</button>
+                    </div>
                 </div>
 
                 <!-- Upload Progress -->
@@ -326,6 +337,205 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const formData = new FormData(form);
             xhr.send(formData);
+        });
+    }
+
+    // ====== Media Library Modal ======
+    const csrfToken = '{{ csrf_token() }}';
+    const openModalBtn = document.getElementById('open-media-modal');
+    const selectedWrap = document.getElementById('selected-media');
+    const selectedUrl = document.getElementById('selected-media-url');
+    const clearSelectedBtn = document.getElementById('clear-selected-media');
+    const hiddenVideoUrl = document.getElementById('video_url');
+    const fileInput = document.getElementById('video_file');
+
+    function toggleRequired() {
+        // Se è stata selezionata una URL dalla galleria, il file non è richiesto
+        if (hiddenVideoUrl.value) {
+            fileInput.removeAttribute('required');
+        } else {
+            // opzionale: non forziamo required lato client, la validazione server richiede almeno uno dei due
+        }
+    }
+
+    function setSelectedMedia(url) {
+        hiddenVideoUrl.value = url;
+        if (selectedWrap && selectedUrl) {
+            selectedUrl.textContent = url;
+            selectedUrl.href = url;
+            selectedWrap.classList.remove('hidden');
+        }
+        if (fileInput) {
+            fileInput.value = '';
+        }
+        toggleRequired();
+    }
+
+    if (clearSelectedBtn) {
+        clearSelectedBtn.addEventListener('click', function(){
+            hiddenVideoUrl.value = '';
+            if (selectedWrap) selectedWrap.classList.add('hidden');
+            toggleRequired();
+        });
+    }
+
+    // Modal markup
+    const modalHtml = `
+    <div id="media-modal" class="fixed inset-0 z-50 hidden">
+      <div class="absolute inset-0 bg-black/50"></div>
+      <div class="relative mx-auto mt-16 bg-white rounded-lg shadow-xl w-11/12 max-w-5xl">
+        <div class="flex items-center justify-between px-4 py-3 border-b">
+          <h3 class="text-lg font-semibold">Galleria Media</h3>
+          <button type="button" id="media-modal-close" class="text-gray-500 hover:text-gray-700">✕</button>
+        </div>
+        <div class="p-4">
+          <div class="flex items-center justify-between mb-4">
+            <div class="space-x-2">
+              <button type="button" data-filter="video" class="media-filter bg-primary text-white px-3 py-1 rounded">Video</button>
+              <button type="button" data-filter="image" class="media-filter bg-gray-200 text-gray-800 px-3 py-1 rounded">Immagini</button>
+              <button type="button" data-filter="all" class="media-filter bg-gray-200 text-gray-800 px-3 py-1 rounded">Tutti</button>
+            </div>
+            <div>
+              <label class="inline-flex items-center px-3 py-2 bg-gray-100 border rounded cursor-pointer hover:bg-gray-200">
+                <input type="file" id="media-upload-input" class="hidden" accept="image/*,video/*">
+                <span>Carica Nuovo</span>
+              </label>
+            </div>
+          </div>
+          <div id="media-upload-progress" class="hidden mb-3">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div id="media-upload-progress-bar" class="bg-primary h-2 rounded-full" style="width:0%"></div>
+            </div>
+            <p id="media-upload-progress-text" class="text-sm text-gray-600 mt-1">0%</p>
+          </div>
+          <div id="media-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 min-h-[120px]"></div>
+        </div>
+      </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const mediaModal = document.getElementById('media-modal');
+    const mediaGrid = document.getElementById('media-grid');
+    const modalClose = document.getElementById('media-modal-close');
+    const uploadInput = document.getElementById('media-upload-input');
+    const upWrap = document.getElementById('media-upload-progress');
+    const upBar = document.getElementById('media-upload-progress-bar');
+    const upText = document.getElementById('media-upload-progress-text');
+
+    function openModal() {
+        mediaModal.classList.remove('hidden');
+        loadMedia('video');
+    }
+    function closeModal() { mediaModal.classList.add('hidden'); }
+    if (openModalBtn) openModalBtn.addEventListener('click', openModal);
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    mediaModal.addEventListener('click', (e)=>{ if (e.target === mediaModal.firstElementChild) closeModal(); });
+
+    function renderItems(items) {
+        mediaGrid.innerHTML = '';
+        if (!items || !items.length) {
+            mediaGrid.innerHTML = '<p class="col-span-full text-center text-gray-500">Nessun media disponibile.</p>';
+            return;
+        }
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'border rounded p-2 flex flex-col';
+            const preview = document.createElement(item.type === 'image' ? 'img' : 'video');
+            preview.className = 'w-full h-28 object-cover rounded';
+            preview.src = item.url;
+            if (item.type !== 'image') preview.controls = false;
+            const name = document.createElement('div');
+            name.className = 'mt-2 text-xs break-all';
+            name.textContent = item.filename;
+            const actions = document.createElement('div');
+            actions.className = 'mt-2 flex justify-between';
+            const selectBtn = document.createElement('button');
+            selectBtn.type = 'button';
+            selectBtn.className = 'text-white bg-primary px-2 py-1 rounded text-xs';
+            selectBtn.textContent = 'Seleziona';
+            selectBtn.addEventListener('click', ()=>{ setSelectedMedia(item.url); closeModal(); });
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'text-red-600 text-xs hover:underline';
+            delBtn.textContent = 'Elimina';
+            delBtn.addEventListener('click', ()=>{ deleteMedia(item.id, card); });
+            actions.appendChild(selectBtn);
+            actions.appendChild(delBtn);
+            card.appendChild(preview);
+            card.appendChild(name);
+            card.appendChild(actions);
+            mediaGrid.appendChild(card);
+        });
+    }
+
+    async function loadMedia(filter) {
+        let url = '{{ route('admin.media.list') }}';
+        if (filter && filter !== 'all') url += ('?type=' + encodeURIComponent(filter));
+        const res = await fetch(url, { headers: { 'Accept':'application/json' } });
+        const json = await res.json();
+        renderItems(json.data || []);
+    }
+
+    async function deleteMedia(id, cardEl) {
+        if (!confirm('Eliminare definitivamente questo media?')) return;
+        const res = await fetch(`{{ url('admin/media') }}/${id}`, {
+            method: 'DELETE',
+            headers: { 'Accept':'application/json', 'X-CSRF-TOKEN': csrfToken }
+        });
+        if (res.ok) {
+            cardEl.remove();
+        } else {
+            alert('Errore durante l\'eliminazione');
+        }
+    }
+
+    // Filter buttons
+    document.addEventListener('click', function(e){
+        if (e.target && e.target.classList.contains('media-filter')) {
+            const t = e.target.getAttribute('data-filter');
+            loadMedia(t === 'all' ? undefined : t);
+            document.querySelectorAll('.media-filter').forEach(b=>{
+                b.classList.remove('bg-primary','text-white');
+                b.classList.add('bg-gray-200','text-gray-800');
+            });
+            e.target.classList.remove('bg-gray-200','text-gray-800');
+            e.target.classList.add('bg-primary','text-white');
+        }
+    });
+
+    // Upload inside modal
+    if (uploadInput) {
+        uploadInput.addEventListener('change', function(){
+            const file = this.files && this.files[0];
+            if (!file) return;
+            if (upWrap) upWrap.classList.remove('hidden');
+            if (upBar) upBar.style.width = '0%';
+            if (upText) upText.textContent = '0%';
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ route('admin.media.store') }}', true);
+            xhr.setRequestHeader('Accept','application/json');
+            xhr.upload.onprogress = function(evt){
+                if (evt.lengthComputable) {
+                    const percent = Math.round((evt.loaded / evt.total) * 100);
+                    if (upBar) upBar.style.width = percent + '%';
+                    if (upText) upText.textContent = percent + '%';
+                }
+            };
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try { const res = JSON.parse(xhr.responseText); } catch(e) {}
+                        loadMedia('video');
+                    } else {
+                        alert('Errore durante l\'upload media');
+                    }
+                    uploadInput.value = '';
+                }
+            };
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('_token', csrfToken);
+            xhr.send(fd);
         });
     }
 });

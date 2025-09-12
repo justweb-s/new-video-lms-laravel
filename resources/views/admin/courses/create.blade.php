@@ -58,12 +58,12 @@
                                 @enderror
                             </div>
 
-                            <!-- Duration Weeks -->
+                            <!-- Duration Days -->
                             <div>
-                                <label for="duration_weeks" class="block text-sm font-medium text-gray-700">Durata (settimane)</label>
-                                <input type="number" name="duration_weeks" id="duration_weeks" value="{{ old('duration_weeks') }}" min="1" 
+                                <label for="duration_days" class="block text-sm font-medium text-gray-700">Durata (giorni)</label>
+                                <input type="number" name="duration_days" id="duration_days" value="{{ old('duration_days', 30) }}" min="1" 
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                                @error('duration_weeks')
+                                @error('duration_days')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -78,6 +78,20 @@
                                     </label>
                                 </div>
                                 @error('is_active')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Is Featured -->
+                            <div>
+                                <div class="flex items-center h-full">
+                                    <input type="checkbox" name="is_featured" id="is_featured" value="1" 
+                                           class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary">
+                                    <label for="is_featured" class="ml-2 block text-sm text-gray-900">
+                                        In primo piano
+                                    </label>
+                                </div>
+                                @error('is_featured')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

@@ -45,7 +45,7 @@ class CourseSeeder extends Seeder
             'name' => 'Corso Base di Fitness',
             'description' => 'Un corso completo per iniziare il tuo percorso di fitness con esercizi base e tecniche fondamentali.',
             'price' => 99.99,
-            'duration_weeks' => 8,
+            'duration_days' => 8,
             'prerequisites' => 'Nessun prerequisito richiesto',
             'is_active' => true,
         ]);
@@ -54,7 +54,7 @@ class CourseSeeder extends Seeder
             'name' => 'Allenamento Avanzato',
             'description' => 'Corso avanzato per chi vuole portare il proprio allenamento al livello successivo.',
             'price' => 149.99,
-            'duration_weeks' => 12,
+            'duration_days' => 12,
             'prerequisites' => 'Completamento del corso base o esperienza equivalente',
             'is_active' => true,
         ]);

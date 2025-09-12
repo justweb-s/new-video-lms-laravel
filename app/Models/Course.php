@@ -19,16 +19,18 @@ class Course extends Model
         'image_url',
         'price',
         'is_active',
-        'duration_weeks',
+        'duration_days',
         'prerequisites',
         'meta_title',
         'meta_description',
+        'is_featured',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'is_active' => 'boolean',
-        'duration_weeks' => 'integer',
+        'is_featured' => 'boolean',
+        'duration_days' => 'integer',
     ];
 
     public function sections(): HasMany

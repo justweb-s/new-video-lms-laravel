@@ -110,6 +110,17 @@
                     </a>
                 </li>
 
+                <li class="menu-item">
+                    <a href="{{ route('admin.media.index') }}" class="menu-link {{ request()->routeIs('admin.media.*') ? 'active' : '' }}">
+                        <span class="menu-text">
+                            <svg class="menu-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h12v6l-3-2-3 4-2-3-4 5V5z"/>
+                            </svg>
+                            Galleria Media
+                        </span>
+                    </a>
+                </li>
+
                 <!-- Dropdown Item -->
                 <li class="menu-item" x-data="{ open: @js(request()->routeIs('admin.settings.*')) }">
                     <div @click="open = !open" class="menu-link" :class="{'active': open}">

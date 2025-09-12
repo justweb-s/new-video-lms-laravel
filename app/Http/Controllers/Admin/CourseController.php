@@ -44,6 +44,7 @@ class CourseController extends Controller
 
         // Ensure is_active is set properly
         $validated['is_active'] = $request->has('is_active');
+        $validated['is_featured'] = $request->has('is_featured');
 
         $course = Course::create($validated);
 
@@ -97,6 +98,7 @@ class CourseController extends Controller
 
         // Ensure is_active is set properly
         $validated['is_active'] = $request->has('is_active');
+        $validated['is_featured'] = $request->has('is_featured');
 
         $course->update($validated);
 

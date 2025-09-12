@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SeoSettingController as AdminSeoSettingController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
+use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -142,6 +143,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Lesson Management (nested under courses and sections)
         Route::resource('courses.sections.lessons', AdminLessonController::class)->except(['index']);
         Route::get('/courses/{course}/sections/{section}/lessons', [AdminLessonController::class, 'index'])->name('courses.sections.lessons.index');
+
+        // Media Library
+        Route::get('/media', [AdminMediaController::class, 'index'])->name('media.index');
+        Route::get('/media/list', [AdminMediaController::class, 'list'])->name('media.list'); // JSON
+        Route::post('/media', [AdminMediaController::class, 'store'])->name('media.store');
+        Route::delete('/media/{media}', [AdminMediaController::class, 'destroy'])->name('media.destroy');
         
         // Student Management
         Route::resource('students', AdminStudentController::class);
