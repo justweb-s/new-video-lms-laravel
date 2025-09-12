@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\GenerateSitemap;
 use App\Providers\ViewServiceProvider;
+use App\Providers\AuthServiceProvider;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -28,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withProviders([
         ViewServiceProvider::class,
+        AuthServiceProvider::class,
     ])
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('sitemap:generate')->daily();
