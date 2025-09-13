@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\SeoSettingController as AdminSeoSettingController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
+use App\Http\Controllers\Admin\ImportExportController as AdminImportExportController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -201,6 +202,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Newsletter Management
         Route::get('/newsletters', [AdminNewsletterController::class, 'index'])->name('newsletters.index');
+
+        // Import/Export Data Management
+        Route::prefix('data')->name('data.')->group(function () {
+            Route::get('/', [AdminImportExportController::class, 'index'])->name('index');
+            // Export
+            Route::get('/export/courses', [AdminImportExportController::class, 'exportCourses'])->name('export.courses');
+            Route::get('/export/students', [AdminImportExportController::class, 'exportStudents'])->name('export.students');
+            Route::get('/export/enrollments', [AdminImportExportController::class, 'exportEnrollments'])->name('export.enrollments');
+            Route::get('/export/payments', [AdminImportExportController::class, 'exportPayments'])->name('export.payments');
+            // Import
+            Route::post('/import/courses', [AdminImportExportController::class, 'importCourses'])->name('import.courses');
+            Route::post('/import/students', [AdminImportExportController::class, 'importStudents'])->name('import.students');
+            Route::post('/import/enrollments', [AdminImportExportController::class, 'importEnrollments'])->name('import.enrollments');
+            Route::post('/import/payments', [AdminImportExportController::class, 'importPayments'])->name('import.payments');
+        });
     });
 });
 
