@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use App\Services\PayPalService;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
@@ -163,8 +164,47 @@ class CourseController extends Controller
                 ->with('status', 'Iscrizione attivata tramite gift card. Buona visione!');
         }
 
-        // Configura Stripe
+        // Metodo di pagamento
+        $provider = (string) $request->query('provider', 'stripe');
+
+        if ($provider === 'paypal') {
+            // PayPal: crea ordine e rimanda all'approvazione
+            /** @var PayPalService $pp */
+            $pp = app(PayPalService::class);
+            $amount = number_format(((float) $course->price), 2, '.', '');
+            $successUrl = route('catalog.checkout.success') . '?course=' . $course->id;
+            $cancelUrl = route('catalog.checkout.cancel') . '?course=' . $course->id;
+
+            $order = $pp->createOrder(
+                amountValue: $amount,
+                currencyCode: config('services.paypal.currency', 'eur'),
+                returnUrl: $successUrl,
+                cancelUrl: $cancelUrl,
+                description: 'Acquisto corso: ' . $course->name,
+                locale: app()->getLocale()
+            );
+
+            $orderId = (string) ($order['id'] ?? '');
+            $approve = PayPalService::getApproveLink($order);
+            if (!$orderId || !$approve) {
+                return redirect()->route('catalog.show', $course)->with('error', 'Impossibile iniziare il pagamento PayPal.');
+            }
+            return redirect()->away($approve);
+        }
+
+        // Default: Stripe
         Stripe::setApiKey(config('services.stripe.secret'));
+
+        $description = !empty($course->subtitle)
+            ? $course->subtitle
+            : (Str::limit(strip_tags((string) $course->description), 200));
+        $description = trim((string) $description);
+        $productData = [
+            'name' => $course->name,
+        ];
+        if ($description !== '') {
+            $productData['description'] = $description;
+        }
 
         $amount = (int) round($course->price * 100); // in centesimi
         $currency = config('services.stripe.currency', 'eur');
@@ -180,11 +220,8 @@ class CourseController extends Controller
             'line_items' => [[
                 'price_data' => [
                     'currency' => $currency,
+                    'product_data' => $productData,
                     'unit_amount' => $amount,
-                    'product_data' => [
-                        'name' => $course->name,
-                        'description' => Str::limit((string) $course->description, 200),
-                    ],
                 ],
                 'quantity' => 1,
             ]],
@@ -223,12 +260,84 @@ class CourseController extends Controller
     public function success(Request $request)
     {
         $request->validate([
-            'session_id' => 'required|string',
             'course' => 'required|integer',
         ]);
 
         $user = $request->user();
         $course = Course::findOrFail($request->integer('course'));
+
+        // Se presente token PayPal, esegue la capture
+        $orderId = (string) $request->query('token');
+        if ($orderId) {
+            /** @var PayPalService $pp */
+            $pp = app(PayPalService::class);
+            try {
+                $capture = $pp->captureOrder($orderId);
+            } catch (\Throwable $e) {
+                return redirect()->route('catalog.show', $course)->with('error', 'Pagamento non confermato.');
+            }
+
+            $status = (string) ($capture['status'] ?? '');
+            if (!in_array($status, ['COMPLETED'], true)) {
+                return redirect()->route('catalog.show', $course)->with('error', 'Pagamento non confermato.');
+            }
+
+            $pu = $capture['purchase_units'][0] ?? [];
+            $cap = ($pu['payments']['captures'][0] ?? []);
+            $amountValue = (string) ($cap['amount']['value'] ?? '0.00');
+            $currency = strtolower((string) ($cap['amount']['currency_code'] ?? config('services.paypal.currency', 'eur')));
+            $amountCents = (int) round(((float) $amountValue) * 100);
+            $payer = $capture['payer'] ?? null;
+            $customerEmail = $payer['email_address'] ?? null;
+
+            // Verifica importo e valuta coerenti col corso
+            $expectedAmount = (int) round(((float) $course->price) * 100);
+            $expectedCurrency = strtolower(config('services.paypal.currency', 'eur'));
+            if ($amountCents < $expectedAmount || $currency !== $expectedCurrency) {
+                return redirect()->route('catalog.show', $course)
+                    ->with('error', 'Dati pagamento incoerenti.');
+            }
+
+            // Registra il pagamento (idempotente su paypal_order_id)
+            try {
+                $attributes = [ 'paypal_order_id' => (string) $orderId ];
+                $values = [
+                    'provider' => 'paypal',
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'paypal_capture_id' => (string) ($cap['id'] ?? ''),
+                    'amount_total' => $amountCents,
+                    'currency' => $currency,
+                    'status' => 'paid',
+                    'customer_email' => $customerEmail,
+                    'customer_details' => $payer,
+                    'custom_fields' => null,
+                    'metadata' => null,
+                ];
+                Payment::updateOrCreate($attributes, $values);
+            } catch (\Throwable $e) {
+                \Log::warning('Impossibile registrare Payment (PayPal corso): ' . $e->getMessage());
+            }
+
+            // Crea o attiva l'iscrizione
+            $enrollment = Enrollment::firstOrNew([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+            ]);
+            $defaultDays = (int) (Setting::get('enrollment.default_duration_days', 30));
+            $expiresAt = now()->addDays(max(1, $defaultDays));
+            $enrollment->enrolled_at = now();
+            $enrollment->expires_at = $expiresAt;
+            $enrollment->is_active = true;
+            $enrollment->progress_percentage = $enrollment->progress_percentage ?? 0;
+            $enrollment->save();
+
+            return redirect()->route('courses.show', $course)
+                ->with('status', 'Pagamento completato! Iscrizione attivata.');
+        }
+
+        // Altrimenti flusso Stripe
+        $request->validate(['session_id' => 'required|string']);
 
         // Verifica sessione Stripe
         Stripe::setApiKey(config('services.stripe.secret'));

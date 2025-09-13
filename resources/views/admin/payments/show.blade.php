@@ -48,6 +48,18 @@
                                     <dd class="text-sm font-mono text-gray-900">{{ $payment->stripe_payment_intent_id ?: 'N/A' }}</dd>
                                 </div>
                                 <div>
+                                    <dt class="text-sm text-gray-500">Provider</dt>
+                                    <dd class="text-sm text-gray-900">{{ strtoupper($payment->provider ?? 'stripe') }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm text-gray-500">PayPal Order ID</dt>
+                                    <dd class="text-sm font-mono text-gray-900">{{ $payment->paypal_order_id ?: 'N/A' }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm text-gray-500">PayPal Capture ID</dt>
+                                    <dd class="text-sm font-mono text-gray-900">{{ $payment->paypal_capture_id ?: 'N/A' }}</dd>
+                                </div>
+                                <div>
                                     <dt class="text-sm text-gray-500">Importo</dt>
                                     <dd class="text-sm text-gray-900">{{ number_format($payment->amount_total/100, 2, ',', '.') }} {{ strtoupper($payment->currency) }}</dd>
                                 </div>
@@ -75,7 +87,7 @@
 
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Dati cliente (Stripe)</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Dati cliente</h3>
                             @if($payment->customer_details)
                                 @php $details = $payment->customer_details; @endphp
                                 <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">

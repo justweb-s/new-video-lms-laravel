@@ -53,6 +53,7 @@
                     <a href="{{ route('courses.show', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Vai al corso</a>
                 @else
                     <a href="{{ route('catalog.checkout', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista ora</a>
+                    <a href="{{ route('catalog.checkout', [$course, 'provider' => 'paypal']) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-[#ffc439] text-gray-900 font-semibold hover:brightness-95 ml-3">Acquista con PayPal</a>
                     <form method="POST" action="{{ route('cart.add-course', $course) }}" class="inline" data-add-to-cart>
                         @csrf
                         <button type="submit" class="inline-flex items-center px-6 py-3 rounded-md border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 ml-3">Aggiungi al carrello</button>

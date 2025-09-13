@@ -34,6 +34,13 @@ return [
         'currency' => env('STRIPE_CURRENCY', 'eur'),
     ],
 
+    'paypal' => [
+        'client_id' => env('PAYPAL_CLIENT_ID'),
+        'secret' => env('PAYPAL_SECRET'),
+        'mode' => env('PAYPAL_MODE', 'sandbox'), // sandbox | live
+        'currency' => env('PAYPAL_CURRENCY', 'eur'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

@@ -13,8 +13,11 @@ class Payment extends Model
     protected $fillable = [
         'user_id',
         'course_id',
+        'provider',
         'stripe_session_id',
         'stripe_payment_intent_id',
+        'paypal_order_id',
+        'paypal_capture_id',
         'amount_total',
         'currency',
         'status',

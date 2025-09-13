@@ -25,7 +25,10 @@ class PaymentController extends Controller
             $q = (string) $request->input('q');
             $query->where(function ($sub) use ($q) {
                 $sub->where('stripe_session_id', 'like', "%$q%")
-                    ->orWhere('stripe_payment_intent_id', 'like', "%$q%");
+                    ->orWhere('stripe_payment_intent_id', 'like', "%$q%")
+                    ->orWhere('paypal_order_id', 'like', "%$q%")
+                    ->orWhere('paypal_capture_id', 'like', "%$q%")
+                    ->orWhere('provider', 'like', "%$q%");
             });
         }
 

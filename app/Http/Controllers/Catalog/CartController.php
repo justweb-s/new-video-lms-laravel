@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Services\PayPalService;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
@@ -198,13 +199,16 @@ class CartController extends Controller
                 $description = Str::limit((string) $course->description, 200);
             }
 
+            $description = trim((string) $description);
+            $productData = [ 'name' => $name ];
+            if ($description !== '') {
+                $productData['description'] = $description;
+            }
+
             $lineItems[] = [
                 'price_data' => [
                     'currency' => strtolower(config('services.stripe.currency', 'eur')),
-                    'product_data' => [
-                        'name' => $name,
-                        'description' => $description,
-                    ],
+                    'product_data' => $productData,
                     'unit_amount' => $priceCents,
                 ],
                 'quantity' => 1,
@@ -216,6 +220,37 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('error', 'Nessun elemento valido nel carrello.');
         }
 
+        // Scegli provider
+        $provider = (string) $request->query('provider', 'stripe');
+
+        if ($provider === 'paypal') {
+            // PayPal: crea ordine per l'importo totale e reindirizza all'approvazione
+            $amount = number_format(((float) ($totalCents / 100)), 2, '.', '');
+            $pp = app(PayPalService::class);
+            $successUrl = URL::route('cart.checkout.success', [], true);
+            $cancelUrl = URL::route('cart.checkout.cancel', [], true);
+
+            $order = $pp->createOrder(
+                amountValue: $amount,
+                currencyCode: config('services.paypal.currency', 'eur'),
+                returnUrl: $successUrl,
+                cancelUrl: $cancelUrl,
+                description: 'Acquisto corsi/gift card',
+                locale: app()->getLocale()
+            );
+            $orderId = (string) ($order['id'] ?? '');
+            $approve = PayPalService::getApproveLink($order);
+            if (!$orderId || !$approve) {
+                return redirect()->route('cart.index')->with('error', 'Impossibile iniziare il pagamento PayPal.');
+            }
+
+            // Salva gli elementi per l'elaborazione post-pagamento
+            $request->session()->put('cart_pending_' . $orderId, $validItems);
+
+            return redirect()->away($approve);
+        }
+
+        // Default Stripe
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $token = (string) Str::uuid();
@@ -248,8 +283,9 @@ class CartController extends Controller
     public function success(Request $request)
     {
         $sessionId = (string) $request->query('session_id');
+        $ppOrderId = (string) $request->query('token'); // PayPal order id
         $token = (string) $request->query('cart_token');
-        if (!$sessionId || !$token) {
+        if (!$sessionId && !$ppOrderId && !$token) {
             return redirect()->route('cart.index')->with('error', 'Sessione non valida.');
         }
 
@@ -258,15 +294,97 @@ class CartController extends Controller
             return redirect()->route('login')->with('error', 'Accedi per completare l\'acquisto.');
         }
 
-        $items = $request->session()->get('cart_pending_' . $token);
+        // Per PayPal utilizziamo token=orderId come chiave, per Stripe cart_token
+        $lookupKey = $ppOrderId ?: $token;
+        $items = $request->session()->get('cart_pending_' . $lookupKey);
         if (!$items || !is_array($items)) {
             return redirect()->route('cart.index')->with('error', 'Carrello non trovato o già elaborato.');
         }
+        
+        // Variabili contesto pagamento (riusate nella creazione gift card)
+        $paymentProvider = null;
+        $paymentCurrencyCtx = null;
+        $paymentStripeSessionId = null;
+        $paymentStripePaymentIntentId = null;
+        $paymentPayPalOrderId = null;
+        $paymentPayPalCaptureId = null;
 
-        Stripe::setApiKey(config('services.stripe.secret'));
-        $session = StripeSession::retrieve($sessionId);
-        if (!in_array($session->payment_status, ['paid'], true)) {
-            return redirect()->route('cart.index')->with('error', 'Pagamento non confermato.');
+        // Per PayPal verificheremo l'importo contro il totale carrello
+        $expectedTotalCents = 0;
+        foreach ($items as $itm) {
+            $crs = Course::find($itm['course_id'] ?? null);
+            if ($crs && $crs->is_active && ($crs->price > 0)) {
+                $expectedTotalCents += (int) round(((float) $crs->price) * 100);
+            }
+        }
+
+        if ($ppOrderId) {
+            // Flusso PayPal
+            $pp = app(PayPalService::class);
+            try {
+                $capture = $pp->captureOrder($ppOrderId);
+            } catch (\Throwable $e) {
+                return redirect()->route('cart.index')->with('error', 'Pagamento non confermato.');
+            }
+
+            $status = (string) ($capture['status'] ?? '');
+            if (!in_array($status, ['COMPLETED'], true)) {
+                return redirect()->route('cart.index')->with('error', 'Pagamento non confermato.');
+            }
+
+            $pu = $capture['purchase_units'][0] ?? [];
+            $cap = ($pu['payments']['captures'][0] ?? []);
+            $amountValue = (string) ($cap['amount']['value'] ?? '0.00');
+            $currency = strtolower((string) ($cap['amount']['currency_code'] ?? config('services.paypal.currency', 'eur')));
+            $amountCents = (int) round(((float) $amountValue) * 100);
+            $payer = $capture['payer'] ?? null;
+            $customerEmail = $payer['email_address'] ?? null;
+
+            // Convalida importo/valuta rispetto al carrello
+            $expectedCurrency = strtolower(config('services.paypal.currency', 'eur'));
+            if ($amountCents !== $expectedTotalCents || $currency !== $expectedCurrency) {
+                return redirect()->route('cart.index')->with('error', 'Dati pagamento incoerenti.');
+            }
+
+            // Salva contesto provider per creazione gift card
+            $paymentProvider = 'paypal';
+            $paymentCurrencyCtx = $currency;
+            $paymentPayPalOrderId = (string) $ppOrderId;
+            $paymentPayPalCaptureId = (string) ($cap['id'] ?? '');
+        } else {
+            // Flusso Stripe
+            Stripe::setApiKey(config('services.stripe.secret'));
+            $session = StripeSession::retrieve($sessionId);
+            if (!in_array($session->payment_status, ['paid'], true)) {
+                return redirect()->route('cart.index')->with('error', 'Pagamento non confermato.');
+            }
+
+            // Salva contesto provider per creazione gift card
+            $paymentProvider = 'stripe';
+            $paymentCurrencyCtx = (string) strtolower($session->currency);
+            $paymentStripeSessionId = (string) $session->id;
+            $paymentStripePaymentIntentId = is_string($session->payment_intent) ? $session->payment_intent : (is_object($session->payment_intent) ? ($session->payment_intent->id ?? null) : null);
+        }
+
+        // Registra il pagamento (idempotente su paypal_order_id)
+        try {
+            $attributes = [ 'paypal_order_id' => (string) $ppOrderId ];
+            $values = [
+                'provider' => 'paypal',
+                'user_id' => $user->id,
+                'course_id' => null,
+                'paypal_capture_id' => (string) ($cap['id'] ?? ''),
+                'amount_total' => $amountCents,
+                'currency' => $currency,
+                'status' => 'paid',
+                'customer_email' => $customerEmail,
+                'customer_details' => $payer,
+                'custom_fields' => null,
+                'metadata' => null,
+            ];
+            Payment::updateOrCreate($attributes, $values);
+        } catch (\Throwable $e) {
+            \Log::warning('Impossibile registrare Payment cart (PayPal): ' . $e->getMessage());
         }
 
         // Registra il pagamento
@@ -278,6 +396,7 @@ class CartController extends Controller
                 'stripe_session_id' => (string) $session->id,
             ];
             $values = [
+                'provider' => 'stripe',
                 'user_id' => $user->id,
                 'course_id' => null,
                 'stripe_payment_intent_id' => is_string($session->payment_intent) ? $session->payment_intent : (is_object($session->payment_intent) ? ($session->payment_intent->id ?? null) : null),
@@ -289,7 +408,6 @@ class CartController extends Controller
                 'custom_fields' => null,
                 'metadata' => $metadataArr,
             ];
-
             Payment::updateOrCreate($attributes, $values);
         } catch (\Throwable $e) {
             \Log::warning('Impossibile registrare Payment cart: ' . $e->getMessage());
@@ -319,10 +437,13 @@ class CartController extends Controller
                     'recipient_email' => (string) ($it['gift']['recipient_email'] ?? ''),
                     'message' => (string) ($it['gift']['message'] ?? ''),
                     'amount' => (int) round(((float) $course->price) * 100),
-                    'currency' => (string) strtolower(config('services.stripe.currency', 'eur')),
+                    'currency' => (string) $paymentCurrencyCtx,
+                    'provider' => $paymentProvider,
                     'status' => 'paid',
-                    'stripe_session_id' => (string) $session->id,
-                    'stripe_payment_intent_id' => is_string($session->payment_intent) ? $session->payment_intent : (is_object($session->payment_intent) ? ($session->payment_intent->id ?? null) : null),
+                    'stripe_session_id' => $paymentProvider === 'stripe' ? $paymentStripeSessionId : null,
+                    'stripe_payment_intent_id' => $paymentProvider === 'stripe' ? $paymentStripePaymentIntentId : null,
+                    'paypal_order_id' => $paymentProvider === 'paypal' ? $paymentPayPalOrderId : null,
+                    'paypal_capture_id' => $paymentProvider === 'paypal' ? $paymentPayPalCaptureId : null,
                     'issued_at' => now(),
                 ]);
 
@@ -346,7 +467,7 @@ class CartController extends Controller
 
         // Pulisci carrello e pending
         $request->session()->forget('cart.items');
-        $request->session()->forget('cart_pending_' . $token);
+        $request->session()->forget('cart_pending_' . $lookupKey);
 
         return redirect()->route('dashboard')->with('status', 'Pagamento completato! Acquisto effettuato.');
     }

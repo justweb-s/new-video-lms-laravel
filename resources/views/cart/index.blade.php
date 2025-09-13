@@ -54,7 +54,10 @@
         <div class="text-right">
             <div class="text-gray-600">Totale</div>
             <div class="text-2xl font-semibold text-primary">€{{ number_format((float)$total, 2, ',', '.') }}</div>
-            <a href="{{ route('cart.checkout') }}" class="inline-flex items-center mt-3 px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Procedi al pagamento</a>
+            <div class="mt-3 flex items-center gap-3 justify-end flex-wrap">
+                <a href="{{ route('cart.checkout') }}" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Paga con carta</a>
+                <a href="{{ route('cart.checkout', ['provider' => 'paypal']) }}" class="inline-flex items-center px-6 py-3 rounded-md bg-[#ffc439] text-gray-900 font-semibold hover:brightness-95">Checkout con PayPal</a>
+            </div>
         </div>
     </div>
 

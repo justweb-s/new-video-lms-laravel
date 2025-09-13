@@ -52,6 +52,7 @@
                     </div>
                     <div class="pt-2 flex items-center gap-3 flex-wrap">
                         <button type="submit" class="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary/90">Acquista gift card</button>
+                        <button type="submit" formaction="{{ route('giftcards.checkout', $course) }}?provider=paypal" class="inline-flex items-center px-6 py-3 rounded-md bg-[#ffc439] text-gray-900 font-semibold hover:brightness-95">Acquista con PayPal</button>
                         <button type="submit" formaction="{{ route('cart.add-gift-card', $course) }}" class="inline-flex items-center px-6 py-3 rounded-md border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50">Aggiungi al carrello</button>
                         <p class="mt-2 text-xs text-gray-500 w-full">Ti verrà richiesto di accedere se non sei autenticato.</p>
                     </div>
