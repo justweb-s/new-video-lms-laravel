@@ -50,8 +50,9 @@ class GiftCardController extends Controller
                     'recipient_name' => (string) $request->input('recipient_name'),
                     'recipient_email' => (string) $request->input('recipient_email'),
                     'message' => (string) $request->input('message'),
-                    'provider' => (string) $request->input('provider', 'stripe'),
                 ]);
+                // Salva il provider separatamente per non interferire con i test e mantenere la scelta
+                $request->session()->put('gift_checkout_provider_'.$course->id, (string) $request->input('provider', 'stripe'));
             }
             // Imposta manualmente l'URL di ritorno dopo login/registrazione
             $request->session()->put('url.intended', route('giftcards.checkout', $course));
@@ -77,7 +78,7 @@ class GiftCardController extends Controller
         ]);
 
         $user = Auth::user();
-        $provider = (string) $request->input('provider', (string) ($request->session()->get('gift_checkout_'.$course->id)['provider'] ?? 'stripe'));
+        $provider = (string) $request->input('provider', (string) ($request->session()->get('gift_checkout_provider_'.$course->id) ?? 'stripe'));
 
         // Calcoli comuni
         $priceCents = (int) round(((float) $course->price) * 100);

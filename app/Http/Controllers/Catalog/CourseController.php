@@ -10,7 +10,9 @@ use App\Models\GiftCard;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Services\PayPalService;
 use Stripe\Stripe;
@@ -259,6 +261,16 @@ class CourseController extends Controller
 
     public function success(Request $request)
     {
+        // Logger dedicato per debug ordini singolo corso
+        $orderLogger = \Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/order-debug.log'),
+            'level' => 'debug',
+        ]);
+        $orderLogger->info('Catalog.Course.success start', [
+            'query' => $request->query(),
+            'user_id' => optional($request->user())->id,
+        ]);
         $request->validate([
             'course' => 'required|integer',
         ]);
@@ -274,6 +286,8 @@ class CourseController extends Controller
             try {
                 $capture = $pp->captureOrder($orderId);
             } catch (\Throwable $e) {
+                Log::error('Catalog.Course.success PayPal capture error', ['exception' => $e->getMessage()]);
+                $orderLogger->error('Catalog.Course.success PayPal capture error', ['exception' => $e->getMessage()]);
                 return redirect()->route('catalog.show', $course)->with('error', 'Pagamento non confermato.');
             }
 
@@ -299,6 +313,7 @@ class CourseController extends Controller
             }
 
             // Registra il pagamento (idempotente su paypal_order_id)
+            $payment = null;
             try {
                 $attributes = [ 'paypal_order_id' => (string) $orderId ];
                 $values = [
@@ -314,9 +329,12 @@ class CourseController extends Controller
                     'custom_fields' => null,
                     'metadata' => null,
                 ];
-                Payment::updateOrCreate($attributes, $values);
+                $payment = Payment::updateOrCreate($attributes, $values);
+                Log::info('Catalog.Course.success payment saved (paypal)', ['payment_id' => $payment->id ?? null]);
+                $orderLogger->info('Catalog.Course.success payment saved (paypal)', ['payment_id' => $payment->id ?? null]);
             } catch (\Throwable $e) {
                 \Log::warning('Impossibile registrare Payment (PayPal corso): ' . $e->getMessage());
+                $orderLogger->warning('Impossibile registrare Payment (PayPal corso)', ['exception' => $e->getMessage()]);
             }
 
             // Crea o attiva l'iscrizione
@@ -331,6 +349,34 @@ class CourseController extends Controller
             $enrollment->is_active = true;
             $enrollment->progress_percentage = $enrollment->progress_percentage ?? 0;
             $enrollment->save();
+
+            // Invia email conferma ordine (se abbiamo un pagamento)
+            if (isset($payment) && $payment) {
+                try {
+                    Log::info('OrderConfirmationMail (single course): dispatching', [
+                        'user_id' => $user->id,
+                        'payment_id' => $payment->id,
+                    ]);
+                    $orderLogger->info('OrderConfirmationMail (single course): dispatching', [
+                        'user_id' => $user->id,
+                        'payment_id' => $payment->id,
+                    ]);
+                    if (config('queue.default') === 'sync') {
+                        Mail::to($user)->send(new \App\Mail\OrderConfirmationMail($user, collect([$payment])));
+                        Log::info('OrderConfirmationMail (single course): sent (sync)');
+                        $orderLogger->info('OrderConfirmationMail (single course): sent (sync)');
+                    } else {
+                        Mail::to($user)->queue(new \App\Mail\OrderConfirmationMail($user, collect([$payment])));
+                        Log::info('OrderConfirmationMail (single course): queued');
+                        $orderLogger->info('OrderConfirmationMail (single course): queued');
+                    }
+                } catch (\Throwable $e) {
+                    Log::error('Errore invio email conferma ordine (single course)', ['exception' => $e->getMessage()]);
+                    $orderLogger->error('Errore invio email conferma ordine (single course)', ['exception' => $e->getMessage()]);
+                }
+            } else {
+                $orderLogger->info('OrderConfirmationMail (single course): skipped no payment');
+            }
 
             return redirect()->route('courses.show', $course)
                 ->with('status', 'Pagamento completato! Iscrizione attivata.');
@@ -416,6 +462,7 @@ class CourseController extends Controller
         $user->save();
 
         // Registra il pagamento per consultazione lato admin (idempotente)
+        $payment = null;
         try {
             $customFieldsArr = null;
             if (!empty($session->custom_fields) && is_array($session->custom_fields)) {
@@ -445,10 +492,13 @@ class CourseController extends Controller
                 'metadata' => $metadataArr,
             ];
 
-            Payment::updateOrCreate($attributes, $values);
+            $payment = Payment::updateOrCreate($attributes, $values);
+            Log::info('Catalog.Course.success payment saved (stripe)', ['payment_id' => $payment->id ?? null]);
+            $orderLogger->info('Catalog.Course.success payment saved (stripe)', ['payment_id' => $payment->id ?? null]);
         } catch (\Throwable $e) {
             // Non bloccare il flusso utente se per qualche ragione il salvataggio pagamento fallisce
             \Log::warning('Impossibile registrare Payment: ' . $e->getMessage());
+            $orderLogger->warning('Impossibile registrare Payment (stripe)', ['exception' => $e->getMessage()]);
         }
 
         // Crea o attiva l'iscrizione
@@ -466,6 +516,34 @@ class CourseController extends Controller
         $enrollment->is_active = true;
         $enrollment->progress_percentage = $enrollment->progress_percentage ?? 0;
         $enrollment->save();
+
+        // Invia email conferma ordine (se abbiamo un pagamento)
+        if (isset($payment) && $payment) {
+            try {
+                Log::info('OrderConfirmationMail (single course): dispatching', [
+                    'user_id' => $user->id,
+                    'payment_id' => $payment->id,
+                ]);
+                $orderLogger->info('OrderConfirmationMail (single course): dispatching', [
+                    'user_id' => $user->id,
+                    'payment_id' => $payment->id,
+                ]);
+                if (config('queue.default') === 'sync') {
+                    Mail::to($user)->send(new \App\Mail\OrderConfirmationMail($user, collect([$payment])));
+                    Log::info('OrderConfirmationMail (single course): sent (sync)');
+                    $orderLogger->info('OrderConfirmationMail (single course): sent (sync)');
+                } else {
+                    Mail::to($user)->queue(new \App\Mail\OrderConfirmationMail($user, collect([$payment])));
+                    Log::info('OrderConfirmationMail (single course): queued');
+                    $orderLogger->info('OrderConfirmationMail (single course): queued');
+                }
+            } catch (\Throwable $e) {
+                Log::error('Errore invio email conferma ordine (single course)', ['exception' => $e->getMessage()]);
+                $orderLogger->error('Errore invio email conferma ordine (single course)', ['exception' => $e->getMessage()]);
+            }
+        } else {
+            $orderLogger->info('OrderConfirmationMail (single course): skipped no payment');
+        }
 
         return redirect()->route('courses.show', $course)
             ->with('status', 'Pagamento completato! Iscrizione attivata.');

@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
@@ -245,6 +246,10 @@ class CartController extends Controller
             }
 
             // Salva gli elementi per l'elaborazione post-pagamento
+            Log::info('Cart.checkout pending saved (paypal)', [
+                'lookup_key' => $orderId,
+                'items_count' => count($validItems),
+            ]);
             $request->session()->put('cart_pending_' . $orderId, $validItems);
 
             return redirect()->away($approve);
@@ -256,6 +261,11 @@ class CartController extends Controller
         $token = (string) Str::uuid();
         $successUrl = URL::route('cart.checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}&cart_token=' . $token;
         $cancelUrl = URL::route('cart.checkout.cancel', [], true) . '?cart_token=' . $token;
+        Log::info('Cart.checkout stripe urls', [
+            'success_url' => $successUrl,
+            'cancel_url' => $cancelUrl,
+            'token' => $token,
+        ]);
 
         $session = StripeSession::create([
             'mode' => 'payment',
@@ -275,6 +285,11 @@ class CartController extends Controller
         ]);
 
         // Salva gli elementi per l'elaborazione post-pagamento
+        Log::info('Cart.checkout pending saved (stripe)', [
+            'lookup_key' => $token,
+            'session_id' => $session->id,
+            'items_count' => count($validItems),
+        ]);
         $request->session()->put('cart_pending_' . $token, $validItems);
 
         return redirect()->away($session->url);
@@ -282,22 +297,70 @@ class CartController extends Controller
 
     public function success(Request $request)
     {
+        // Logger dedicato su file per debug ordine
+        $orderLogger = \Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/order-debug.log'),
+            'level' => 'debug',
+        ]);
         $sessionId = (string) $request->query('session_id');
         $ppOrderId = (string) $request->query('token'); // PayPal order id
         $token = (string) $request->query('cart_token');
+        Log::info('Cart.success start', [
+            'session_id' => $sessionId,
+            'ppOrderId' => $ppOrderId,
+            'token' => $token,
+            'query' => $request->query(),
+            'user_id' => optional(Auth::user())->id,
+        ]);
+        $orderLogger->info('Cart.success start', [
+            'session_id' => $sessionId,
+            'ppOrderId' => $ppOrderId,
+            'token' => $token,
+            'query' => $request->query(),
+            'user_id' => optional(Auth::user())->id,
+        ]);
         if (!$sessionId && !$ppOrderId && !$token) {
+            Log::warning('Cart.success invalid session', [
+                'session_id' => $sessionId,
+                'ppOrderId' => $ppOrderId,
+                'token' => $token,
+            ]);
+            $orderLogger->warning('Cart.success invalid session', [
+                'session_id' => $sessionId,
+                'ppOrderId' => $ppOrderId,
+                'token' => $token,
+            ]);
             return redirect()->route('cart.index')->with('error', 'Sessione non valida.');
         }
 
         $user = Auth::user();
         if (!$user) {
+            Log::warning('Cart.success no auth user');
+            $orderLogger->warning('Cart.success no auth user');
             return redirect()->route('login')->with('error', 'Accedi per completare l\'acquisto.');
         }
 
         // Per PayPal utilizziamo token=orderId come chiave, per Stripe cart_token
         $lookupKey = $ppOrderId ?: $token;
         $items = $request->session()->get('cart_pending_' . $lookupKey);
+        Log::info('Cart.success loaded pending items', [
+            'lookup_key' => $lookupKey,
+            'items_count' => is_array($items) ? count($items) : null,
+            'has_items' => is_array($items),
+        ]);
+        $orderLogger->info('Cart.success loaded pending items', [
+            'lookup_key' => $lookupKey,
+            'items_count' => is_array($items) ? count($items) : null,
+            'has_items' => is_array($items),
+        ]);
         if (!$items || !is_array($items)) {
+            Log::warning('Cart.success cart not found or already processed', [
+                'lookup_key' => $lookupKey,
+            ]);
+            $orderLogger->warning('Cart.success cart not found or already processed', [
+                'lookup_key' => $lookupKey,
+            ]);
             return redirect()->route('cart.index')->with('error', 'Carrello non trovato o già elaborato.');
         }
         
@@ -324,6 +387,8 @@ class CartController extends Controller
             try {
                 $capture = $pp->captureOrder($ppOrderId);
             } catch (\Throwable $e) {
+                Log::error('Cart.success PayPal capture error', ['exception' => $e->getMessage()]);
+                $orderLogger->error('Cart.success PayPal capture error', ['exception' => $e->getMessage()]);
                 return redirect()->route('cart.index')->with('error', 'Pagamento non confermato.');
             }
 
@@ -351,6 +416,18 @@ class CartController extends Controller
             $paymentCurrencyCtx = $currency;
             $paymentPayPalOrderId = (string) $ppOrderId;
             $paymentPayPalCaptureId = (string) ($cap['id'] ?? '');
+            Log::info('Cart.success provider set', [
+                'provider' => $paymentProvider,
+                'currency' => $paymentCurrencyCtx,
+                'paypal_order_id' => $paymentPayPalOrderId,
+                'paypal_capture_id' => $paymentPayPalCaptureId,
+            ]);
+            $orderLogger->info('Cart.success provider set', [
+                'provider' => $paymentProvider,
+                'currency' => $paymentCurrencyCtx,
+                'paypal_order_id' => $paymentPayPalOrderId,
+                'paypal_capture_id' => $paymentPayPalCaptureId,
+            ]);
         } else {
             // Flusso Stripe
             Stripe::setApiKey(config('services.stripe.secret'));
@@ -364,54 +441,27 @@ class CartController extends Controller
             $paymentCurrencyCtx = (string) strtolower($session->currency);
             $paymentStripeSessionId = (string) $session->id;
             $paymentStripePaymentIntentId = is_string($session->payment_intent) ? $session->payment_intent : (is_object($session->payment_intent) ? ($session->payment_intent->id ?? null) : null);
+            Log::info('Cart.success provider set', [
+                'provider' => $paymentProvider,
+                'currency' => $paymentCurrencyCtx,
+                'stripe_session_id' => $paymentStripeSessionId,
+                'stripe_payment_intent_id' => $paymentStripePaymentIntentId,
+            ]);
+            $orderLogger->info('Cart.success provider set', [
+                'provider' => $paymentProvider,
+                'currency' => $paymentCurrencyCtx,
+                'stripe_session_id' => $paymentStripeSessionId,
+                'stripe_payment_intent_id' => $paymentStripePaymentIntentId,
+            ]);
         }
 
-        // Registra il pagamento (idempotente su paypal_order_id)
-        try {
-            $attributes = [ 'paypal_order_id' => (string) $ppOrderId ];
-            $values = [
-                'provider' => 'paypal',
-                'user_id' => $user->id,
-                'course_id' => null,
-                'paypal_capture_id' => (string) ($cap['id'] ?? ''),
-                'amount_total' => $amountCents,
-                'currency' => $currency,
-                'status' => 'paid',
-                'customer_email' => $customerEmail,
-                'customer_details' => $payer,
-                'custom_fields' => null,
-                'metadata' => null,
-            ];
-            Payment::updateOrCreate($attributes, $values);
-        } catch (\Throwable $e) {
-            \Log::warning('Impossibile registrare Payment cart (PayPal): ' . $e->getMessage());
-        }
-
-        // Registra il pagamento
-        try {
-            $customerDetailsArr = $session->customer_details ? (method_exists($session->customer_details, 'toArray') ? $session->customer_details->toArray() : json_decode(json_encode($session->customer_details), true)) : null;
-            $metadataArr = $session->metadata ? (method_exists($session->metadata, 'toArray') ? $session->metadata->toArray() : json_decode(json_encode($session->metadata), true)) : null;
-
-            $attributes = [
-                'stripe_session_id' => (string) $session->id,
-            ];
-            $values = [
-                'provider' => 'stripe',
-                'user_id' => $user->id,
-                'course_id' => null,
-                'stripe_payment_intent_id' => is_string($session->payment_intent) ? $session->payment_intent : (is_object($session->payment_intent) ? ($session->payment_intent->id ?? null) : null),
-                'amount_total' => (int) $session->amount_total,
-                'currency' => (string) strtolower($session->currency),
-                'status' => (string) $session->payment_status,
-                'customer_email' => $session->customer_details->email ?? $session->customer_email ?? null,
-                'customer_details' => $customerDetailsArr,
-                'custom_fields' => null,
-                'metadata' => $metadataArr,
-            ];
-            Payment::updateOrCreate($attributes, $values);
-        } catch (\Throwable $e) {
-            \Log::warning('Impossibile registrare Payment cart: ' . $e->getMessage());
-        }
+        $createdPayments = [];
+        Log::info('Cart.success processing items start', [
+            'items_total' => is_array($items) ? count($items) : null,
+        ]);
+        $orderLogger->info('Cart.success processing items start', [
+            'items_total' => is_array($items) ? count($items) : null,
+        ]);
 
         // Elabora gli elementi
         foreach ($items as $it) {
@@ -463,11 +513,84 @@ class CartController extends Controller
                 $enrollment->progress_percentage = $enrollment->progress_percentage ?? 0;
                 $enrollment->save();
             }
+
+            // Crea un record di pagamento per ogni articolo
+            try {
+                $payment = Payment::create([
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'provider' => $paymentProvider,
+                    'stripe_session_id' => $paymentStripeSessionId,
+                    'stripe_payment_intent_id' => $paymentStripePaymentIntentId,
+                    'paypal_order_id' => $paymentPayPalOrderId,
+                    'paypal_capture_id' => $paymentPayPalCaptureId,
+                    'amount_total' => (int) round(((float) $course->price) * 100),
+                    'currency' => $paymentCurrencyCtx,
+                    'status' => 'paid',
+                    'customer_email' => $user->email,
+                    'metadata' => ['item_type' => $it['type']],
+                ]);
+                $createdPayments[] = $payment;
+            } catch (\Throwable $e) {
+                \Log::error('Errore creazione record di pagamento: ' . $e->getMessage());
+            }
         }
 
         // Pulisci carrello e pending
         $request->session()->forget('cart.items');
         $request->session()->forget('cart_pending_' . $lookupKey);
+
+        // Invia email di conferma ordine (su coda) con logging diagnostico
+        Log::info('Cart.success created payments', [
+            'count' => count($createdPayments),
+        ]);
+        $orderLogger->info('Cart.success created payments', [
+            'count' => count($createdPayments),
+        ]);
+        if (!empty($createdPayments)) {
+            try {
+                $paymentIds = collect($createdPayments)->pluck('id')->all();
+                Log::info('OrderConfirmationMail: dispatching', [
+                    'user_id' => $user->id,
+                    'payments_count' => count($createdPayments),
+                    'payment_ids' => $paymentIds,
+                ]);
+                $orderLogger->info('OrderConfirmationMail: dispatching', [
+                    'user_id' => $user->id,
+                    'payments_count' => count($createdPayments),
+                    'payment_ids' => $paymentIds,
+                ]);
+                if (config('queue.default') === 'sync') {
+                    Mail::to($user)->send(new \App\Mail\OrderConfirmationMail($user, collect($createdPayments)));
+                    Log::info('OrderConfirmationMail: sent (sync)', ['user_id' => $user->id]);
+                    $orderLogger->info('OrderConfirmationMail: sent (sync)', ['user_id' => $user->id]);
+                } else {
+                    Mail::to($user)->queue(new \App\Mail\OrderConfirmationMail($user, collect($createdPayments)));
+                    Log::info('OrderConfirmationMail: queued', [
+                        'user_id' => $user->id,
+                    ]);
+                    $orderLogger->info('OrderConfirmationMail: queued', [
+                        'user_id' => $user->id,
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                Log::error('Errore invio email conferma ordine', [
+                    'user_id' => $user->id,
+                    'exception' => $e->getMessage(),
+                ]);
+                $orderLogger->error('Errore invio email conferma ordine', [
+                    'user_id' => $user->id,
+                    'exception' => $e->getMessage(),
+                ]);
+            }
+        } else {
+            Log::info('OrderConfirmationMail: skipped (no payments)', [
+                'user_id' => $user->id,
+            ]);
+            $orderLogger->info('OrderConfirmationMail: skipped (no payments)', [
+                'user_id' => $user->id,
+            ]);
+        }
 
         return redirect()->route('dashboard')->with('status', 'Pagamento completato! Acquisto effettuato.');
     }
