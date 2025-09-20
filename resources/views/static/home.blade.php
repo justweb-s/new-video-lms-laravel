@@ -408,10 +408,10 @@
         color: #f6e849; /* Testo giallo */
     }
 
-    .workout-online .workout-btn {
-        background-color: #f6e849;
-        color: #36583d;
-    }
+    .workout-online .workout-option-btn {
+    background-color: #f6e849;
+    color: #36583d;
+}
 
     /* --- Blocco Destra: Workout in Studio --- */
     .workout-studio {
@@ -427,10 +427,10 @@
         color: #36583d; /* Testo verde */
     }
     
-    .workout-studio .workout-btn {
-        background-color: #36583d;
-        color: #f6e849;
-    }
+    .workout-studio .workout-option-btn {
+    background-color: #36583d;
+    color: #f6e849;
+}
     
     /* --- Stili Comuni --- */
     .workout-option h3 {
@@ -449,17 +449,18 @@
         font-size: 1.1rem;
     }
 
-    .workout-option .workout-btn {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 600;
-        text-transform: uppercase;
-        padding: 0.8rem 1.5rem;
-        border: none;
-        border-radius: 50px;
-        text-decoration: none;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-        cursor: pointer;
-    }
+    .workout-option .workout-option-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+}
 
     @media (max-width: 768px) {
         .workout-option h3 {

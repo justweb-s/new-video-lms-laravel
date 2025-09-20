@@ -219,9 +219,20 @@
                             </a>
                             <div class="mt-6">
                                 <h4 class="font-bold text-green-800 text-sm mb-3" style="font-family: 'Montserrat', sans-serif; text-transform: uppercase;">SEGUIMI SUI SOCIAL</h4>
-                                <a href="#" class="text-green-800 hover:text-green-600 transition-colors">
-                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.749-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001.017 0z"/>
+                                <a href="https://www.instagram.com/emy_workout_/" target="_blank" rel="noopener" class="text-green-800 hover:opacity-80 transition-opacity">
+                                    <svg class="w-6 h-6" viewBox="0 0 64 64">
+                                        <defs>
+                                            <radialGradient id="insta-gradient" r="150%" cx="30%" cy="107%">
+                                                <stop stop-color="#fdf497" offset="0"></stop>
+                                                <stop stop-color="#fdf497" offset="0.05"></stop>
+                                                <stop stop-color="#fd5949" offset="0.45"></stop>
+                                                <stop stop-color="#d6249f" offset="0.6"></stop>
+                                                <stop stop-color="#285AEB" offset="0.9"></stop>
+                                            </radialGradient>
+                                        </defs>
+                                        <path d="M45.1,12.1H18.9c-3.7,0-6.8,3-6.8,6.8v26.3c0,3.7,3,6.8,6.8,6.8h26.3c3.7,0,6.8-3,6.8-6.8V18.9 C51.9,15.1,48.9,12.1,45.1,12.1z M47.4,45.1c0,1.3-1,2.3-2.3,2.3H18.9c-1.3,0-2.3-1-2.3-2.3V18.9c0-1.3,1-2.3,2.3-2.3h26.3 c1.3,0,2.3,1,2.3,2.3V45.1z" fill="url(#insta-gradient)"></path>
+                                        <path d="M32,21c-6.1,0-11,4.9-11,11s4.9,11,11,11s11-4.9,11-11S38.1,21,32,21z M32,38.6c-3.7,0-6.6-3-6.6-6.6 s3-6.6,6.6-6.6s6.6,3,6.6,6.6S35.7,38.6,32,38.6z" fill="url(#insta-gradient)"></path>
+                                        <circle cx="41.6" cy="22.4" r="2.6" fill="url(#insta-gradient)"></circle>
                                     </svg>
                                 </a>
                             </div>
