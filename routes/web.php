@@ -50,6 +50,7 @@ Route::get('/workout-online', [StaticPageController::class, 'workoutOnline'])->n
 Route::get('/workout-in-studio', [StaticPageController::class, 'workoutInStudio'])->name('static.workout-in-studio');
 Route::get('/prenota-una-consulenza', [StaticPageController::class, 'bookAConsultation'])->name('static.book-a-consultation');
 Route::post('/prenota-una-consulenza', [StaticPageController::class, 'submitBookAConsultation'])->name('static.book-a-consultation.submit');
+Route::view('/percorso-allenamento-adattato-personalizzato', 'static.percorso-allenamento-adattato-personalizzato')->name('static.percorso-allenamento-adattato-personalizzato');
 
 // Blog (public)
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

@@ -21,6 +21,24 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>[x-cloak]{display:none!important}</style>
         @stack('styles')
+        <style>
+            @media (max-width: 992px) {
+                .desktop-menu {
+                    display: none;
+                }
+                .mobile-menu-button {
+                    display: flex;
+                }
+            }
+            @media (min-width: 993px) {
+                .desktop-menu {
+                    display: flex;
+                }
+                .mobile-menu-button {
+                    display: none;
+                }
+            }
+        </style>
         <style id="cookie-consent-styles">
             .cookie-consent {
                 position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 5000;
@@ -58,23 +76,36 @@
     </head>
     <body x-data="{ openCart: false }" x-on:keydown.escape.window="openCart=false" x-on:open-cart.window="openCart=true" class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white/95 backdrop-blur border-b border-primary/10">
+            <nav class="relative z-[9999] overflow-visible bg-white/95 backdrop-blur border-b border-primary/10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex items-center space-x-6">
                             <a href="{{ route('static.home') }}" class="flex items-center">
                                 <x-brand-logo class="block h-8 w-auto" />
                             </a>
-                            <div class="hidden sm:flex items-center space-x-6">
-                                <a href="{{ route('static.home') }}" class="text-sm font-medium text-primary hover:text-primary/80">Home</a>
+                            <div class="desktop-menu items-center space-x-6">
                                 <a href="{{ route('static.about') }}" class="text-sm font-medium text-primary hover:text-primary/80">Chi Sono</a>
-                                <a href="{{ route('static.workout-online') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout Online</a>
-                                <a href="{{ route('static.workout-in-studio') }}" class="text-sm font-medium text-primary hover:text-primary/80">Workout in Studio</a>
-                                <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Catalogo</a>
-                                <a href="{{ route('blog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Blog</a>
-                                <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Gift Card</a>
-                                <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
+                                <a href="{{ route('giftcards.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Regala Una Gift Card</a>
+
+                                <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                                    <button @click="open = !open" class="flex items-center text-sm font-medium text-primary hover:text-primary/80 focus:outline-none">
+                                        <span>Programmi</span>
+                                        <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+
+                                    <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1" class="absolute z-[10000] -ml-4 mt-3 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                        <div class="py-1">
+                                            <a href="{{ route('static.workout-online') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Workout Online</a>
+                                            <a href="{{ route('static.workout-in-studio') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Workout in Studio</a>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <a href="{{ route('static.book-a-consultation') }}" class="text-sm font-medium text-primary hover:text-primary/80">Prenota una consulenza</a>
+                                <a href="{{ route('blog.index') }}" class="text-sm font-medium text-primary hover:text-primary/80">Blog</a>
+                                <a href="{{ route('static.contact') }}" class="text-sm font-medium text-primary hover:text-primary/80">Contatti</a>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
@@ -97,32 +128,44 @@
                                 <a href="{{ route('register') }}" class="inline-flex items-center px-3 py-1.5 rounded-md bg-primary text-white text-sm hover:bg-primary/90">Registrati</a>
                             @endif
                             <!-- Mobile menu button -->
-                            <button id="mobile-menu-button-public" type="button" class="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-primary/80 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/30" aria-controls="mobile-menu-public" aria-expanded="false">
-                                <span class="sr-only">Apri menu</span>
-                                <!-- Menu open icon -->
-                                <svg id="icon-menu-public" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <!-- Menu close icon -->
-                                <svg id="icon-close-public" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                            <div class="-mr-2 mobile-menu-button items-center">
+                                <button id="mobile-menu-button-public" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary" aria-controls="mobile-menu-public" aria-expanded="false">
+                                    <span class="sr-only">Apri menu</span>
+                                    <!-- Menu open icon -->
+                                    <svg id="icon-menu-public" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                    </svg>
+                                    <!-- Menu close icon -->
+                                    <svg id="icon-close-public" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Mobile Menu Panel -->
-                <div id="mobile-menu-public" class="sm:hidden hidden border-t border-primary/10">
+                <div id="mobile-menu-public" class="lg:hidden hidden border-t border-primary/10">
                     <div class="pt-2 pb-3 space-y-1">
-                        <a href="{{ route('static.home') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.home') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Home</a>
-                        <a href="{{ route('static.about') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.about') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Chi Sono</a>
-                        <a href="{{ route('static.workout-online') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-online') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout Online</a>
-                        <a href="{{ route('static.workout-in-studio') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-in-studio') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout in Studio</a>
-                        <a href="{{ route('catalog.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('catalog.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Catalogo</a>
+                        <a href="{{ route('static.about') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('about') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Chi Sono</a>
+                        <a href="{{ route('giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('giftcards.index') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Regala Una Gift Card</a>
+
+                        <div x-data="{ open: false }" class="space-y-1">
+                            <button @click="open = !open" class="w-full flex justify-between items-center pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">
+                                <span>Programmi</span>
+                                <svg class="h-5 w-5 transform" :class="{ 'rotate-180': open }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div x-show="open" x-transition class="pl-8 space-y-1">
+                                <a href="{{ route('static.workout-online') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-online') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout Online</a>
+                                <a href="{{ route('static.workout-in-studio') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.workout-in-studio') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Workout in Studio</a>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('static.book-a-consultation') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('book-a-consultation') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Prenota una consulenza</a>
                         <a href="{{ route('blog.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('blog.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Blog</a>
-                        <a href="{{ route('giftcards.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('giftcards.*') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Gift Card</a>
-                        <a href="{{ route('static.contact') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.contact') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Contatti</a>
-                        <a href="{{ route('static.book-a-consultation') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('static.book-a-consultation') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Prenota una consulenza</a>
+                        <a href="{{ route('static.contact') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('contact') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Contatti</a>
                         @if(Auth::check())
                             <a href="{{ route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Dashboard</a>
                             <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('profile.edit') ? 'bg-gray-50 border-primary text-gray-900' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">Profilo</a>
@@ -215,7 +258,7 @@
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="text-center">
                             <p class="text-yellow-400 text-sm" style="font-family: 'Source Sans Pro', sans-serif;">
-                                Copyright © 2025 Emy Workout | Powered by JustWebsite
+                                Copyright 2025 Emy Workout | Powered by JustWebsite
                             </p>
                         </div>
                     </div>
