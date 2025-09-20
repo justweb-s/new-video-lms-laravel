@@ -979,7 +979,7 @@
                 <h2>SE HAI DECISO DI PRENDERE IN MANO LA TUA SALUTE E IL TUO BENESSERE, SEI NEL POSTO GIUSTO</h2>
                 <p>L'allenamento <span class="highlight">adattato</span> è un percorso <span class="highlight">personalizzato</span> di attività fisica che si adegua perfettamente alle caratteristiche e agli obiettivi di ogni persona. È ideale sia per chi ha condizioni particolari, come sindromi dolorose o disturbi neuromotori.</p>
                 <p>I programmi sono <span class="highlight">strutturati individualmente</span>, modulando intensità e durata in base alle specifiche esigenze che tu su un <span class="highlight">principiante</span>, un atleta, o abbia <span class="highlight">necessità specifiche</span> legate alla salute, l'allenamento viene calibrato per massimizzare i tuoi risultati in totale sicurezza.</p>
-                <a href="{{ route('static.about') }}" class="emy-btn">
+                <a href="{{ route('static.percorso-allenamento-adattato-personalizzato') }}" class="emy-btn">
                     SCOPRI DI PIÙ
                 </a>
             </div>

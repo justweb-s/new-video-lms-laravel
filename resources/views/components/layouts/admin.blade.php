@@ -122,10 +122,21 @@
                 </li>
 
                 <li class="menu-item">
+                    <a href="{{ route('admin.newsletters.index') }}" class="menu-link {{ request()->routeIs('admin.newsletters.*') ? 'active' : '' }}">
+                        <span class="menu-text">
+                            <svg class="menu-icon" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.94 6.94A2 2 0 014 6h12a2 2 0 011.06.94L10 12 2.94 6.94zM18 8.38v5.62A2 2 0 0116 16H4a2 2 0 01-2-2V8.38l7.55 4.77a1 1 0 001.1 0L18 8.38z"/>
+                            </svg>
+                            Newsletter
+                        </span>
+                    </a>
+                </li>
+
+                <li class="menu-item">
                     <a href="{{ route('admin.data.index') }}" class="menu-link {{ request()->routeIs('admin.data.*') ? 'active' : '' }}">
                         <span class="menu-text">
                             <svg class="menu-icon" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v3H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h7a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10-5a1 1 0 011-1h3a1 1 0 011 1v9a2 2 0 01-2 2h-3a1 1 0 01-1-1V5z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v3H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h7a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10-5a1 1 0 011-1h3a1 1 0 011 1v9a2 2 0 01-2 2h-3a1 1 0 01-1-1V5z" clip-rule="evenodd"/>
                             </svg>
                             Import/Export
                         </span>
