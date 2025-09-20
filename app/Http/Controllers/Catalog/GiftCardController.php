@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
 use App\Mail\GiftCardIssuedMail;
+use App\Mail\GiftCardPurchaseConfirmationMail;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\GiftCard;
@@ -251,9 +252,22 @@ class GiftCardController extends Controller
                 ]
             );
 
-            try { Mail::to($gift->recipient_email)->send(new GiftCardIssuedMail($gift)); } catch (\Throwable $e) { \Log::error('Errore invio email gift card: ' . $e->getMessage()); }
+            // Invia email solo alla prima creazione per evitare duplicati su refresh
+            if ($gift->wasRecentlyCreated) {
+                try { Mail::to($gift->recipient_email)->send(new GiftCardIssuedMail($gift)); } catch (\Throwable $e) { \Log::error('Errore invio email gift card: ' . $e->getMessage()); }
+                // Email di conferma al compratore
+                try {
+                    if (config('queue.default') === 'sync') {
+                        Mail::to($user)->send(new GiftCardPurchaseConfirmationMail($gift));
+                    } else {
+                        Mail::to($user)->queue(new GiftCardPurchaseConfirmationMail($gift));
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('Errore invio email conferma acquisto gift card: ' . $e->getMessage());
+                }
+            }
 
-            return redirect()->route('giftcards.show', $course)->with('status', 'Gift card acquistata! Il destinatario riceverà una email con il codice.');
+            return view('giftcards.success', compact('gift','course'));
         }
 
         // Flusso Stripe
@@ -331,13 +345,26 @@ class GiftCardController extends Controller
             ]
         );
 
-        try {
-            Mail::to($gift->recipient_email)->send(new GiftCardIssuedMail($gift));
-        } catch (\Throwable $e) {
-            \Log::error('Errore invio email gift card: ' . $e->getMessage());
+        // Invia email solo alla prima creazione per evitare duplicati su refresh
+        if ($gift->wasRecentlyCreated) {
+            try {
+                Mail::to($gift->recipient_email)->send(new GiftCardIssuedMail($gift));
+            } catch (\Throwable $e) {
+                \Log::error('Errore invio email gift card: ' . $e->getMessage());
+            }
+            // Email di conferma al compratore
+            try {
+                if (config('queue.default') === 'sync') {
+                    Mail::to($user)->send(new GiftCardPurchaseConfirmationMail($gift));
+                } else {
+                    Mail::to($user)->queue(new GiftCardPurchaseConfirmationMail($gift));
+                }
+            } catch (\Throwable $e) {
+                \Log::error('Errore invio email conferma acquisto gift card: ' . $e->getMessage());
+            }
         }
 
-        return redirect()->route('giftcards.show', $course)->with('status', 'Gift card acquistata! Il destinatario riceverà una email con il codice.');
+        return view('giftcards.success', compact('gift','course'));
     }
 
     public function cancel(Request $request)

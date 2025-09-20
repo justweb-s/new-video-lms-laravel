@@ -921,7 +921,7 @@
         <div class="programs-grid">
             @if($featuredCourses->count() > 0)
                 @foreach($featuredCourses as $course)
-                    <a href="{{ route('courses.show', $course) }}" class="program-card" style="background-image: url('{{ Storage::url($course->image_url) }}');">
+                    <a href="{{ route('catalog.show', $course) }}" class="program-card" style="background-image: url('{{ Storage::url($course->image_url) }}');">
                         <div class="program-overlay">
                             <div class="program-content">
                                 <h3 class="program-title">{{ $course->name }}</h3>
